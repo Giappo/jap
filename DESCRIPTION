@@ -1,16 +1,26 @@
 Package: jappe
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+Type: Package
+Title: Jappe
+Version: 0.1
+Author: Giovanni Laudanno <glaudanno@gmail.com>
+Maintainer: Giovanni Laudanno <glaudanno@gmail.com>
+Depends: 
+  R (>= 3.2.0)
+Imports: 
+  beastier,
+  mauricer,
+  devtools,
+  pryr,
+  rappdirs
+Suggests:
+  knitr,
+  lintr,
+  testthat
+Description: 
+  Giappo's personal package.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Suggests: 
-    testthat
+NeedsCompilation: no
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

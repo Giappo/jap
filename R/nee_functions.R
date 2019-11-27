@@ -100,7 +100,10 @@ pn_bar <- function(lambda, mu, t, n, tbar = 0) {
     (jappe::one_minus_ut(t = t, lambda = lambda, mu = mu)) *
     n *
     jappe::ut(t = t, lambda = lambda, mu = mu) ^ (n - 1) *
-    jappe::one_minus_pt(t = tbar, lambda = lambda, mu = mu) ^ (n - 1 + (n == 0)) +
+    jappe::one_minus_pt(
+      t = tbar,
+      lambda = lambda, mu = mu
+    ) ^ (n - 1 + (n == 0)) +
     (n == 0) * (jappe::one_minus_pt(t = t, lambda = lambda, mu = mu)) * n
   return(out)
 }
