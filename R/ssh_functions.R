@@ -73,10 +73,10 @@ check_jobs <- function(account = "p274829") {
   ))
   jappe::close_connection(connection = connection)
   list(
-    jobs = jobs,
     job_ids = job_ids,
     job_names = job_names,
-    sshare_output = sshare_output
+    sshare_output = sshare_output,
+    jobs = jobs
   )
 }
 
