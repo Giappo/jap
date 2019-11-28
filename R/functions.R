@@ -1,6 +1,6 @@
 #' Receive the word of our lord JC directly on your PC
 #' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
+#' @author Giovanni Laudanno, Richel Bilderbeek
 #' @return nothing
 #' @export
 install_richel <- function() {
