@@ -7,7 +7,7 @@
 create_singleton_phylo(age)
 }
 \arguments{
-\item{age}{the age of the tree.}
+\item{age}{the age of the phylogeny}
 }
 \description{
 Create an empty phylogeny

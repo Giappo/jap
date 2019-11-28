@@ -7,11 +7,15 @@
 pn_bar(lambda, mu, t, n, tbar = 0)
 }
 \arguments{
-\item{lambda}{the sympatric speciation rate.}
+\item{lambda}{speciation rate}
 
-\item{mu}{the extinction rate.}
+\item{mu}{extinction rate}
 
 \item{t}{time}
+
+\item{n}{number of species}
+
+\item{tbar}{time}
 }
 \value{
 pn times probability of extinction for n-1 species after the shift

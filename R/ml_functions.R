@@ -1,6 +1,6 @@
 #' @title Transform parameters
 #' @description Transform parameters according to y = x / (1 + x)
-#' @inheritParams default_params_doc
+#' @param pars parameters
 #' @details This is not to be called by the user.
 #' @return transformed parameters
 #' @export
@@ -13,7 +13,7 @@ pars_transform_forward <- function(pars) {
 
 #' @title Transform parameters back
 #' @description Transform parameters back according to x = y / (1 + y)
-#' @inheritParams default_params_doc
+#' @param pars_transformed parameters already transformed
 #' @details This is not to be called by the user.
 #' @return the original parameters
 #' @export

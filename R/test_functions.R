@@ -1,4 +1,5 @@
 #' Print a variable, but not from test environment
+#' @param var a variable, to be expressed as string
 #' @export
 print_from_global <- function(var = "seed") {
   if (var %in% ls(.GlobalEnv)) {

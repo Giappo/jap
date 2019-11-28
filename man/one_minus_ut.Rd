@@ -7,9 +7,9 @@
 one_minus_ut(lambda, mu, t)
 }
 \arguments{
-\item{lambda}{the sympatric speciation rate.}
+\item{lambda}{speciation rate}
 
-\item{mu}{the extinction rate.}
+\item{mu}{extinction rate}
 
 \item{t}{time}
 }

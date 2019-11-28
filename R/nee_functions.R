@@ -1,7 +1,7 @@
 #' @title Pt
 #' @author Giovanni Laudanno
 #' @description Nee's function: pt
-#' @inheritParams default_params_doc
+#' @inheritParams nee_params_doc
 #' @return pt
 #' @export
 p_t  <- function(lambda, mu, t) {
@@ -20,7 +20,7 @@ p_t  <- function(lambda, mu, t) {
 #' @title 1 - Pt
 #' @author Giovanni Laudanno
 #' @description Nee's function: 1 - pt
-#' @inheritParams default_params_doc
+#' @inheritParams nee_params_doc
 #' @return 1 - pt
 #' @export
 one_minus_pt  <- function(lambda, mu, t) {
@@ -39,7 +39,7 @@ one_minus_pt  <- function(lambda, mu, t) {
 #' @title ut
 #' @author Giovanni Laudanno
 #' @description Nee's function: ut
-#' @inheritParams default_params_doc
+#' @inheritParams nee_params_doc
 #' @return ut
 #' @export
 ut  <- function(lambda, mu, t) {
@@ -58,7 +58,7 @@ ut  <- function(lambda, mu, t) {
 #' @title 1 - ut
 #' @author Giovanni Laudanno
 #' @description Nee's function: 1 - ut
-#' @inheritParams default_params_doc
+#' @inheritParams nee_params_doc
 #' @return 1 - ut
 #' @export
 one_minus_ut  <- function(lambda, mu, t) {
@@ -77,7 +77,7 @@ one_minus_ut  <- function(lambda, mu, t) {
 #' @title Pn
 #' @author Giovanni Laudanno
 #' @description Nee's function: pn
-#' @inheritParams default_params_doc
+#' @inheritParams nee_params_doc
 #' @return pn
 #' @export
 pn <- function(lambda, mu, t, n) {
@@ -92,7 +92,7 @@ pn <- function(lambda, mu, t, n) {
 #' @author Giovanni Laudanno
 #' @description Combine pn from Nee et al. and imposes the extinction
 #'  before the present of all species not visible in the phylogeny
-#' @inheritParams default_params_doc
+#' @inheritParams nee_params_doc
 #' @return pn times probability of extinction for n-1 species after the shift
 #' @export
 pn_bar <- function(lambda, mu, t, n, tbar = 0) {

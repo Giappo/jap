@@ -7,13 +7,7 @@
 pars_transform_forward(pars)
 }
 \arguments{
-\item{pars}{vector of parameters:
-\itemize{
-  \item pars[1] is lambda, the sympatric speciation rate;
-  \item pars[2] is mu, the extinction rate;
-  \item pars[3] is nu, the multiple allopatric speciation trigger rate;
-  \item pars[4] is q, the single-lineage speciation probability;
-}}
+\item{pars}{parameters}
 }
 \value{
 transformed parameters
