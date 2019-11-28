@@ -1,4 +1,4 @@
-context("jappe")
+context("jap")
 
 test_that("use", {
   x <- 1

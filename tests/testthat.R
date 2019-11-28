@@ -1,4 +1,4 @@
 library(testthat)
-library(jappe)
+library(jap)
 
-test_check("jappe")
+test_check("jap")

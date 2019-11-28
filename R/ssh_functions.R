@@ -25,7 +25,7 @@ get_cluster_address <- function(account = "p274829") {
 #' @return the connection
 #' @export
 open_connection <- function(account = "p274829") {
-  cluster_address <- jappe::get_cluster_address(account = account)
+  cluster_address <- jap::get_cluster_address(account = account)
   connection <- ssh::ssh_connect(cluster_address)
   connection
 }
@@ -48,7 +48,7 @@ close_connection <- function(connection) {
 #' @export
 check_jobs <- function(account = "p274829") {
 
-  connection <- jappe::open_connection(account = account)
+  connection <- jap::open_connection(account = account)
 
   jobs <- utils::capture.output(ssh::ssh_exec_wait(session = connection, command = "squeue -u $USER --long"))
   if ((length(jobs) - 1) >= 3) {
@@ -71,7 +71,7 @@ check_jobs <- function(account = "p274829") {
     session = connection,
     command = "sshare -u $USER"
   ))
-  jappe::close_connection(connection = connection)
+  jap::close_connection(connection = connection)
   list(
     job_ids = job_ids,
     job_names = job_names,
@@ -88,13 +88,13 @@ check_jobs <- function(account = "p274829") {
 #' @export
 close_jobs <- function(account = "p274829") {
 
-  connection <- jappe::open_connection(account = account)
+  connection <- jap::open_connection(account = account)
 
   ssh::ssh_exec_wait(
     session = connection,
     command = "scancel --user=$USER --partition=gelifes && scancel --user=$USER --partition=regular" # nolint indeed long command
   )
 
-  jappe::close_connection(connection = connection)
-  jappe::check_jobs(account = account)
+  jap::close_connection(connection = connection)
+  jap::check_jobs(account = account)
 }
