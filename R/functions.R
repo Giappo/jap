@@ -51,3 +51,8 @@ file_path <- function(..., fsep = .Platform$file.sep) {
   gsub("//", "/", file.path(..., fsep = fsep))
 }
 
+#' Open R library
+#' @export
+open_rlibrary <- function() {
+  shell.exec(.libPaths()[1])
+}
