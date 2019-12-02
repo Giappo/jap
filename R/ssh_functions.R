@@ -51,7 +51,9 @@ check_jobs <- function(
   session = NA
 ) {
 
-  if (is.na(session)) {
+  new_session <- FALSE
+  if (suppressWarnings(is.na(session))) {
+    new_session <- TRUE
     session <- jap::open_session(account = account)
   }
 
@@ -76,7 +78,9 @@ check_jobs <- function(
     session = session,
     command = "sshare -u $USER"
   ))
-  jap::close_session(session = session)
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
   list(
     job_ids = job_ids,
     job_names = job_names,
