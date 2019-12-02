@@ -4,12 +4,12 @@
 \alias{check_jobs}
 \title{Check jobs on cluster}
 \usage{
-check_jobs(account = "p274829", connection = NA)
+check_jobs(account = "p274829", session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}
 
-\item{connection}{a ssh connection}
+\item{session}{a ssh session}
 }
 \value{
 list with job ids, job info and sshare

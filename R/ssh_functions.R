@@ -18,26 +18,26 @@ get_cluster_address <- function(account = "p274829") {
   cluster_address
 }
 
-#' @title Open connection
-#' @description Open a connection for a given account
+#' @title Open session
+#' @description Open a session for a given account
 #' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
-#' @return the connection
+#' @return the session
 #' @export
-open_connection <- function(account = "p274829") {
+open_session <- function(account = "p274829") {
   cluster_address <- jap::get_cluster_address(account = account)
-  connection <- ssh::ssh_connect(cluster_address)
-  connection
+  session <- ssh::ssh_connect(cluster_address)
+  session
 }
 
-#' @title Close connection
-#' @description Close a connection for a given account
+#' @title Close session
+#' @description Close a session for a given account
 #' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
 #' @return nothing
 #' @export
-close_connection <- function(connection) {
-  ssh::ssh_disconnect(connection); gc()
+close_session <- function(session) {
+  ssh::ssh_disconnect(session); gc()
 }
 
 #' @title Check jobs on cluster
@@ -48,21 +48,21 @@ close_connection <- function(connection) {
 #' @export
 check_jobs <- function(
   account = "p274829",
-  connection = NA
+  session = NA
 ) {
 
-  if (is.na(connection)) {
-    connection <- jap::open_connection(account = account)
+  if (is.na(session)) {
+    session <- jap::open_session(account = account)
   }
 
-  jobs <- utils::capture.output(ssh::ssh_exec_wait(session = connection, command = "squeue -u $USER --long"))
+  jobs <- utils::capture.output(ssh::ssh_exec_wait(session = session, command = "squeue -u $USER --long"))
   if ((length(jobs) - 1) >= 3) {
     job_ids <- job_names <- c()
     for (i in 3:(length(jobs) - 1)) {
       job_id_i <- substr(jobs[i], start = 12, stop = 18)
       job_ids <- c(job_ids, job_id_i)
       job_info <- utils::capture.output(ssh::ssh_exec_wait(
-        session = connection,
+        session = session,
         command = paste("jobinfo", job_id_i)
       ))
       job_name_i <- substr(job_info[1], start = 23, stop = nchar(job_info[1]))
@@ -73,10 +73,10 @@ check_jobs <- function(
     job_ids <- job_names <- NULL
   }
   sshare_output <- utils::capture.output(ssh::ssh_exec_wait(
-    session = connection,
+    session = session,
     command = "sshare -u $USER"
   ))
-  jap::close_connection(connection = connection)
+  jap::close_session(session = session)
   list(
     job_ids = job_ids,
     job_names = job_names,
@@ -93,13 +93,13 @@ check_jobs <- function(
 #' @export
 close_jobs <- function(account = "p274829") {
 
-  connection <- jap::open_connection(account = account)
+  session <- jap::open_session(account = account)
 
   ssh::ssh_exec_wait(
-    session = connection,
+    session = session,
     command = "scancel --user=$USER --partition=gelifes && scancel --user=$USER --partition=regular" # nolint indeed long command
   )
 
-  jap::close_connection(connection = connection)
+  jap::close_session(session = session)
   jap::check_jobs(account = account)
 }

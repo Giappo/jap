@@ -2,7 +2,7 @@
 #' documentation.
 #' @param account a peregrine account
 #' @param age the age of the phylogeny
-#' @param connection a ssh connection
+#' @param session a ssh session
 #' @param lambda speciation rate
 #' @param mu extinction rate
 #' @param message a message to be print
@@ -15,7 +15,7 @@
 default_params_doc <- function(
   account,
   age,
-  connection,
+  session,
   lambda,
   mu,
   t,

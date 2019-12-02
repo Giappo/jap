@@ -5,15 +5,14 @@
 \title{This function does nothing. It is intended to inherit is parameters'
 documentation.}
 \usage{
-default_params_doc(account, age, connection, lambda, mu, t, message,
-  verbose)
+default_params_doc(account, age, session, lambda, mu, t, message, verbose)
 }
 \arguments{
 \item{account}{a peregrine account}
 
 \item{age}{the age of the phylogeny}
 
-\item{connection}{a ssh connection}
+\item{session}{a ssh session}
 
 \item{lambda}{speciation rate}
 
