@@ -52,7 +52,7 @@ check_jobs <- function(
 ) {
 
   new_session <- FALSE
-  if (suppressWarnings(is.na(session))) {
+  if (!jap::is_session_open(session = session)) {
     new_session <- TRUE
     session <- jap::open_session(account = account)
   }
@@ -106,4 +106,21 @@ close_jobs <- function(account = "p274829") {
 
   jap::close_session(session = session)
   jap::check_jobs(account = account)
+}
+
+#' @title Check if session is open
+#' @description Check if session is open
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return TRUE or FALSE
+#' @export
+is_session_open <- function(
+  session
+) {
+  out <- jap::my_try_catch(ssh::ssh_session_info(session))
+  if (!is.null(out$value)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }
