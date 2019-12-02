@@ -46,9 +46,14 @@ close_connection <- function(connection) {
 #' @inheritParams default_params_doc
 #' @return list with job ids, job info and sshare
 #' @export
-check_jobs <- function(account = "p274829") {
+check_jobs <- function(
+  account = "p274829",
+  connection = NA
+) {
 
-  connection <- jap::open_connection(account = account)
+  if (is.na(connection)) {
+    connection <- jap::open_connection(account = account)
+  }
 
   jobs <- utils::capture.output(ssh::ssh_exec_wait(session = connection, command = "squeue -u $USER --long"))
   if ((length(jobs) - 1) >= 3) {
