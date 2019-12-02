@@ -108,7 +108,7 @@ close_jobs <- function(account = "p274829") {
   jap::check_jobs(account = account)
 }
 
-#' @title Check if session is open
+#' @title Check if session is open or not
 #' @description Check if session is open
 #' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
