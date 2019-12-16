@@ -2,7 +2,7 @@
 % Please edit documentation in R/ssh_functions.R
 \name{is_session_open}
 \alias{is_session_open}
-\title{Check if session is open}
+\title{Check if session is open or not}
 \usage{
 is_session_open(session)
 }

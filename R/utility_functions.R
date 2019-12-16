@@ -57,7 +57,7 @@ plot_matrix <- function(
     mat[col(mat) >= row(mat)] <- 0
   }
   rotate <- function(x) t(apply(x, 2, rev))
-  col_palette <- colorRampPalette(
+  col_palette <- grDevices::colorRampPalette(
     c('blue', 'white', 'red')
   )(30)
   if (logs == TRUE) {
@@ -65,7 +65,7 @@ plot_matrix <- function(
   } else {
     mat2 <- mat
   }
-  levelplot(
+  lattice::levelplot(
     rotate(mat2),
     col.regions = col_palette
   )
