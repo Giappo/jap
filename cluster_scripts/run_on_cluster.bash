@@ -9,10 +9,10 @@ package=$2
 funname=$3
 arguments=$4
 
-github=$( printf '%04d' $github )
-package=$( printf '%04d' $package )
-funname=$( printf '%04d' $funname )
-arguments=$( printf '%04d' $arguments )
+github=$( printf $github )
+package=$( printf $package )
+funname=$( printf $funname )
+arguments=$( printf $arguments )
 
 args_vector=(${github} ${package} ${funname} ${arguments})
 
