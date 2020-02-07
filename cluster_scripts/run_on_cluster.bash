@@ -8,7 +8,7 @@ github=$1
 package=$2
 funname=$3
 arguments=$4
-args_vector=(${github} ${package} ${funname} ${arguments})
+args_vector=(\"${github}\" \"${package}\" \"${funname}\" \"${arguments}\")
 
 R_file_name=R-${funname}.R
 bash_file_name=bash-${funname}.bash

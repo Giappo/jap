@@ -217,26 +217,20 @@ upload_jap_scripts <- function(
 
   # jap scripts
   tempfolder <- tempdir()
-  url <- "https://github.com/Giappo/jap/tree/master/cluster_scripts/run_on_cluster.bash"
+  url <- "https://raw.githubusercontent.com/Giappo/jap/master/cluster_scripts/run_on_cluster.bash"
   utils::download.file(url, destfile = file.path(tempfolder, "run_on_cluster.bash"))
-  project_folder <- file.path(github_folder, "jap")
   scripts_folder <- tempfolder
-  if (!dir.exists(scripts_folder)) {
-    scripts_folder <- file.path(project_folder, "cluster_scripts")
-  }
   remote_folder <- "jap_scripts"
   ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", remote_folder))
 
-  system.time(
-    ssh::scp_upload(
-      session = session,
-      files = paste0(
-        scripts_folder,
-        "/",
-        list.files(scripts_folder, pattern = ".bash")
-      ),
-      to = remote_folder
-    )
+  ssh::scp_upload(
+    session = session,
+    files = paste0(
+      scripts_folder,
+      "/",
+      list.files(scripts_folder, pattern = ".bash")
+    ),
+    to = remote_folder
   )
 
   if (new_session == TRUE) {
@@ -310,18 +304,20 @@ run_on_cluster <- function(
     "run_on_cluster.bash"
   )
 
-  x <- utils::capture.output(ssh::ssh_exec_wait(session = session, command = paste0(
-    "sbatch ",
-    bash_file,
-    " ",
-    github_name,
-    " ",
-    package_name,
-    " ",
-    function_name,
-    " ",
-    fun_arguments
-  )))
+  x <- utils::capture.output(ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "sbatch ",
+      bash_file,
+      " ",
+      github_name,
+      " ",
+      package_name,
+      " ",
+      function_name,
+      " ",
+      fun_arguments
+    )))
 
   # ssh::ssh_exec_wait(session = session, command = "sleep 5")
   # ssh::ssh_exec_wait(session = session, command = paste0(
