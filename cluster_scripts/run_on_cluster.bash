@@ -31,7 +31,7 @@ echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
 echo "#SBATCH --output=bash-${funname}.log" >> $bash_file_name
 echo "module load R" >> $bash_file_name
-echo "Rscript $R_file_name ${args_vector[@]}" >> $bash_file_name
+echo 'Rscript $R_file_name ${args_vector[@]}' >> $bash_file_name
 echo "rm $R_file_name" >> $bash_file_name
 echo "rm $bash_file_name" >> $bash_file_name
 
