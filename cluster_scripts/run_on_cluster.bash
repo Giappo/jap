@@ -2,6 +2,7 @@
 #SBATCH --time=00:00:58 --partition=short
 my_email=glaudanno@gmail.com
 chosen_partition=gelifes
+cd /home/$USER/jap_scripts/
 
 github=$1
 package=$2
