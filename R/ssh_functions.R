@@ -320,6 +320,8 @@ run_on_cluster <- function(
 
   # escape characters
   fun_arguments <- gsub(x = fun_arguments, pattern = "=", replacement = paste0("\\="))
+  fun_arguments <- gsub(x = fun_arguments, pattern = "(", replacement = paste0("\\("))
+  fun_arguments <- gsub(x = fun_arguments, pattern = ")", replacement = paste0("\\)"))
 
   jap::upload_jap_scripts(account = account, session = session)
   jap_folder <- "jap_scripts"
