@@ -8,6 +8,12 @@ github=$1
 package=$2
 funname=$3
 arguments=$4
+
+github=$( printf '%04d' $github )
+package=$( printf '%04d' $package )
+funname=$( printf '%04d' $funname )
+arguments=$( printf '%04d' $arguments )
+
 args_vector=(${github} ${package} ${funname} ${arguments})
 
 R_file_name=R-${funname}.R
