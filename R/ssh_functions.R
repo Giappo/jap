@@ -124,3 +124,330 @@ is_session_open <- function(
     return(FALSE)
   }
 }
+
+#' @title Export cluster scripts
+#' @author Giovanni Laudanno
+#' @description Export cluster scripts
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+upload_bash_scripts <- function(
+  project_name,
+  account = "p274829",
+  session = NA
+) {
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  github_folder <- dirname(getwd())
+  testit::assert(
+    grepl(x = github_folder, pattern = "GitHub")
+  )
+
+  # project specific scripts
+  project_folder <- file.path(github_folder, project_name)
+  scripts_folder <- file.path(project_folder, "scripts")
+  if (!dir.exists(scripts_folder)) {
+    scripts_folder <- file.path(project_folder, "cluster_scripts")
+  }
+  remote_folder <- file.path(project_name)
+  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
+
+  system.time(
+    ssh::scp_upload(
+      session = session,
+      files = paste0(
+        scripts_folder,
+        "/",
+        list.files(scripts_folder, pattern = ".bash")
+      ),
+      to = remote_folder
+    )
+  )
+
+  # jap scripts
+  project_folder <- file.path(github_folder, "jap")
+  scripts_folder <- file.path(project_folder, "scripts")
+  if (!dir.exists(scripts_folder)) {
+    scripts_folder <- file.path(project_folder, "cluster_scripts")
+  }
+  remote_folder <- file.path(project_name)
+  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
+
+  system.time(
+    ssh::scp_upload(
+      session = session,
+      files = paste0(
+        scripts_folder,
+        "/",
+        list.files(scripts_folder, pattern = ".bash")
+      ),
+      to = remote_folder
+    )
+  )
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+  return()
+}
+
+#' @title Export cluster scripts
+#' @author Giovanni Laudanno
+#' @description Export cluster scripts
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+upload_jap_scripts <- function(
+  account = "p274829",
+  session = NA
+) {
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+  tempfolder <- tempdir()
+  utils::download.file(
+    "https://github.com/Giappo/jap/tree/master/cluster_scripts/run_on_cluster.bash",
+    destfile = tempfolder
+  )
+
+  # jap scripts
+
+  project_folder <- file.path(github_folder, "jap")
+  scripts_folder <- tempfolder
+  if (!dir.exists(scripts_folder)) {
+    scripts_folder <- file.path(project_folder, "cluster_scripts")
+  }
+  remote_folder <- file.path(project_name)
+  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
+
+  system.time(
+    ssh::scp_upload(
+      session = session,
+      files = paste0(
+        scripts_folder,
+        "/",
+        list.files(scripts_folder, pattern = ".bash")
+      ),
+      to = remote_folder
+    )
+  )
+
+  rm(tempfolder)
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+  return()
+}
+
+#' List all GitHub projects
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+list_projects <- function() {
+  github_folder <- dirname(getwd())
+  testit::assert(
+    grepl(x = github_folder, pattern = "GitHub")
+  )
+  list.files(github_folder)
+}
+
+#' Get function list
+#' @author Giovanni Laudanno
+#' @return function list
+#' @export
+get_function_list <- function(
+  project_name,
+  my_github = "Giappo"
+) {
+
+  devtools::install_github(
+    paste0(my_github, "/", project_name)
+  )
+  library(project_name, character.only = T)
+
+  fun_list <- ls(paste0("package:", project_name)) # nolint internal function
+  err_funs <- fun_list[sapply(
+    fun_list, function(x)
+      any(grepl("errors", x))
+  )]
+  err_funs
+}
+
+#' @title run pirouette example
+#' @author Giovanni Laudanno
+#' @description run pirouette example
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+run_on_cluster <- function(
+  github_name = NA,
+  package_name,
+  function_name,
+  fun_arguments,
+  account = "p274829",
+  session = NA
+) {
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  jap::upload_jap_scripts(account = account, session = session)
+
+  bash_file <- file.path(
+    project_name,
+    "run_on_cluster.bash"
+  )
+
+  ssh::ssh_exec_wait(session = session, command = paste0(
+    "sbatch ",
+    bash_file,
+    " ",
+    github_name,
+    " ",
+    package_name,
+    " ",
+    function_name,
+    " ",
+    fun_arguments
+  ))
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+
+  return()
+}
+
+#' @title run pirouette example
+#' @author Giovanni Laudanno
+#' @description run pirouette example
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+run_project_on_cluster <- function(
+  project_name,
+  function_name,
+  account = "p274829",
+  session = NA,
+  fun_arguments
+) {
+
+  if (!(function_name %in% jap::get_function_list(project_name))) {
+    stop("This is not a function you can call")
+  }
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  jap::upload_bash_scripts(
+    project_name = project_name,
+    account = account,
+    session = session
+  )
+
+  bash_file <- file.path(
+    project_name,
+    "run_project_on_cluster.bash"
+  )
+
+  ssh::ssh_exec_wait(session = session, command = paste0(
+    "sbatch ",
+    bash_file,
+    " ",
+    function_name,
+    " ",
+    fun_arguments
+  ))
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+  return()
+}
+
+#' @title run a function
+#' @author Giovanni Laudanno
+#' @description run a function
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+run_function <- function(
+  github_name = NA,
+  package_name,
+  function_name,
+  arguments
+) {
+
+  call_me_maybe <- function(listOfCharArgs) {
+    CharArgs = unlist(listOfCharArgs)
+    if(is.null(CharArgs)) return(alist())
+    .out = eval(parse(
+      text = paste0("alist(", paste(parse(text = CharArgs), collapse = ","),")")
+    ))
+  }
+
+  myArgs <- call_me_maybe(arguments)
+  jap::install_package(
+    github_name = github_name,
+    package_name = package_name
+  )
+  do.call(eval(function_name), myArgs)
+}
+
+#' @title run pirouette example
+#' @author Giovanni Laudanno
+#' @description run pirouette example
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+run_pirouette_example <- function(
+  example_no,
+  project_name = get_pkg_name(),
+  account = "p274829",
+  session = NA
+) {
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  bash_file <- file.path(
+    project_name,
+    "run_pirouette_example.bash"
+  )
+
+  ssh::ssh_exec_wait(session = session, command = paste0(
+    "sbatch ",
+    bash_file,
+    " ",
+    example_no
+  ))
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+  return()
+}

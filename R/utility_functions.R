@@ -70,3 +70,42 @@ plot_matrix <- function(
     col.regions = col_palette
   )
 }
+
+#' Install and load a package
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+install_package <- function(
+  github_name = NA,
+  package_name
+) {
+  if (is.na(github_name)) {
+    install.packages(package_name)
+  } else {
+    devtools::install_github(
+      paste0(github_name, "/", package_name)
+    )
+  }
+  library(package_name, character.only = TRUE)
+}
+
+#' Unlock package when you cannot git add anymore
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+unlock_package <- function(
+  package_name
+) {
+  github_folder <- dirname(getwd())
+  testit::assert(
+    grepl(x = github_folder, pattern = "GitHub")
+  )
+  package_folder <- file.path(
+    github_folder,
+    package_name
+  )
+  file.remove(file.path(package_folder, ".git", "index.lock"))
+  file.remove(file.path(package_folder, "man"))
+}
