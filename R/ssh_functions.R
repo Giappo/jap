@@ -224,8 +224,8 @@ upload_jap_scripts <- function(
   if (!dir.exists(scripts_folder)) {
     scripts_folder <- file.path(project_folder, "cluster_scripts")
   }
-  remote_folder <- file.path(project_name)
-  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
+  remote_folder <- "jap_scripts"
+  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", remote_folder))
 
   system.time(
     ssh::scp_upload(
@@ -303,13 +303,14 @@ run_on_cluster <- function(
   }
 
   jap::upload_jap_scripts(account = account, session = session)
+  jap_folder <- "jap_scripts"
 
   bash_file <- file.path(
-    project_name,
+    jap_folder,
     "run_on_cluster.bash"
   )
 
-  ssh::ssh_exec_wait(session = session, command = paste0(
+  x <- utils::capture.output(ssh::ssh_exec_wait(session = session, command = paste0(
     "sbatch ",
     bash_file,
     " ",
@@ -320,13 +321,18 @@ run_on_cluster <- function(
     function_name,
     " ",
     fun_arguments
-  ))
+  )))
+
+  # ssh::ssh_exec_wait(session = session, command = "sleep 5")
+  # ssh::ssh_exec_wait(session = session, command = paste0(
+  #   "rm -r ", jap_folder
+  # ))
 
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
 
-  return()
+  return(x)
 }
 
 #' @title run pirouette example
