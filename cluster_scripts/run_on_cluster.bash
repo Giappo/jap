@@ -41,7 +41,7 @@ sbatch  --partition=$chosen_partition \
 		--job-name=$job_name \
 		--mail-type=FAIL,TIME_LIMIT \
 		--mail-user=$my_email \
-		--output=logs/job-${job_name}.log \
+		--output=job-${job_name}.log \
 		$bash_file_name
 		
 cd /home/$USER/
