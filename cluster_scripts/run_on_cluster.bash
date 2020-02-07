@@ -25,7 +25,7 @@ rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
 echo "x <- jap::run_function(github_name = args[1], package_name = args[2], function_name = args[3], arguments = args[4])" >> $R_file_name
-echo "print(x)" >> $R_file_name
+echo 'save(x, \"out.RData\")' >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
