@@ -214,14 +214,11 @@ upload_jap_scripts <- function(
     new_session <- TRUE
     session <- jap::open_session(account = account)
   }
-  tempfolder <- tempdir()
-  utils::download.file(
-    "https://github.com/Giappo/jap/tree/master/cluster_scripts/run_on_cluster.bash",
-    destfile = tempfolder
-  )
 
   # jap scripts
-
+  tempfolder <- tempdir()
+  url <- "https://github.com/Giappo/jap/tree/master/cluster_scripts/run_on_cluster.bash"
+  utils::download.file(url, destfile = file.path(tempfolder, "run_on_cluster.bash"))
   project_folder <- file.path(github_folder, "jap")
   scripts_folder <- tempfolder
   if (!dir.exists(scripts_folder)) {
@@ -241,8 +238,6 @@ upload_jap_scripts <- function(
       to = remote_folder
     )
   )
-
-  rm(tempfolder)
 
   if (new_session == TRUE) {
     jap::close_session(session = session)

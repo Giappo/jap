@@ -77,8 +77,8 @@ plot_matrix <- function(
 #' @return nothing
 #' @export
 install_package <- function(
-  github_name = NA,
-  package_name
+  package_name,
+  github_name = NA
 ) {
   if (is.na(github_name)) {
     install.packages(package_name)
@@ -107,5 +107,5 @@ unlock_package <- function(
     package_name
   )
   file.remove(file.path(package_folder, ".git", "index.lock"))
-  file.remove(file.path(package_folder, "man"))
+  unlink(file.path(package_folder, "man"))
 }

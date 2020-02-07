@@ -4,7 +4,7 @@
 \alias{install_package}
 \title{Install and load a package}
 \usage{
-install_package(github_name = NA, package_name)
+install_package(package_name, github_name = NA)
 }
 \value{
 nothing
