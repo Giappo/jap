@@ -249,7 +249,8 @@ upload_jap_scripts <- function(
       session = session,
       # command = paste0("sed 's/^M$//' ", file)
       # command = paste0("tr -d '\r' < ", file)
-      command = paste0("sed -i.bak 's/\r$//' ", file)
+      # command = paste0("sed -i.bak 's/\r$//' ", file)
+      command = paste0("sed 's/\r$//' ", file)
     )
   }
 
