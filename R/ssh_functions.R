@@ -233,6 +233,26 @@ upload_jap_scripts <- function(
     to = remote_folder
   )
 
+  # list files
+  x <- capture.output(ssh::ssh_exec_wait(
+    session = session,
+    command = paste0("ls ", remote_folder)
+  ))
+  files <- paste0(
+    remote_folder, "/",
+    x[grepl("*.bash", x) | grepl("*.sh", x)]
+  )
+
+  # fix line breaks
+  for (file in files) {
+    ssh::ssh_exec_wait(
+      session = session,
+      # command = paste0("sed 's/^M$//' ", file)
+      # command = paste0("tr -d '\r' < ", file)
+      command = paste0("sed -i.bak 's/\r$//' ", file)
+    )
+  }
+
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
@@ -310,14 +330,15 @@ run_on_cluster <- function(
       "sbatch ",
       bash_file,
       " ",
-      github_name,
+      "\"", github_name, "\"",
       " ",
-      package_name,
+      "\"", package_name, "\"",
       " ",
-      function_name,
+      "\"", function_name, "\"",
       " ",
-      fun_arguments
-    )))
+      "\"", fun_arguments, "\""
+    )
+  ))
 
   # ssh::ssh_exec_wait(session = session, command = "sleep 5")
   # ssh::ssh_exec_wait(session = session, command = paste0(

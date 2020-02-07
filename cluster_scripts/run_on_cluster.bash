@@ -2,7 +2,6 @@
 #SBATCH --time=00:00:58 --partition=short
 my_email=glaudanno@gmail.com
 chosen_partition=gelifes
-cd /home/$USER/
 
 github=$1
 package=$2
@@ -18,7 +17,7 @@ rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
-echo "jap::run_function(github_name = toString(args[1]), package_name = toString(args[2]), function_name = toString(args[3]), arguments = toString(args[4]))" >> $R_file_name
+echo "jap::run_function(github_name = args[1], package_name = args[2], function_name = args[3], arguments = args[4])" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
