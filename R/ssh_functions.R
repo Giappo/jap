@@ -318,6 +318,9 @@ run_on_cluster <- function(
     session <- jap::open_session(account = account)
   }
 
+  # escape characters
+  fun_arguments <- gsub(x = fun_arguments, pattern = "=", replacement = paste0("\\="))
+
   jap::upload_jap_scripts(account = account, session = session)
   jap_folder <- "jap_scripts"
 
