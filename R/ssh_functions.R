@@ -144,10 +144,16 @@ upload_bash_scripts <- function(
     session <- jap::open_session(account = account)
   }
 
-  github_folder <- dirname(getwd())
-  testit::assert(
-    grepl(x = github_folder, pattern = "GitHub")
-  )
+  # test git folder
+  substr_right <- function(x, n){
+    substr(x, nchar(x) - n + 1, nchar(x))
+  }
+
+  current_folder <- getwd()
+  github_folder <- dirname(current_folder)
+  if (!grepl(x = substr_right(github_folder, 8), pattern = "Githubs")) {
+    stop("Github folder has not been correctly identified!")
+  }
 
   # project specific scripts
   project_folder <- file.path(github_folder, project_name)
@@ -458,7 +464,7 @@ run_pirouette_example <- function(
   gl = TRUE
 ) {
 
-  jap::upload_bash_scripts(account = account)
+  jap::upload_jap_scripts(account = account)
 
   # open session
   new_session <- FALSE

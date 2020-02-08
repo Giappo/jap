@@ -10,8 +10,8 @@ git_clone <- function(
   }
 
   current_folder <- getwd()
-  git_folder <- dirname(current_folder)
-  if (!grepl(x = substr_right(git_folder, 8), pattern = "Githubs")) {
+  github_folder <- dirname(current_folder)
+  if (!grepl(x = substr_right(github_folder, 8), pattern = "Githubs")) {
     stop("Github folder has not been correctly identified!")
   }
   setwd(git_folder)

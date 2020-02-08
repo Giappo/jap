@@ -1,3 +1,6 @@
+#!/bin/bash
+#SBATCH --time=00:00:58 --partition=short
+
 example_no=$1
 
 module load git
