@@ -216,9 +216,19 @@ upload_jap_scripts <- function(
   }
 
   # jap scripts
+  filenames <- c(
+    "run_on_cluster.bash",
+    "run_pir_example.bash",
+    "run_pir_example_gl.bash"
+  )
   tempfolder <- tempdir()
-  url <- "https://raw.githubusercontent.com/Giappo/jap/master/cluster_scripts/run_on_cluster.bash"
-  utils::download.file(url, destfile = file.path(tempfolder, "run_on_cluster.bash"))
+  for (filename in filenames) {
+    url <- paste0(
+      "https://raw.githubusercontent.com/Giappo/jap/master/cluster_scripts/",
+      filename
+    )
+    utils::download.file(url, destfile = file.path(tempfolder, filename))
+  }
   scripts_folder <- tempfolder
   remote_folder <- "jap_scripts"
   ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", remote_folder))
@@ -247,10 +257,6 @@ upload_jap_scripts <- function(
   for (file in files) {
     ssh::ssh_exec_wait(
       session = session,
-      # command = paste0("sed 's/^M$//' ", file)
-      # command = paste0("tr -d '\r' < ", file)
-      # command = paste0("sed -i.bak 's/\r$//' ", file)
-      # command = paste0("sed 's/\r$//' ", file)
       command = paste0("sed -i 's/\r$//' ", file)
     )
   }
@@ -447,10 +453,12 @@ run_function <- function(
 #' @export
 run_pirouette_example <- function(
   example_no,
-  project_name = get_pkg_name(),
   account = "p274829",
-  session = NA
+  session = NA,
+  gl = TRUE
 ) {
+
+  jap::upload_bash_scripts(account = account)
 
   # open session
   new_session <- FALSE
@@ -459,10 +467,17 @@ run_pirouette_example <- function(
     session <- jap::open_session(account = account)
   }
 
-  bash_file <- file.path(
-    project_name,
-    "run_pirouette_example.bash"
-  )
+  if (gl == TRUE) {
+    bash_file <- file.path(
+      "jap_scripts",
+      "run_pir_example_gl.bash"
+    )
+  } else {
+    bash_file <- file.path(
+      "jap_scripts",
+      "run_pir_example.bash"
+    )
+  }
 
   ssh::ssh_exec_wait(session = session, command = paste0(
     "sbatch ",
