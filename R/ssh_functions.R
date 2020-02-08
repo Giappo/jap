@@ -270,6 +270,7 @@ upload_jap_scripts <- function(
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
+  unlink(tempfolder, recursive = TRUE)
   return()
 }
 
@@ -279,10 +280,11 @@ upload_jap_scripts <- function(
 #' @return nothing
 #' @export
 list_projects <- function() {
-  github_folder <- dirname(getwd())
-  testit::assert(
-    grepl(x = github_folder, pattern = "GitHub")
-  )
+  current_folder <- getwd()
+  github_folder <- dirname(current_folder)
+  if (!grepl(x = substr_right(github_folder, 8), pattern = "Githubs")) {
+    stop("Github folder has not been correctly identified!")
+  }
   list.files(github_folder)
 }
 

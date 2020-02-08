@@ -6,12 +6,12 @@ Author: Giovanni Laudanno <glaudanno@gmail.com>
 Maintainer: Giovanni Laudanno <glaudanno@gmail.com>
 Depends: 
   R (>= 3.2.0)
-Imports: 
-  beastier,
+Imports:
+  fs,
+  stringr,
   devtools,
   grDevices,
   lattice,
-  mauricer,
   pryr,
   rappdirs,
   ssh
