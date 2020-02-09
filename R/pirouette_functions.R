@@ -11,8 +11,6 @@ run_pirouette_example <- function(
   gl = TRUE
 ) {
 
-  jap::upload_jap_scripts(account = account)
-
   git_clone(
     github_name = "richelbilderbeek",
     github_repo = paste0("pirouette_example_", example_no)
@@ -24,6 +22,8 @@ run_pirouette_example <- function(
     new_session <- TRUE
     session <- jap::open_session(account = account)
   }
+
+  jap::upload_jap_scripts(account = account, session = session)
 
   if (gl == TRUE) {
     bash_file <- file.path(

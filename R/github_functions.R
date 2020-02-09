@@ -5,16 +5,9 @@ git_clone <- function(
   github_repo
 ) {
 
-  substr_right <- function(x, n){
-    substr(x, nchar(x) - n + 1, nchar(x))
-  }
-
   current_folder <- getwd()
   github_folder <- jap::find_github_folder()
-  if (!grepl(x = substr_right(github_folder, 8), pattern = "Githubs")) {
-    stop("Github folder has not been correctly identified!")
-  }
-  setwd(git_folder)
+  setwd(github_folder)
   command <- paste0(
     "git clone https://github.com/",
     github_name,
@@ -57,6 +50,11 @@ find_github_folder <- function(
       stop("Folder not found")
     }
   }
+
+  substr_right <- function(x, n){
+    substr(x, nchar(x) - n + 1, nchar(x))
+  }
+
   y <- stringr::str_length(folder_name) + 1
   x <- pre[which(grepl(x = substr_right(pre, y), pattern = folder_name))]
   x <- x[which(stringr::str_length(x) == min(stringr::str_length(x)))]

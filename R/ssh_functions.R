@@ -144,16 +144,7 @@ upload_bash_scripts <- function(
     session <- jap::open_session(account = account)
   }
 
-  # test git folder
-  substr_right <- function(x, n){
-    substr(x, nchar(x) - n + 1, nchar(x))
-  }
-
-  current_folder <- getwd()
-  github_folder <- dirname(current_folder)
-  if (!grepl(x = substr_right(github_folder, 8), pattern = "Githubs")) {
-    stop("Github folder has not been correctly identified!")
-  }
+  github_folder <- jap::find_github_folder()
 
   # project specific scripts
   project_folder <- file.path(github_folder, project_name)
@@ -280,11 +271,7 @@ upload_jap_scripts <- function(
 #' @return nothing
 #' @export
 list_projects <- function() {
-  current_folder <- getwd()
-  github_folder <- dirname(current_folder)
-  if (!grepl(x = substr_right(github_folder, 8), pattern = "Githubs")) {
-    stop("Github folder has not been correctly identified!")
-  }
+  github_folder <- jap::find_github_folder()
   list.files(github_folder)
 }
 
