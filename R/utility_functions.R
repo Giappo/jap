@@ -96,12 +96,10 @@ install_package <- function(
 #' @return nothing
 #' @export
 unlock_package <- function(
-  package_name
+  package_name,
+  ...
 ) {
-  github_folder <- dirname(getwd())
-  testit::assert(
-    grepl(x = github_folder, pattern = "GitHub")
-  )
+  github_folder <- jap::open_github_folder(...)
   package_folder <- file.path(
     github_folder,
     package_name
