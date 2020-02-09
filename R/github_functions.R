@@ -5,18 +5,49 @@ git_clone <- function(
   github_repo
 ) {
 
-  current_folder <- getwd()
+  # current_folder <- getwd()
   github_folder <- jap::find_github_folder()
-  setwd(github_folder)
+  # setwd(github_folder)
   command <- paste0(
     "git clone https://github.com/",
     github_name,
     "/",
     github_repo,
-    ".git"
+    ".git",
+    " ",
+    github_folder
   )
   system(command)
-  setwd(current_folder)
+  # setwd(current_folder)
+
+  jap::git_pull(
+    github_name = github_name,
+    github_repo = github_repo
+  )
+  return()
+}
+
+#' Pull a repo
+#' @export
+git_pull <- function(
+  github_name,
+  github_repo
+) {
+
+  # current_folder <- getwd()
+  github_folder <- jap::find_github_folder()
+  # setwd(github_folder)
+  command <- paste0(
+    "git pull https://github.com/",
+    github_name,
+    "/",
+    github_repo,
+    ".git",
+    " ",
+    github_folder
+  )
+  system(command)
+  # setwd(current_folder)
   return()
 }
 
