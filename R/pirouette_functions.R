@@ -13,6 +13,11 @@ run_pirouette_example <- function(
 
   jap::upload_jap_scripts(account = account)
 
+  git_clone(
+    github_name = "richelbilderbeek",
+    github_repo = paste0("pirouette_example_", example_no)
+  )
+
   # open session
   new_session <- FALSE
   if (!jap::is_session_open(session = session)) {

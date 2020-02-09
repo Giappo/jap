@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=00:00:58 --partition=short
+#SBATCH --time=00:04:58 --partition=short
 
 example_no=$1
 
