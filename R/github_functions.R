@@ -60,3 +60,14 @@ find_github_folder <- function(
   x <- x[which(stringr::str_length(x) == min(stringr::str_length(x)))]
   x
 }
+
+#' Open github folder
+#' @export
+open_github_folder <- function(
+  folder_name = "Githubs",
+  disk = "D"
+) {
+  github_folder <- jap::open_github_folder(folder_name = folder_name, disk = disk)
+  shell.exec(github_folder)
+  return()
+}
