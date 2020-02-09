@@ -4,7 +4,7 @@
 \alias{unlock_package}
 \title{Unlock package when you cannot git add anymore}
 \usage{
-unlock_package(package_name)
+unlock_package(package_name, ...)
 }
 \value{
 nothing

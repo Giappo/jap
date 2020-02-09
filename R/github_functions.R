@@ -2,27 +2,29 @@
 #' @export
 git_clone <- function(
   github_name,
-  github_repo
+  github_repo,
+  ...
 ) {
 
-  # current_folder <- getwd()
-  github_folder <- jap::find_github_folder()
-  # setwd(github_folder)
-  command <- paste0(
-    "git clone https://github.com/",
-    github_name,
-    "/",
-    github_repo,
-    ".git",
-    " ",
-    github_folder
-  )
-  system(command)
-  # setwd(current_folder)
+  github_folder <- jap::find_github_folder(...)
+  if (!(github_repo %in% list.files(github_folder))) {
+    command <- paste0(
+      "git clone -q https://github.com/",
+      github_name,
+      "/",
+      github_repo,
+      ".git",
+      " ",
+      github_folder,
+      "/",
+      github_repo
+    )
+  }
 
   jap::git_pull(
     github_name = github_name,
-    github_repo = github_repo
+    github_repo = github_repo,
+    ...
   )
   return()
 }
@@ -34,20 +36,14 @@ git_pull <- function(
   github_repo
 ) {
 
-  # current_folder <- getwd()
-  github_folder <- jap::find_github_folder()
-  # setwd(github_folder)
   command <- paste0(
-    "git pull https://github.com/",
+    "git pull --allow-unrelated-histories https://github.com/",
     github_name,
     "/",
     github_repo,
-    ".git",
-    " ",
-    github_folder
+    ".git"
   )
   system(command)
-  # setwd(current_folder)
   return()
 }
 
