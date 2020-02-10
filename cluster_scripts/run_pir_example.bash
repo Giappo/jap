@@ -3,7 +3,7 @@
 
 example_no=$1
 
-rm pirouette_example_${example_no}
+rm ./pirouette_example_${example_no}
 module load git
 module load R
 git clone https://github.com/richelbilderbeek/peregrine.git
