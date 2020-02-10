@@ -12,8 +12,10 @@ Imports:
   devtools,
   grDevices,
   lattice,
+  processx,
   rappdirs,
-  ssh
+  ssh,
+  utils
 Suggests:
   knitr,
   lintr,

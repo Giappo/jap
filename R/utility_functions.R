@@ -70,22 +70,3 @@ plot_matrix <- function(
     col.regions = col_palette
   )
 }
-
-#' Install and load a package
-#' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-install_package <- function(
-  package_name,
-  github_name = NA
-) {
-  if (is.na(github_name)) {
-    install.packages(package_name)
-  } else {
-    devtools::install_github(
-      paste0(github_name, "/", package_name)
-    )
-  }
-  library(package_name, character.only = TRUE)
-}

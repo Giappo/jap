@@ -97,10 +97,26 @@ find_github_folder <- function(
 
   y <- stringr::str_length(folder_name) + 1
   x <- pre[which(grepl(x = substr_right(pre, y), pattern = folder_name))]
-  x <- x[dir.exists(file.path(x, "jap"))]
-  x <- x[which(stringr::str_length(x) == min(stringr::str_length(x)))]
-
-  write.csv(x, file = path_file)
+  project_checks <- rep(FALSE, length(x))
+  for (i in seq_along(x)) {
+    z <- fs::dir_ls(
+      path = x[i], #c("D:/"), # c("C:/", "E:/"),
+      # type = "directory",
+      glob = "*.Rproj",
+      recurse = TRUE,
+      fail = FALSE
+    )
+    project_checks[i] <- length(z) > 0
+  }
+  x <- x[project_checks]
+  if (length(x) > 1) {
+    for (i in seq_along(x)) {
+      print(paste0(i, ": ", x[i]))
+    }
+    xx <- readline("More than one folder found. Choose one:\n")
+    x <- x[xx]
+  }
+  utils::write.csv(x, file = path_file)
   x
 }
 

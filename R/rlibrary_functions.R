@@ -31,3 +31,41 @@
 open_rlibrary <- function() {
   shell.exec(.libPaths()[1])
 }
+
+#' Install and load a package
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+install_package <- function(
+  package_name,
+  github_name = NA
+) {
+  if (is.na(github_name)) {
+    install.packages(package_name)
+  } else {
+    devtools::install_github(
+      paste0(github_name, "/", package_name)
+    )
+  }
+  library(package_name, character.only = TRUE)
+}
+
+#' Remove a package (and lock file)
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+remove_package <- function(
+  package_name
+) {
+  remove.packages(package_name)
+  x <- list.files(.libPaths()[1])
+  y <- x[
+    # x == package_name |
+    x == paste0("00LOCK-", package_name)
+    ]
+  z <- file.path(.libPaths()[1], y)
+  unlink(z, recursive = TRUE, force = TRUE)
+  remove.packages(package_name)
+}
