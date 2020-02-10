@@ -89,21 +89,3 @@ install_package <- function(
   }
   library(package_name, character.only = TRUE)
 }
-
-#' Unlock package when you cannot git add anymore
-#' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-unlock_package <- function(
-  package_name,
-  ...
-) {
-  github_folder <- jap::open_github_folder(...)
-  package_folder <- file.path(
-    github_folder,
-    package_name
-  )
-  file.remove(file.path(package_folder, ".git", "index.lock"))
-  unlink(file.path(package_folder, "man"))
-}

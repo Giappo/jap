@@ -4,7 +4,7 @@
 \alias{git_clone}
 \title{Clone a repo}
 \usage{
-git_clone(github_name, github_repo)
+git_clone(github_name, github_repo, ...)
 }
 \description{
 Clone a repo

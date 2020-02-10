@@ -4,8 +4,14 @@
 \alias{run_on_cluster}
 \title{run pirouette example}
 \usage{
-run_on_cluster(github_name = NA, package_name, function_name,
-  fun_arguments, account = "p274829", session = NA)
+run_on_cluster(
+  github_name = NA,
+  package_name,
+  function_name,
+  fun_arguments,
+  account = "p274829",
+  session = NA
+)
 }
 \arguments{
 \item{account}{a peregrine account}

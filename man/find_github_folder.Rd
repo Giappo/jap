@@ -4,7 +4,7 @@
 \alias{find_github_folder}
 \title{Find github folder}
 \usage{
-find_github_folder(folder_name = "Githubs", disk = "D")
+find_github_folder(folder_name = "Githubs", disk = "C")
 }
 \description{
 Find github folder

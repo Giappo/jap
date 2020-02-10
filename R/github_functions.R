@@ -51,8 +51,20 @@ git_pull <- function(
 #' @export
 find_github_folder <- function(
   folder_name = "Githubs",
-  disk = "D"
+  disk = "C"
 ) {
+
+  jap_folder <- system.file(package = "jap")
+  extdata_folder <- file.path(jap_folder, "extdata")
+  if (!("extdata" %in% list.files(jap_folder))) {
+    dir.create(extdata_folder)
+  }
+  path_file <- file.path(extdata_folder, "githubs_path")
+  if (file.exists(path_file)) {
+    x <- levels(unname(read.csv(path_file)[[1]]))
+    return(x)
+  }
+
   suppressWarnings(
     pre <- fs::dir_ls(
       path = paste0(disk, ":/"), #c("D:/"), # c("C:/", "E:/"),
@@ -84,17 +96,44 @@ find_github_folder <- function(
 
   y <- stringr::str_length(folder_name) + 1
   x <- pre[which(grepl(x = substr_right(pre, y), pattern = folder_name))]
+  x <- x[dir.exists(file.path(x, "jap"))]
   x <- x[which(stringr::str_length(x) == min(stringr::str_length(x)))]
+
+  write.csv(x, file = path_file)
   x
 }
 
 #' Open github folder
 #' @export
-open_github_folder <- function(
-  folder_name = "Githubs",
-  disk = "D"
-) {
-  github_folder <- jap::open_github_folder(folder_name = folder_name, disk = disk)
+open_github_folder <- function(...) {
+  github_folder <- jap::find_github_folder(...)
   shell.exec(github_folder)
+  return()
+}
+
+#' Open github folder
+#' @export
+list_githubs <- function(...) {
+  github_folder <- jap::find_github_folder(...)
+  list.dirs(github_folder, recursive = FALSE)
+}
+
+#' Open github folder
+#' @export
+open_github_project <- function(
+  project_name,
+  ...
+) {
+  github_folder <- jap::find_github_folder(...)
+  project_folder <- file.path(github_folder, project_name)
+  if (!dir.exists(project_folder)) {
+    stop(paste0(project_name, " is not in ", github_folder))
+  }
+  project_file <- file.path(project_folder, paste0(project_name,".Rproj"))
+  if (rappdirs::app_dir()$os == "win") {
+    shell.exec(project_file)
+  } else {
+    shell(project_file)
+  }
   return()
 }
