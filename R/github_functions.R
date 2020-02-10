@@ -127,7 +127,7 @@ open_github_project <- function(
 ) {
   github_folder <- jap::find_github_folder(...)
   project_folder <- file.path(github_folder, github_repo)
-  if (!dir.exists(github_repo)) {
+  if (!dir.exists(project_folder)) {
     github_name <- readline("What's the name of the Github profile?")
     jap::git_clone(github_name = github_name, github_repo = github_repo)
   }
