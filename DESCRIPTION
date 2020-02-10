@@ -12,7 +12,6 @@ Imports:
   devtools,
   grDevices,
   lattice,
-  pryr,
   rappdirs,
   ssh
 Suggests:
