@@ -122,15 +122,15 @@ list_githubs <- function(...) {
 #' Open github folder
 #' @export
 open_github_project <- function(
-  project_name,
+  github_repo,
   ...
 ) {
   github_folder <- jap::find_github_folder(...)
-  project_folder <- file.path(github_folder, project_name)
-  if (!dir.exists(project_folder)) {
-    stop(paste0(project_name, " is not in ", github_folder))
+  project_folder <- file.path(github_folder, github_repo)
+  if (!dir.exists(github_repo)) {
+    jap::git_clone(github_name = github_name, github_repo = github_repo)
   }
-  project_file <- file.path(project_folder, paste0(project_name,".Rproj"))
+  project_file <- file.path(project_folder, paste0(github_repo,".Rproj"))
   if (rappdirs::app_dir()$os == "win") {
     shell.exec(project_file)
   } else {
