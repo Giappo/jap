@@ -4,7 +4,7 @@
 \alias{open_github_project}
 \title{Open github folder}
 \usage{
-open_github_project(project_name, ...)
+open_github_project(github_repo, ...)
 }
 \description{
 Open github folder

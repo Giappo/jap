@@ -22,11 +22,11 @@ git_clone <- function(
     system(command)
   }
 
-  jap::git_pull(
-    github_name = github_name,
-    github_repo = github_repo,
-    ...
-  )
+  # jap::git_pull(
+  #   github_name = github_name,
+  #   github_repo = github_repo,
+  #   ...
+  # )
   return()
 }
 
