@@ -261,7 +261,7 @@ upload_jap_scripts <- function(
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
-  unlink(tempfolder, recursive = TRUE)
+  # unlink(tempfolder, recursive = TRUE)
   return()
 }
 
