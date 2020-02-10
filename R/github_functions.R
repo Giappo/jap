@@ -19,6 +19,7 @@ git_clone <- function(
       "/",
       github_repo
     )
+    system(command)
   }
 
   jap::git_pull(

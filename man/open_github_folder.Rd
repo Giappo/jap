@@ -4,7 +4,7 @@
 \alias{open_github_folder}
 \title{Open github folder}
 \usage{
-open_github_folder(folder_name = "Githubs", disk = "C")
+open_github_folder(...)
 }
 \description{
 Open github folder
