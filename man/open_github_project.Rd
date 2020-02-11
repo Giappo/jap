@@ -2,10 +2,11 @@
 % Please edit documentation in R/github_functions.R
 \name{open_github_project}
 \alias{open_github_project}
-\title{Open github folder}
+\title{Open github project}
 \usage{
 open_github_project(github_repo, ...)
 }
 \description{
-Open github folder
+It opens a github project from your github folder.
+To specify your github folder see \link{find_github_folder}.
 }

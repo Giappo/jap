@@ -41,14 +41,22 @@ install_package <- function(
   package_name,
   github_name = NA
 ) {
-  if (is.na(github_name)) {
-    install.packages(package_name)
-  } else {
-    devtools::install_github(
-      paste0(github_name, "/", package_name)
-    )
+  max_rep <- 2
+  rep <- 1
+  while (
+    !require(package_name, character.only = TRUE) &&
+    rep <= max_rep
+  ) {
+    if (is.na(github_name)) {
+      install.packages(package_name)
+    } else {
+      devtools::install_github(
+        paste0(github_name, "/", package_name)
+      )
+    }
+    rep <- rep + 1
   }
-  library(package_name, character.only = TRUE)
+  # library(package_name, character.only = TRUE)
 }
 
 #' Remove a package (and lock file)

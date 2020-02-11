@@ -7,5 +7,6 @@
 open_github_folder(...)
 }
 \description{
-Open github folder
+It opens your github folder.
+To specify your github folder see \link{find_github_folder}.
 }

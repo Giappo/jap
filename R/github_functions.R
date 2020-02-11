@@ -121,6 +121,8 @@ find_github_folder <- function(
 }
 
 #' Open github folder
+#' @description It opens your github folder.
+#' To specify your github folder see \link{find_github_folder}.
 #' @export
 open_github_folder <- function(...) {
   github_folder <- jap::find_github_folder(...)
@@ -135,7 +137,9 @@ list_githubs <- function(...) {
   list.dirs(github_folder, recursive = FALSE)
 }
 
-#' Open github folder
+#' Open github project
+#' @description It opens a github project from your github folder.
+#' To specify your github folder see \link{find_github_folder}.
 #' @export
 open_github_project <- function(
   github_repo,
@@ -144,7 +148,7 @@ open_github_project <- function(
   github_folder <- jap::find_github_folder(...)
   project_folder <- file.path(github_folder, github_repo)
   if (!dir.exists(project_folder)) {
-    github_name <- readline("What's the name of the Github profile?")
+    github_name <- readline("What's the name of the Github profile? ")
     jap::git_clone(github_name = github_name, github_repo = github_repo)
   }
   project_file <- file.path(project_folder, paste0(github_repo,".Rproj"))
