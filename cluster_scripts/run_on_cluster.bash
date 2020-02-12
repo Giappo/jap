@@ -14,7 +14,14 @@ package=$( printf $package )
 funname=$( printf $funname )
 arguments=$( printf $arguments )
 
+echo "${github}"
+echo "${package}"
+echo "${funname}"
+echo "${arguments}"
+
 args_vector=(${github} ${package} ${funname} ${arguments})
+
+echo "${args_vector[@]}"
 
 R_file_name=R-${funname}.R
 bash_file_name=bash-${funname}.bash

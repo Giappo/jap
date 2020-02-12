@@ -313,12 +313,12 @@ run_on_cluster <- function(
 ) {
 
   # escape characters
-  fun_arguments <-
-    gsub(x = fun_arguments, pattern = "=", replacement = paste0("\\="))
-  fun_arguments <-
-    gsub(x = fun_arguments, pattern = "(", replacement = paste0("\\("))
-  fun_arguments <-
-    gsub(x = fun_arguments, pattern = ")", replacement = paste0("\\)"))
+  # fun_arguments <-
+  #   gsub(x = fun_arguments, pattern = "=", replacement = paste0("\\="))
+  # fun_arguments <-
+  #   gsub(x = fun_arguments, pattern = "(", replacement = paste0("\\("))
+  # fun_arguments <-
+  #   gsub(x = fun_arguments, pattern = ")", replacement = paste0("\\)"))
 
   # open session
   new_session <- FALSE
