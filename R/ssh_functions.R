@@ -320,6 +320,10 @@ run_on_cluster <- function(
   # fun_arguments <-
   #   gsub(x = fun_arguments, pattern = ")", replacement = paste0("\\)"))
 
+  while (grepl(x = fun_arguments, pattern = " ")) {
+    fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
+  }
+
   # open session
   new_session <- FALSE
   if (!jap::is_session_open(session = session)) {
