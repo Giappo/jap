@@ -4,7 +4,8 @@
 \alias{run_function}
 \title{run a function}
 \usage{
-run_function(github_name = NA, package_name, function_name, arguments)
+run_function(github_name = NA, package_name, function_name,
+  fun_arguments)
 }
 \value{
 nothing

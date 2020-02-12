@@ -4,13 +4,8 @@
 \alias{run_project_on_cluster}
 \title{run pirouette example}
 \usage{
-run_project_on_cluster(
-  project_name,
-  function_name,
-  account = "p274829",
-  session = NA,
-  fun_arguments
-)
+run_project_on_cluster(project_name, function_name, account = "p274829",
+  session = NA, fun_arguments)
 }
 \arguments{
 \item{account}{a peregrine account}

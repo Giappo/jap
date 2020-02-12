@@ -14,33 +14,35 @@ package=$( printf $package )
 funname=$( printf $funname )
 arguments=$( printf $arguments )
 
-echo "${github}"
-echo "${package}"
-echo "${funname}"
-echo "${arguments}"
-
 args_vector=(${github} ${package} ${funname} ${arguments})
-
-echo "${args_vector[@]}"
 
 R_file_name=R-${funname}.R
 bash_file_name=bash-${funname}.bash
 job_name=${funname}-${arguments}
 
+echo "${github}"
+echo "${package}"
+echo "${funname}"
+echo "${arguments}"
+echo "${args_vector[@]}"
+echo "${R_file_name}"
+echo "${bash_file_name}"
+echo "${job_name}"
+
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
-echo "x <- jap::run_function(github_name = args[1], package_name = args[2], function_name = args[3], arguments = args[4])" >> $R_file_name
-echo 'save(x, \"out.RData\")' >> $R_file_name
+echo "x <- jap::run_function(github_name = args[1], package_name = args[2], function_name = args[3], fun_arguments = args[4])" >> $R_file_name
+echo 'save(x, file.path(getwd(), \"out.RData\"))' >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
 echo "#SBATCH --output=bash-${funname}.log" >> $bash_file_name
 echo "module load R" >> $bash_file_name
-echo 'Rscript $R_file_name ${args_vector[@]}' >> $bash_file_name
-echo "rm $R_file_name" >> $bash_file_name
-echo "rm $bash_file_name" >> $bash_file_name
+echo 'Rscript ${R_file_name} ${args_vector[@]}' >> $bash_file_name
+echo "rm ${R_file_name}" >> $bash_file_name
+echo "rm ${bash_file_name}" >> $bash_file_name
 
 #NEVER ASK FOR MORE THAN 9GB OF MEMORY!
 sbatch  --partition=$chosen_partition \

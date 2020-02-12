@@ -428,7 +428,7 @@ run_function <- function(
   github_name = NA,
   package_name,
   function_name,
-  arguments
+  fun_arguments
 ) {
 
   call_me_maybe <- function(listOfCharArgs) {
@@ -439,10 +439,10 @@ run_function <- function(
     ))
   }
 
-  myArgs <- call_me_maybe(arguments)
+  my_args <- call_me_maybe(fun_arguments)
   jap::install_package(
     github_name = github_name,
     package_name = package_name
   )
-  do.call(eval(function_name), myArgs)
+  do.call(eval(function_name), my_args)
 }
