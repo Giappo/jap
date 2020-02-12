@@ -5,11 +5,12 @@ chosen_partition=gelifes
 cd /home/$USER/jap_scripts/
 
 args_file=$1
+args_string=${args_file%.*}
 
-R_file_name=R-${args_file}.R
-bash_file_name=bash-${args_file}.bash
-job_name=${args_file}
-log_name=${args_file}.log
+R_file_name=R-${args_string}.R
+bash_file_name=bash-${args_string}.bash
+job_name=${args_string}
+log_name=${args_string}.log
 
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions

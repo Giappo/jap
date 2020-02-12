@@ -339,7 +339,7 @@ run_on_cluster <- function(
     function_name = function_name,
     fun_arguments = fun_arguments
   )
-  args_file <- file.path(tempfolder, paste0(stri_rand_strings(1, 20), ".RData"))
+  args_file <- file.path(tempfolder, paste0(stri_rand_strings(1, 12), ".RData"))
   save(args_list, file = args_file)
   ssh::scp_upload(
     session = session,
@@ -401,14 +401,17 @@ run_project_on_cluster <- function(
     "run_project_on_cluster.bash"
   )
 
-  ssh::ssh_exec_wait(session = session, command = paste0(
-    "sbatch ",
-    bash_file,
-    " ",
-    function_name,
-    " ",
-    fun_arguments
-  ))
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "sbatch ",
+      bash_file,
+      " ",
+      function_name,
+      " ",
+      fun_arguments
+    )
+  )
 
   if (new_session == TRUE) {
     jap::close_session(session = session)
