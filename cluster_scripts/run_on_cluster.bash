@@ -7,6 +7,9 @@ cd /home/$USER/jap_scripts/
 args_file=$1
 args_string=${args_file%.*}
 
+echo ${args_file}
+echo ${args_string}
+
 R_file_name=R-${args_string}.R
 bash_file_name=bash-${args_string}.bash
 job_name=${args_string}
