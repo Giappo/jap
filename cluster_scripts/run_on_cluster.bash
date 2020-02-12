@@ -29,6 +29,8 @@ echo "${R_file_name}"
 echo "${bash_file_name}"
 echo "${job_name}"
 
+printf '%q\n' "$arguments"
+
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
 
