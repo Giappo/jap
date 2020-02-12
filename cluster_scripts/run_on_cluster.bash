@@ -4,50 +4,27 @@ my_email=glaudanno@gmail.com
 chosen_partition=gelifes
 cd /home/$USER/jap_scripts/
 
-github=$1
-package=$2
-funname=$3
-arguments=$4
+args_file=$1
 
-github=$( printf $github )
-package=$( printf $package )
-funname=$( printf $funname )
-arguments=$( printf $arguments )
-
-args_vector=(${github} ${package} ${funname} ${arguments})
-
-R_file_name=R-${funname}.R
-bash_file_name=bash-${funname}.bash
-job_name=${funname}-${arguments}
-
-echo "${github}"
-echo "${package}"
-echo "${funname}"
-echo "${arguments}"
-echo "${args_vector[@]}"
-echo "${R_file_name}"
-echo "${bash_file_name}"
-echo "${job_name}"
-
-printf '%q\n' "$arguments"
+R_file_name=R-${args_file}.R
+bash_file_name=bash-${args_file}.bash
+job_name=${args_file}
+log_name=${args_file}.log
 
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
-echo "print(args[1])" >> $R_file_name
-echo "print(args[2])" >> $R_file_name
-echo "print(args[3])" >> $R_file_name
-echo "print(args[4])" >> $R_file_name
-echo "x <- jap::run_function(github_name = args[1], package_name = args[2], function_name = args[3], fun_arguments = args[4])" >> $R_file_name
+echo "print(args)" >> $R_file_name
+echo "x <- jap::run_function_from_file(args_file = args)" >> $R_file_name
 echo "print(x)" >> $R_file_name
-echo 'save(x, file = file.path(getwd(), \"out.RData\"))' >> $R_file_name
+#echo 'save(x, file = file.path(getwd(), \"out.RData\"))' >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
-echo "#SBATCH --output=bash-${funname}.log" >> $bash_file_name
+echo "#SBATCH --output=${log_name}" >> $bash_file_name
 echo "module load R" >> $bash_file_name
-echo "Rscript ${R_file_name} ${args_vector[@]}" >> $bash_file_name
+echo "Rscript ${R_file_name} ${args_file}" >> $bash_file_name
 echo "rm ${R_file_name}" >> $bash_file_name
 echo "rm ${bash_file_name}" >> $bash_file_name
 

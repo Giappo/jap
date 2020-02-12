@@ -312,14 +312,6 @@ run_on_cluster <- function(
   session = NA
 ) {
 
-  # escape characters
-  # fun_arguments <-
-  #   gsub(x = fun_arguments, pattern = "=", replacement = paste0("\\="))
-  # fun_arguments <-
-  #   gsub(x = fun_arguments, pattern = "(", replacement = paste0("\\("))
-  # fun_arguments <-
-  #   gsub(x = fun_arguments, pattern = ")", replacement = paste0("\\)"))
-
   while (grepl(x = fun_arguments, pattern = " ")) {
     fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
   }
@@ -331,34 +323,40 @@ run_on_cluster <- function(
     session <- jap::open_session(account = account)
   }
 
+  # upload scripts
   jap::upload_jap_scripts(account = account, session = session)
   jap_folder <- "jap_scripts"
-
   bash_file <- file.path(
     jap_folder,
     "run_on_cluster.bash"
   )
 
+  # mandrakata
+  tempfolder <- tempdir()
+  args_list <- list(
+    github_name = github_name,
+    package_name = package_name,
+    function_name = function_name,
+    fun_arguments = fun_arguments
+  )
+  args_file <- file.path(tempfolder, paste0(stri_rand_strings(1, 20), ".RData"))
+  save(args_list, file = args_file)
+  ssh::scp_upload(
+    session = session,
+    files = args_file,
+    to = jap_folder
+  )
+
+  # execute
   x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0(
       "sbatch ",
       bash_file,
       " ",
-      "\"", github_name, "\"",
-      " ",
-      "\"", package_name, "\"",
-      " ",
-      "\"", function_name, "\"",
-      " ",
-      "\"", fun_arguments, "\""
+      args_file
     )
   ))
-
-  # ssh::ssh_exec_wait(session = session, command = "sleep 5")
-  # ssh::ssh_exec_wait(session = session, command = paste0(
-  #   "rm -r ", jap_folder
-  # ))
 
   if (new_session == TRUE) {
     jap::close_session(session = session)
@@ -445,4 +443,23 @@ run_function <- function(
     package_name = package_name
   )
   do.call(eval(function_name), my_args)
+}
+
+#' @title run a function from file
+#' @author Giovanni Laudanno
+#' @description run a function from file
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+run_function_from_file <- function(
+  args_file
+) {
+  load(args_file)
+  out <- jap::run_function(
+    github_name = github_name,
+    package_name = package_name,
+    function_name = function_name,
+    fun_arguments = fun_arguments
+  )
+  out
 }

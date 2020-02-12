@@ -15,6 +15,7 @@ Imports:
   processx,
   rappdirs,
   ssh,
+  stringi,
   utils
 Suggests:
   knitr,
