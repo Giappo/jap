@@ -339,7 +339,8 @@ run_on_cluster <- function(
     function_name = function_name,
     fun_arguments = fun_arguments
   )
-  args_file <- file.path(tempfolder, paste0(stri_rand_strings(1, 12), ".RData"))
+  args_filename <- paste0(stri_rand_strings(1, 12), ".RData")
+  args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
   ssh::scp_upload(
     session = session,
@@ -354,7 +355,7 @@ run_on_cluster <- function(
       "sbatch ",
       bash_file,
       " ",
-      args_file
+      args_filename
     )
   ))
 
