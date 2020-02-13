@@ -340,9 +340,9 @@ run_on_cluster <- function(
     fun_arguments = fun_arguments
   )
   fun_list <- list(
-    run_function_from_file = jap::run_function_from_file,
-    run_function = jap::run_function,
-    install_package = jap::install_package
+    run_function_from_file = function(...) {jap::run_function_from_file(...)},
+    run_function = function(...) {jap::run_function(...)},
+    install_package = function(...) {jap::install_package(...)}
   )
   args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   args_file <- file.path(tempfolder, args_filename)
