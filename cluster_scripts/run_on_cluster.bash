@@ -5,11 +5,12 @@ chosen_partition=gelifes
 cd /home/$USER/jap_scripts/
 
 args_file=$1
-fun_file=$1
+fun_file=$2
 args_string=${args_file%.*}
 
 echo ${args_file}
 echo ${args_string}
+echo ${fun_file}
 
 R_file_name=R-${args_string}.R
 bash_file_name=bash-${args_string}.bash

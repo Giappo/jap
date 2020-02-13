@@ -353,7 +353,7 @@ run_on_cluster <- function(
     to = jap_folder
   )
   fun_filename <- paste0(stri_rand_strings(1, 12), ".RData")
-  fun_file <- file.path(tempfolder, args_filename)
+  fun_file <- file.path(tempfolder, fun_filename)
   save(fun_list, file = fun_file)
   ssh::scp_upload(
     session = session,
