@@ -48,7 +48,7 @@ install_package <- function(
     rep <= max_rep
   ) {
     if (is.na(github_name)) {
-      install.packages(package_name)
+      install.packages(package_name, repos = 'https://lib.ugent.be/CRAN/')
     } else {
       devtools::install_github(
         paste0(github_name, "/", package_name)

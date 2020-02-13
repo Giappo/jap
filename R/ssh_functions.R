@@ -454,20 +454,21 @@ run_function <- function(
   fun_arguments
 ) {
 
-  call_me_maybe <- function(listOfCharArgs) {
-    CharArgs = unlist(listOfCharArgs)
-    if(is.null(CharArgs)) return(alist())
-    .out = eval(parse(
-      text = paste0("alist(", paste(parse(text = CharArgs), collapse = ","),")")
-    ))
-  }
-
-  my_args <- call_me_maybe(fun_arguments)
   install_package(
     github_name = github_name,
     package_name = package_name
   )
-  do.call(eval(function_name), my_args)
+
+  stringa <- paste0(
+    package_name,
+    "::",
+    function_name,
+    "(",
+    fun_arguments,
+    ")"
+  )
+  print(stringa)
+  eval(str2expression(stringa))
 }
 
 #' @title run a function from file
