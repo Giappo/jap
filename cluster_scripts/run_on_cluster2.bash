@@ -7,10 +7,10 @@ cd /home/$USER/jap_scripts/
 stringa=$1
 stringa=$( printf $stringa )
 
-R_file_name=R-${stringa}.R
-bash_file_name=bash-${stringa}.bash
-job_name=${stringa}
-log_name=${stringa}.log
+R_file_name=R-${chosen_partition}.R
+bash_file_name=bash-${chosen_partition}.bash
+job_name=${chosen_partition}
+log_name=${chosen_partition}.log
 
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions

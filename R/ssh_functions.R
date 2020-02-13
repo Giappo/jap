@@ -215,6 +215,7 @@ upload_jap_scripts <- function(
   # jap scripts
   filenames <- c(
     "run_on_cluster.bash",
+    "run_on_cluster2.bash",
     "run_pir_example.bash",
     "run_pir_example_gl.bash"
   )
