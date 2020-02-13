@@ -355,7 +355,7 @@ run_on_cluster <- function(
     " ",
     args_filename
   )
-  cat(command)
+  cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = command
