@@ -349,14 +349,16 @@ run_on_cluster <- function(
   )
 
   # execute
+  command <- paste0(
+    "sbatch ",
+    bash_file,
+    " ",
+    args_filename
+  )
+  cat(command)
   x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
-    command = paste0(
-      "sbatch ",
-      bash_file,
-      " ",
-      args_filename
-    )
+    command = command
   ))
 
   if (new_session == TRUE) {
