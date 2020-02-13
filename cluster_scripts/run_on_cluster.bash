@@ -29,7 +29,7 @@ echo "print(args)" >> $R_file_name
 echo "load(file.path(getwd(), \"${fun_file}\"))" >> $R_file_name
 echo "x <- fun_list\$run_function_from_file(args_file = args)" >> $R_file_name
 echo "print(x)" >> $R_file_name
-echo 'save(x, file = file.path(getwd(), \"${out_name}\"))' >> $R_file_name
+echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
