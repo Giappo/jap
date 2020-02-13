@@ -12,6 +12,9 @@ echo ${args_file}
 echo ${args_string}
 echo ${fun_file}
 
+args_file=$( printf $args_file )
+fun_file=$( printf $fun_file )
+
 R_file_name=R-${args_string}.R
 bash_file_name=bash-${args_string}.bash
 job_name=${args_string}
