@@ -5,6 +5,7 @@ chosen_partition=gelifes
 cd /home/$USER/jap_scripts/
 
 args_file=$1
+fun_file=$1
 args_string=${args_file%.*}
 
 echo ${args_file}
@@ -20,6 +21,7 @@ rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
 echo "print(args)" >> $R_file_name
+echo "load(${fun_file})" >> $R_file_name
 echo "x <- run_function_from_file(args_file = args)" >> $R_file_name
 echo "print(x)" >> $R_file_name
 #echo 'save(x, file = file.path(getwd(), \"out.RData\"))' >> $R_file_name

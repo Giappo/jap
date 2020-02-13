@@ -337,7 +337,9 @@ run_on_cluster <- function(
     github_name = github_name,
     package_name = package_name,
     function_name = function_name,
-    fun_arguments = fun_arguments,
+    fun_arguments = fun_arguments
+  )
+  fun_list <- list(
     run_function_from_file = jap::run_function_from_file,
     run_function = jap::run_function,
     install_package = jap::install_package
@@ -350,13 +352,23 @@ run_on_cluster <- function(
     files = args_file,
     to = jap_folder
   )
+  fun_filename <- paste0(stri_rand_strings(1, 12), ".RData")
+  fun_file <- file.path(tempfolder, args_filename)
+  save(fun_list, file = fun_file)
+  ssh::scp_upload(
+    session = session,
+    files = fun_file,
+    to = jap_folder
+  )
 
   # execute
   command <- paste0(
     "sbatch ",
     bash_file,
     " ",
-    args_filename
+    args_filename,
+    " ",
+    fun_filename
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(
