@@ -340,9 +340,12 @@ run_on_cluster <- function(
     fun_arguments = fun_arguments
   )
   fun_list <- list(
-    run_function_from_file = function(...) {jap::run_function_from_file(...)},
-    run_function = function(...) {jap::run_function(...)},
-    install_package = function(...) {jap::install_package(...)}
+    run_function_from_file =
+      eval(parse(text = paste0("run_function_from_file <- function(args_file)", c(body(jap::run_function_from_file))))),
+    run_function =
+      eval(parse(text = paste0("run_function <- function(github_name = NA, package_name, function_name, fun_arguments)", c(body(jap::run_function))))),
+    install_package =
+      eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
   )
   args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   args_file <- file.path(tempfolder, args_filename)
