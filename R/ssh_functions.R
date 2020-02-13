@@ -276,8 +276,9 @@ list_projects <- function() {
   list.files(github_folder)
 }
 
-#' Get function list
+#' @title Get function list
 #' @author Giovanni Laudanno
+#' @description NOT WORKING YET
 #' @return function list
 #' @export
 get_function_list <- function(
@@ -288,7 +289,7 @@ get_function_list <- function(
   devtools::install_github(
     paste0(my_github, "/", project_name)
   )
-  library(project_name, character.only = T)
+  library(project_name, character.only = TRUE)
 
   fun_list <- ls(paste0("package:", project_name)) # nolint internal function
   err_funs <- fun_list[sapply(
@@ -300,96 +301,7 @@ get_function_list <- function(
 
 #' @title run pirouette example
 #' @author Giovanni Laudanno
-#' @description run pirouette example
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-run_on_cluster <- function(
-  github_name = NA,
-  package_name,
-  function_name,
-  fun_arguments,
-  account = "p274829",
-  session = NA
-) {
-
-  while (grepl(x = fun_arguments, pattern = " ")) {
-    fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
-  }
-
-  # open session
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  # upload scripts
-  jap::upload_jap_scripts(account = account, session = session)
-  jap_folder <- "jap_scripts"
-  bash_file <- file.path(
-    jap_folder,
-    "run_on_cluster.bash"
-  )
-
-  # mandrakata
-  tempfolder <- tempdir()
-  args_list <- list(
-    github_name = github_name,
-    package_name = package_name,
-    function_name = function_name,
-    fun_arguments = fun_arguments
-  )
-  fun_list <- list(
-    run_function_from_file =
-      eval(parse(text = paste0("run_function_from_file <- function(args_file)", c(body(jap::run_function_from_file))))),
-    run_function =
-      eval(parse(text = paste0("run_function <- function(github_name = NA, package_name, function_name, fun_arguments)", c(body(jap::run_function))))),
-    install_package =
-      eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
-  )
-  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
-  args_file <- file.path(tempfolder, args_filename)
-  save(args_list, file = args_file)
-  ssh::scp_upload(
-    session = session,
-    files = args_file,
-    to = jap_folder
-  )
-  fun_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
-  fun_file <- file.path(tempfolder, fun_filename)
-  save(fun_list, file = fun_file)
-  ssh::scp_upload(
-    session = session,
-    files = fun_file,
-    to = jap_folder
-  )
-
-  # execute
-  command <- paste0(
-    "sbatch ",
-    bash_file,
-    " ",
-    args_filename,
-    " ",
-    fun_filename
-  )
-  cat(command, "\n")
-  x <- utils::capture.output(ssh::ssh_exec_wait(
-    session = session,
-    command = command
-  ))
-
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-
-  return(x)
-}
-
-#' @title run pirouette example
-#' @author Giovanni Laudanno
-#' @description run pirouette example
+#' @description NOT WORKING YET
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
@@ -488,4 +400,93 @@ run_function_from_file <- function(
     fun_arguments = fun_arguments
   )
   out
+}
+
+#' @title Run a function on cluster
+#' @author Giovanni Laudanno
+#' @description Run a function on cluster
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+run_on_cluster <- function(
+  github_name = NA,
+  package_name,
+  function_name,
+  fun_arguments,
+  account = "p274829",
+  session = NA
+) {
+
+  while (grepl(x = fun_arguments, pattern = " ")) {
+    fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
+  }
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  # upload scripts
+  jap::upload_jap_scripts(account = account, session = session)
+  jap_folder <- "jap_scripts"
+  bash_file <- file.path(
+    jap_folder,
+    "run_on_cluster.bash"
+  )
+
+  # mandrakata
+  tempfolder <- tempdir()
+  args_list <- list(
+    github_name = github_name,
+    package_name = package_name,
+    function_name = function_name,
+    fun_arguments = fun_arguments
+  )
+  fun_list <- list(
+    run_function_from_file =
+      eval(parse(text = paste0("run_function_from_file <- function(args_file)", c(body(jap::run_function_from_file))))),
+    run_function =
+      eval(parse(text = paste0("run_function <- function(github_name = NA, package_name, function_name, fun_arguments)", c(body(jap::run_function))))),
+    install_package =
+      eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
+  )
+  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+  args_file <- file.path(tempfolder, args_filename)
+  save(args_list, file = args_file)
+  ssh::scp_upload(
+    session = session,
+    files = args_file,
+    to = jap_folder
+  )
+  fun_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+  fun_file <- file.path(tempfolder, fun_filename)
+  save(fun_list, file = fun_file)
+  ssh::scp_upload(
+    session = session,
+    files = fun_file,
+    to = jap_folder
+  )
+
+  # execute
+  command <- paste0(
+    "sbatch ",
+    bash_file,
+    " ",
+    args_filename,
+    " ",
+    fun_filename
+  )
+  cat(command, "\n")
+  x <- utils::capture.output(ssh::ssh_exec_wait(
+    session = session,
+    command = command
+  ))
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+
+  return(x)
 }
