@@ -344,7 +344,7 @@ run_on_cluster <- function(
     run_function = jap::run_function,
     install_package = jap::install_package
   )
-  args_filename <- paste0(stri_rand_strings(1, 12), ".RData")
+  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
   ssh::scp_upload(
@@ -352,7 +352,7 @@ run_on_cluster <- function(
     files = args_file,
     to = jap_folder
   )
-  fun_filename <- paste0(stri_rand_strings(1, 12), ".RData")
+  fun_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   fun_file <- file.path(tempfolder, fun_filename)
   save(fun_list, file = fun_file)
   ssh::scp_upload(

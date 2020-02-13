@@ -4,8 +4,7 @@
 \alias{run_pirouette_example}
 \title{run pirouette example}
 \usage{
-run_pirouette_example(example_no, account = "p274829", session = NA,
-  gl = TRUE)
+run_pirouette_example(example_no, account = "p274829", session = NA, gl = TRUE)
 }
 \arguments{
 \item{account}{a peregrine account}

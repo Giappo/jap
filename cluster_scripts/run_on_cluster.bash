@@ -25,7 +25,7 @@ rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
 echo "print(args)" >> $R_file_name
-echo "load(file.path(\"jap_scripts\", \"${fun_file}\"))" >> $R_file_name
+echo "load(file.path(getwd(), \"${fun_file}\"))" >> $R_file_name
 echo "x <- run_function_from_file(args_file = args)" >> $R_file_name
 echo "print(x)" >> $R_file_name
 #echo 'save(x, file = file.path(getwd(), \"out.RData\"))' >> $R_file_name
