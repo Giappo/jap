@@ -337,7 +337,10 @@ run_on_cluster <- function(
     github_name = github_name,
     package_name = package_name,
     function_name = function_name,
-    fun_arguments = fun_arguments
+    fun_arguments = fun_arguments,
+    run_function_from_file = jap::run_function_from_file,
+    run_function = jap::run_function,
+    install_package = jap::install_package
   )
   args_filename <- paste0(stri_rand_strings(1, 12), ".RData")
   args_file <- file.path(tempfolder, args_filename)
@@ -444,7 +447,7 @@ run_function <- function(
   }
 
   my_args <- call_me_maybe(fun_arguments)
-  jap::install_package(
+  install_package(
     github_name = github_name,
     package_name = package_name
   )
@@ -461,7 +464,7 @@ run_function_from_file <- function(
   args_file
 ) {
   load(args_file)
-  out <- jap::run_function(
+  out <- run_function(
     github_name = github_name,
     package_name = package_name,
     function_name = function_name,

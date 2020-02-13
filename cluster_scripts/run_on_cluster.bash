@@ -19,9 +19,8 @@ rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
-echo "devtools::install_github(\"Giappo/jap\")" >> $R_file_name
 echo "print(args)" >> $R_file_name
-echo "x <- jap::run_function_from_file(args_file = args)" >> $R_file_name
+echo "x <- run_function_from_file(args_file = args)" >> $R_file_name
 echo "print(x)" >> $R_file_name
 #echo 'save(x, file = file.path(getwd(), \"out.RData\"))' >> $R_file_name
 
