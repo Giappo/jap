@@ -44,7 +44,7 @@ install_package <- function(
   max_rep <- 2
   rep <- 1
   while (
-    !require(package_name, character.only = TRUE) &&
+    suppressWarnings(!require(package_name, character.only = TRUE)) &&
     rep <= max_rep
   ) {
     if (is.na(github_name)) {
