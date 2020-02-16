@@ -21,7 +21,7 @@ run_project_on_cluster(
 nothing
 }
 \description{
-run pirouette example
+NOT WORKING YET
 }
 \author{
 Giovanni Laudanno

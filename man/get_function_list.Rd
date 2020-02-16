@@ -10,7 +10,7 @@ get_function_list(project_name, my_github = "Giappo")
 function list
 }
 \description{
-Get function list
+NOT WORKING YET
 }
 \author{
 Giovanni Laudanno
