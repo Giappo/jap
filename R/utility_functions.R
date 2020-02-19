@@ -70,3 +70,12 @@ plot_matrix <- function(
     col.regions = col_palette
   )
 }
+
+#' Find name of disks on your machine
+#' @author Giovanni Laudanno
+#' @export
+find_disks <- function() {
+  x <- system("wmic logicaldisk get caption", inter = TRUE)
+  x <- x[2:(length(x) - 1)]
+  gsub(x = x, pattern = ":.*", replacement = "")
+}

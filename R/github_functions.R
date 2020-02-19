@@ -70,12 +70,13 @@ find_github_folder <- function(
     pre <- fs::dir_ls(
       path = paste0(disk, ":/"), #c("D:/"), # c("C:/", "E:/"),
       type = "directory",
-      # glob = "*Githubs",
-      recursive = TRUE, regexp = folder_name, fail = FALSE
+      recurse = TRUE,
+      regexp = folder_name,
+      fail = FALSE
     )
   )
   while (length(pre) == 0) {
-    disks <- LETTERS[3:12]
+    disks <- jap::find_disks()
     disks <- disks[disks != disk]
     for (disk in disks) {
       suppressWarnings(
