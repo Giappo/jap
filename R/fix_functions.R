@@ -33,7 +33,7 @@ fix_java <- function() {
         fail = FALSE
       )
     )
-    stringr::str_length("jre1.8.0_241")
+
     pre <- pre[endsWith(pre, "jre1.8.0_241")]
     if (length(pre) > 0) {
       j <- 1
