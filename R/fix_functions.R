@@ -16,6 +16,22 @@ fix_documentation <- function() {
 #' @return nothing
 #' @export
 fix_java <- function() {
+
+  jap_folder <- system.file(package = "jap")
+  extdata_folder <- file.path(jap_folder, "extdata")
+  if (!("extdata" %in% list.files(jap_folder))) {
+    dir.create(extdata_folder)
+  }
+  path_file <- file.path(extdata_folder, "java_path.txt")
+  if (file.exists(path_file)) {
+    x <- levels(unname(read.csv(path_file)[[1]]))
+    Sys.setenv(JAVA_HOME = x)
+    done <- require("rJava")
+    if (isTRUE(done)) {
+      return()
+    }
+  }
+
   disks <- jap::find_disks()
 
   # browseURL(
@@ -49,6 +65,14 @@ fix_java <- function() {
       while (j <= length(pre) & done == FALSE) {
         Sys.setenv(JAVA_HOME = pre[j])
         done <- require("rJava")
+        if (isTRUE(done)) {
+          invisible(suppressWarnings(file.remove(path_file)))
+          utils::write.csv2(
+            pre[j],
+            file = path_file,
+            row.names = FALSE
+          )
+        }
         j <- j + 1
       }
     }
