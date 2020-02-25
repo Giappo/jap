@@ -25,6 +25,34 @@ fix_java <- function() {
   done <- FALSE
   while (i <= length(disks) & done == FALSE) {
     disk <- disks[i]
+
+    priority <- file.path(
+      paste0(disk, ":"),
+      list.files(path = paste0(disk, ":/"))[
+      grepl(x = list.files(path = paste0(disk, ":/")), pattern = "Program") |
+        grepl(x = list.files(path = paste0(disk, ":/")), pattern = "Users")
+      ]
+    )
+
+    suppressWarnings(
+      pre <- fs::dir_ls(
+        path = priority,
+        recurse = TRUE,
+        regexp = "jre1.8.0_241",
+        fail = FALSE
+      )
+    )
+
+    pre <- pre[endsWith(pre, "jre1.8.0_241")]
+    if (length(pre) > 0) {
+      j <- 1
+      while (j <= length(pre) & done == FALSE) {
+        Sys.setenv(JAVA_HOME = pre[j])
+        done <- require("rJava")
+        j <- j + 1
+      }
+    }
+
     suppressWarnings(
       pre <- fs::dir_ls(
         path = paste0(disk, ":/"),
