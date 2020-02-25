@@ -93,6 +93,15 @@ fix_java <- function() {
       while (j <= length(pre) & done == FALSE) {
         Sys.setenv(JAVA_HOME = pre[j])
         done <- require("rJava")
+        if (isTRUE(done)) {
+          invisible(suppressWarnings(file.remove(path_file)))
+          utils::write.csv2(
+            pre[j],
+            file = path_file,
+            row.names = FALSE
+          )
+          return(pre[j])
+        }
         j <- j + 1
       }
     }
