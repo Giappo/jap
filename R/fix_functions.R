@@ -28,7 +28,7 @@ fix_java <- function() {
     Sys.setenv(JAVA_HOME = x)
     done <- require("rJava")
     if (isTRUE(done)) {
-      return()
+      return(x)
     }
   }
 
@@ -72,6 +72,7 @@ fix_java <- function() {
             file = path_file,
             row.names = FALSE
           )
+          return(pre[j])
         }
         j <- j + 1
       }
