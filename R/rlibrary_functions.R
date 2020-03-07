@@ -47,12 +47,29 @@ install_package <- function(
     suppressWarnings(!require(package_name, character.only = TRUE)) &&
     rep <= max_rep
   ) {
-    if (is.na(github_name)) {
-      install.packages(package_name, repos = 'https://lib.ugent.be/CRAN/')
-    } else {
+    if (!is.na(github_name)) {
       devtools::install_github(
         paste0(github_name, "/", package_name)
       )
+    } else {
+      out <- jap::my_try_catch(
+        utils::install.packages(package_name, repos = 'https://lib.ugent.be/CRAN/')
+      )
+      if (!is.null(out$warning) || !is.null(out$error)) {
+        github_name <- readline(paste0(
+          "What's the name of the Github profile for the package ",
+          package_name,
+          "?"
+        ))
+        # out <- jap::my_try_catch(
+          devtools::install_github(
+            paste0(github_name, "/", package_name)
+          )
+        # )
+        # if (!is.null(out$warning) || !is.null(out$error)) {
+        #   stop(paste0("wrong Github profile for package ", package_name))
+        # }
+      }
     }
     rep <- rep + 1
   }
