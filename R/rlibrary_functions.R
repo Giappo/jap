@@ -30,6 +30,7 @@
 #' @export
 open_rlibrary <- function() {
   shell.exec(.libPaths()[1])
+  .rs.restartR()
 }
 
 #' Install and load a package
