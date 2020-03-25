@@ -75,21 +75,22 @@ find_github_folder <- function(
       fail = FALSE
     )
   )
+  disks <- jap::find_disks()
+  disks <- disks[disks != disk]
+  i <- 1
   while (length(pre) == 0) {
-    disks <- jap::find_disks()
-    disks <- disks[disks != disk]
-    for (disk in disks) {
-      suppressWarnings(
-        pre <- fs::dir_ls(
-          path = paste0(disk, ":/"), #c("D:/"), # c("C:/", "E:/"),
-          type = "directory",
-          recursive = TRUE, regexp = folder_name, fail = FALSE
-        )
+    disk2 <- disks[i]
+    suppressWarnings(
+      pre <- fs::dir_ls(
+        path = paste0(disk2, ":/"), #c("D:/"), # c("C:/", "E:/"),
+        type = "directory",
+        recursive = TRUE, regexp = folder_name, fail = FALSE
       )
-    }
-    if (length(pre) == 0) {
-      stop("Folder not found")
-    }
+    )
+    i <- i + 1
+  }
+  if (length(pre) == 0) {
+    stop("Folder not found")
   }
 
   substr_right <- function(x, n){
