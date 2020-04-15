@@ -58,22 +58,35 @@ check_jobs <- function(
   }
 
   jobs <- utils::capture.output(ssh::ssh_exec_wait(session = session, command = "squeue -u $USER --long"))
-  if ((length(jobs) - 1) >= 3) {
-    job_ids <- job_names <- c()
-    for (i in 3:(length(jobs) - 1)) {
-      job_id_i <- substr(jobs[i], start = 12, stop = 18)
-      job_ids <- c(job_ids, job_id_i)
-      job_info <- utils::capture.output(ssh::ssh_exec_wait(
-        session = session,
-        command = paste("jobinfo", job_id_i)
-      ))
-      job_name_i <- substr(job_info[1], start = 23, stop = nchar(job_info[1]))
-      job_names <- c(job_names, job_name_i)
-    }
-    job_ids <- as.numeric(job_ids)
-  } else {
-    job_ids <- job_names <- NULL
+  fun1 <- function(x) {
+    x1 <- strsplit(x, " ")[[1]]
+    x2 <- x1[which(x1 != "")]
+    x2
   }
+  fun2 <- function(y) {
+    y0 <- y[-c(1, length(y))]
+    y1 <- lapply(X = y0, FUN = fun1)
+
+    if (length(y1[-1]) == 0) {
+      y2 <- data.frame(
+        matrix(NA, ncol = length(y1[[1]]), nrow = 0
+        )
+      )
+    } else {
+      y2 <- data.frame(
+        matrix(unlist(y1[-1]), ncol = length(y1[[1]]), byrow = TRUE),
+        stringsAsFactors = FALSE
+      )
+    }
+    colnames(y2) <- y1[[1]]
+    y2
+  }
+  job_info <- fun2(jobs)
+  job_ids <- job_info$JOBID
+  job_names <- job_info$NAME
+  job_states <- table(job_info$STATE)
+  job_partitions <- table(job_info$PARTITION)
+
   sshare_output <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = "sshare -u $USER"
@@ -84,8 +97,10 @@ check_jobs <- function(
   list(
     job_ids = job_ids,
     job_names = job_names,
+    job_states = job_states,
+    job_partitions = job_partitions,
     sshare_output = sshare_output,
-    jobs = jobs
+    jobs = job_info
   )
 }
 
@@ -187,6 +202,24 @@ upload_bash_scripts <- function(
       to = remote_folder
     )
   )
+
+  # list files
+  x <- capture.output(ssh::ssh_exec_wait(
+    session = session,
+    command = paste0("ls ", remote_folder)
+  ))
+  files <- paste0(
+    remote_folder, "/",
+    x[grepl("*.bash", x) | grepl("*.sh", x)]
+  )
+
+  # fix line breaks
+  for (file in files) {
+    ssh::ssh_exec_wait(
+      session = session,
+      command = paste0("sed -i 's/\r$//' ", file)
+    )
+  }
 
   if (new_session == TRUE) {
     jap::close_session(session = session)
