@@ -39,18 +39,14 @@ params <- expand.grid(
   K = 10,
   gam = 0.001,
   laa = 1,
-  seed = 1:max_sims
+  seed = 1
 )
 
 i <- 1
 while (i <= nrow(params)) {
 
   # Select the i-th parsetting
-  pars <- params[i, sls::get_param_names()]
-  cond <- params[i, "cond"]
-  seed <- params[i, "seed"]
-  t_0_1 <- params[i, "t_0_1"]
-  t_0_2 <- params[i, "t_0_2"]
+  pars <- params[i, DAISIErobustness::load_param_space()]
 
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
@@ -68,17 +64,11 @@ while (i <= nrow(params)) {
       paste0(pars, collapse = ", "),
       ")",
       ", ",
-      "cond = ",
-      cond,
       ", ",
-      "crown_age = ",
-      t_0_1,
-      ", ",
-      "shift_time = ",
-      t_0_2,
+      "totaltime = ",
       ", ",
       "loglik_functions = ",
-      "sls::sls_logliks_experiment()",
+      "DAISIErobustness::oceanic_sim()",
       ", ",
       "project_folder = ",
       jap::path_2_file.path(remote_project_folder)
@@ -86,9 +76,9 @@ while (i <= nrow(params)) {
 
     # Run the main function
     jap::run_on_cluster(
-      github_name = "Giappo",
+      github_name = github_name,
       package_name = project_name,
-      function_name = "sls_main",
+      function_name = "DAISIErobustness::oceanic_sim()",
       account = account,
       session = session,
       fun_arguments = fun_arguments
