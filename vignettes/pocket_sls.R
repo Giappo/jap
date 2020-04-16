@@ -32,6 +32,7 @@ params <- expand.grid(
   cond = 1,
   seed = 1:max_sims
 )
+
 i <- 1
 while (i <= nrow(params)) {
 
@@ -61,13 +62,12 @@ while (i <= nrow(params)) {
       "cond = ",
       cond,
       ", ",
-      "l_2 = sim_get_standard_l_2(",
       "crown_age = ",
       t_0_1,
       ", ",
       "shift_time = ",
       t_0_2,
-      "),",
+      ", ",
       "loglik_functions = ",
       "sls::sls_logliks_experiment()",
       ", ",
