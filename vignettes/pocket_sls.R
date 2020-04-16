@@ -37,8 +37,8 @@ params <- expand.grid(
   mu_m = c(0.1, 0.2),
   lambda_s = 0.8,
   mu_s = 0.1,
-  t_0_1 = 8,
-  t_0_2 = 5,
+  crown_age = 8,
+  shift_time = 5,
   cond = 1,
   seed = 1:max_sims
 )
@@ -47,47 +47,57 @@ i <- 1
 while (i <= nrow(params)) {
 
   # Select the i-th parsetting
-  pars <- params[i, sls::get_param_names()]
+  sim_pars <- params[i, sls::get_param_names()]
   cond <- params[i, "cond"]
   seed <- params[i, "seed"]
-  t_0_1 <- params[i, "t_0_1"]
-  t_0_2 <- params[i, "t_0_2"]
+  crown_age <- params[i, "crown_age"]
+  shift_time <- params[i, "shift_time"]
 
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
-  cat("Pars are", unlist(pars), "\nThere are", n_jobs, "jobs left\n")
+  cat("Pars are", unlist(sim_pars), "\nThere are", n_jobs, "jobs left\n")
 
   if (n_jobs < (max_sims * 0.1)) { #send new jobs only if max 100 jobs are already running
 
     # Create the argument string
-    fun_arguments <- paste0(
-      "seed = ",
-      seed,
-      ", ",
-      "sim_pars = ",
-      "c(",
-      paste0(pars, collapse = ", "),
-      ")",
-      ", ",
-      "cond = ",
-      cond,
-      ", ",
-      "crown_age = ",
-      t_0_1,
-      ", ",
-      "shift_time = ",
-      t_0_2,
-      ", ",
-      "loglik_functions = ",
-      "sls::sls_logliks_experiment()",
-      ", ",
-      "project_folder = ",
-      jap::path_2_file.path(remote_project_folder)
-    )
+    # fun_arguments <- paste0(
+    #   "seed = ",
+    #   seed,
+    #   ", ",
+    #   "sim_pars = ",
+    #   "c(",
+    #   paste0(pars, collapse = ", "),
+    #   ")",
+    #   ", ",
+    #   "cond = ",
+    #   cond,
+    #   ", ",
+    #   "crown_age = ",
+    #   crown_age,
+    #   ", ",
+    #   "shift_time = ",
+    #   shift_time,
+    #   ", ",
+    #   "loglik_functions = ",
+    #   "sls::sls_logliks_experiment()",
+    #   ", ",
+    #   "project_folder = ",
+    #   jap::path_2_file.path(remote_project_folder)
+    # )
+    args <- list(
+        seed = seed,
+        sim_pars = sim_pars,
+        cond = cond,
+        crown_age = crown_age,
+        shift_time = shift_time,
+        loglik_functions = sls::sls_logliks_experiment(),
+        project_folder = remote_project_folder
+      )
+    fun_arguments <- jap::args_2_string(args = args)
 
     # Run the main function
     jap::run_on_cluster(
-      github_name = "Giappo",
+      github_name = github_name,
       package_name = project_name,
       function_name = "sls_main",
       account = account,

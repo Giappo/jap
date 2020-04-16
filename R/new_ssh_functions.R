@@ -437,10 +437,28 @@ args_2_string <- function(
   for (i in seq_along(args)) {
     name <- names(args)[i]
     value <- unlist(args[i])
-    if (is.character(value)) {
-      if (grepl(x = value, pattern = "/")) {
-        out <- jap::path_2_file.path(value)
 
+    if (is.character(value)) {
+      if (grepl(x = value[1], pattern = "/")) {
+        out <- jap::path_2_file.path(value)
+      } else if (length(value) > 1) {
+        out <- paste0(
+          name,
+          " = ",
+          "c(",
+          "\"",
+          paste0(value, collapse = "\", \""),
+          "\"",
+          ")"
+        )
+      } else {
+        out <- paste0(
+          name,
+          " = ",
+          "\"",
+          value,
+          "\""
+        )
       }
     } else if (length(value) > 1) {
       out <- paste0(
