@@ -63,9 +63,9 @@ install_package <- function(
           "?"
         ))
         # out <- jap::my_try_catch(
-          devtools::install_github(
-            paste0(github_name, "/", package_name)
-          )
+        devtools::install_github(
+          paste0(github_name, "/", package_name)
+        )
         # )
         # if (!is.null(out$warning) || !is.null(out$error)) {
         #   stop(paste0("wrong Github profile for package ", package_name))

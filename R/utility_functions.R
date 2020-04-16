@@ -238,3 +238,18 @@ build_description_file <- function(project_name, ...) {
     suggest = suggest_packages
   ))
 }
+
+#' Convert a path to the equivalent file.path call
+#' @inheritParams default_params_doc.R
+#' @export
+path_2_file.path <- function(
+  path
+) {
+  x <- strsplit(path, split = "/")[[1]]
+  paste0(
+    "file.path(",
+    "\"",
+    toString(paste0(x, collapse = "\",\"")),
+    "\")"
+  )
+}

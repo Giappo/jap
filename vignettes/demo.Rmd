@@ -55,7 +55,17 @@ We can now install the package we need from Github
 jap::remote_install.packages(
   github_name = "Giappo",
   package_name = project_name,
-  must_sleep = FALSE,
+  account = account,
+  session = session
+)
+```
+
+We can even install any package from CRAN. To do so it suffices to not specify
+the 'github_name' argument
+
+```{r}
+jap::remote_install.packages(
+  package_name = "DDD",
   account = account,
   session = session
 )

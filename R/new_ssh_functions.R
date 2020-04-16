@@ -29,6 +29,12 @@ create_folder_structure <- function(
     dir.create(local_project_folder)
   }
 
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "chmod +x ", dirname(remote_projects_folder)
+    )
+  )
   if (!remote_dir.exists(remote_projects_folder, session = session)) {
     remote_dir.create(remote_projects_folder, session = session)
   }
@@ -413,4 +419,49 @@ remote_install.packages <- function(
     jap::close_session(session = session)
   }
   return()
+}
+
+#' Convert list to string
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return A fun_argument string
+#' @export
+args_2_string <- function(
+  args
+) {
+  varname <- function(v1) {
+    deparse(substitute(v1))
+  }
+  i <- 1
+  string <- NULL
+  for (i in seq_along(args)) {
+    name <- names(args)[i]
+    value <- unlist(args[i])
+    if (is.character(value)) {
+      if (grepl(x = value, pattern = "/")) {
+        out <- jap::path_2_file.path(value)
+
+      }
+    } else if (length(value) > 1) {
+      out <- paste0(
+        name,
+        " = ",
+        "c(",
+        paste0(value, collapse = ", "),
+        ")"
+      )
+    } else {
+      out <- paste0(
+        name,
+        " = ",
+        value
+      )
+    }
+    if (i > 1) {
+      string <- paste0(string, ", ", out)
+    } else {
+      string <- paste0(string, out)
+    }
+  }
+  string
 }
