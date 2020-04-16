@@ -13,7 +13,5 @@ cd /home/$USER/
 #chmod +x /home/$USER/Rlibrary/
 
 module load R
-#Rscript -e "install.packages(\"$github_address\")"
-#Rscript -e "devtools::install_github(\"$github_address\")"
-Rscript -e "ifelse(grepl(pattern = \"/\", x = \"$pkg_name\"), yes = devtools::install_github(\"$pkg_name\"), no = install.packages(\"$pkg_name\", repos = \"https://lib.ugent.be/CRAN/\"))"
+Rscript -e "if (grepl(pattern = \"/\", x = \"$pkg_name\")) {devtools::install_github(\"$pkg_name\")} else {install.packages(\"$pkg_name\", repos = \"https://lib.ugent.be/CRAN/\")}"
 #Rscript -e ".libPaths(new = file.path(substring(getwd(),1,13), 'Rlibrary')); devtools::install_github(\"$github_address\")"
