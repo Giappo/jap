@@ -3,9 +3,10 @@ library(ssh)
 account <- "p274829"
 project_name <- "sls"
 local_projects_folder <- "D:/Projects"
-remote_projects_folder <- file.path("/home", account, "Projects")
+remote_projects_folder <- file.path("", "home", account, "Projects")
 remote_project_folder <- file.path(remote_projects_folder, project_name)
 partition <- "gelifes"
+jap::install_package(package_name = project_name, github_name = "Giappo")
 library(project_name, character.only = TRUE)
 
 # Open Session
@@ -21,7 +22,7 @@ jap::create_folder_structure(
 )
 
 # Create params for the experiment
-max_sims <- 20
+max_sims <- 4
 params <- expand.grid(
   lambda_m = c(0.3, 0.6),
   mu_m = c(0.1, 0.2),
