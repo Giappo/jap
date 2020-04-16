@@ -7,11 +7,13 @@
 #SBATCH --job-name=install_packages
 #SBATCH --output=install_packages.log
 
-github_address=$1
+pkg_name=$1
 cd /home/$USER/
-mkdir -p Rlibrary
-chmod +x /home/$USER/Rlibrary/
+#mkdir -p Rlibrary
+#chmod +x /home/$USER/Rlibrary/
 
 module load R
-Rscript -e "devtools::install_github(\"$github_address\")"
+#Rscript -e "install.packages(\"$github_address\")"
+#Rscript -e "devtools::install_github(\"$github_address\")"
+Rscript -e "ifelse(grepl(pattern = "/", x = \"$pkg_name\"), yes = devtools::install_github(\"$pkg_name\"), no = install.packages(\"$pkg_name\"))"
 #Rscript -e ".libPaths(new = file.path(substring(getwd(),1,13), 'Rlibrary')); devtools::install_github(\"$github_address\")"

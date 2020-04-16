@@ -1,0 +1,62 @@
+---
+title: "jap demo"
+author: "Giovanni Laudanno"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{jap demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+First, specify basic info
+
+```{r setup, include = FALSE}
+account <- "p274829"
+project_name <- "mbd"
+local_projects_folder <- "D:/Projects"
+remote_projects_folder <- "/home/p274829/Projects"
+remote_project_folder <- file.path(remote_projects_folder, project_name)
+```
+
+Then open a session. We are gonna use this session every time we want to
+execute tasks on the cluster
+
+```{r}
+library(jap)
+session <- jap::open_session(account = account)
+```
+
+Then we setup the remote folder
+
+```{r}
+jap::create_folder_structure(
+  project_name = project_name,
+  local_projects_folder = local_projects_folder,
+  remote_projects_folder = remote_projects_folder,
+  account = account,
+  session = session
+)
+```
+
+We can check the structure on the remote folder
+
+```{r}
+jap::remote_list.files(
+  dir = remote_project_folder,
+  account = account,
+  session = session
+)
+```
+
+We can now install the package we need from Github
+
+```{r}
+jap::remote_install_github(
+  github_name = "Giappo",
+  package_name = project_name,
+  must_sleep = FALSE,
+  account = account,
+  session = session
+)
+```
