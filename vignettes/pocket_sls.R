@@ -1,12 +1,13 @@
 # Basic Setting
 library(ssh)
 account <- "p274829"
+github_name <- "Giappo"
 project_name <- "sls"
 local_projects_folder <- "D:/Projects"
 remote_projects_folder <- file.path("", "home", account, "Projects")
 remote_project_folder <- file.path(remote_projects_folder, project_name)
 partition <- "gelifes"
-jap::install_package(package_name = project_name, github_name = "Giappo")
+jap::install_package(package_name = project_name, github_name = github_name)
 library(project_name, character.only = TRUE)
 
 # Open Session
@@ -17,6 +18,14 @@ jap::create_folder_structure(
   local_projects_folder = local_projects_folder,
   remote_projects_folder = remote_projects_folder,
   project_name = project_name,
+  account = account,
+  session = session
+)
+
+# Install on cluster
+jap::remote_install.packages(
+  github_name = github_name,
+  package_name = project_name,
   account = account,
   session = session
 )
