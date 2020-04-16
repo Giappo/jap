@@ -15,7 +15,7 @@ First, specify basic info
 account <- "p274829"
 project_name <- "mbd"
 local_projects_folder <- "D:/Projects"
-remote_projects_folder <- "/home/p274829/Projects"
+remote_projects_folder <- paste0("/home/", account, "/Projects")
 remote_project_folder <- file.path(remote_projects_folder, project_name)
 ```
 
