@@ -52,7 +52,7 @@ jap::remote_list.files(
 We can now install the package we need from Github
 
 ```{r}
-jap::remote_install_github(
+jap::remote_install.packages(
   github_name = "Giappo",
   package_name = project_name,
   must_sleep = FALSE,

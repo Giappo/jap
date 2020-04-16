@@ -362,7 +362,7 @@ upload_cluster_scripts <- function(
 #' @author Giovanni Laudanno
 #' @return nothing
 #' @export
-remote_install_github <- function(
+remote_install.packages <- function(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
@@ -387,6 +387,12 @@ remote_install_github <- function(
     command = paste0(
     "chmod +x ", file.path("jap_scripts", "install_packages.bash")
   ))
+
+  if (is.na(github_name)) {
+    pkg <- package_name
+  } else {
+    pkg <- paste0(github_name, "/", package_name)
+  }
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
@@ -394,9 +400,7 @@ remote_install_github <- function(
       file.path("jap_scripts", "install_packages.bash"),
       " ",
       "'",
-      github_name,
-      "/",
-      package_name,
+      pkg,
       "'"
     )
   )
