@@ -1,3 +1,17 @@
+#' Specify subfolder structure
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+folder_structure <- function() {
+  folder_names <- c(
+    "results",
+    "logs",
+    "cluster_scripts",
+    "data"
+  )
+}
+
 #' Create folder structure
 #' @author Giovanni Laudanno
 #' @inheritParams default_params_doc
@@ -5,11 +19,16 @@
 #' @export
 create_folder_structure <- function(
   account = "p274829",
-  local_projects_folder = "D:/Projects",
-  remote_projects_folder = file.path("/home", account),
+  projects_folder_name = "Projects",
+  disk = "D",
   project_name = "sls",
-  session = NA
+  session = NA,
+  drive = FALSE
 ) {
+
+  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+
   # open session
   new_session <- FALSE
   if (!jap::is_session_open(session = session)) {
@@ -17,18 +36,15 @@ create_folder_structure <- function(
     session <- jap::open_session(account = account)
   }
 
-  folder_names <- c(
-    "results",
-    "logs",
-    "cluster_scripts",
-    "data"
-  )
+  folder_names <- jap::folder_structure()
 
-  local_project_folder <- file.path(local_projects_folder, project_name)
-  if (!(dir.exists(local_project_folder))) {
-    dir.create(local_project_folder)
+  # PROJECTS FOLDER
+  ## local
+  if (!(dir.exists(local_projects_folder))) {
+    dir.create(local_projects_folder)
   }
 
+  # peregrine
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
@@ -45,11 +61,30 @@ create_folder_structure <- function(
     )
   )
 
+  ## drive
+  if (drive == TRUE) {
+    drive_projects_folder <- basename(local_projects_folder)
+    drive_dir.create(dir = drive_projects_folder)
+  }
+
+  # SPECIFIC PROJECT FOLDER
+  ## local
+  local_project_folder <- file.path(local_projects_folder, project_name)
+  if (!(dir.exists(local_project_folder))) {
+    dir.create(local_project_folder)
+  }
+
+  ## peregrine
   remote_project_folder <- file.path(remote_projects_folder, project_name)
   if (!remote_dir.exists(remote_project_folder, session = session)) {
     remote_dir.create(remote_project_folder, session = session)
   }
 
+  ## drive
+  if (drive == TRUE) {
+    drive_project_folder <- file.path(drive_projects_folder, project_name)
+    drive_dir.create(dir = drive_project_folder)
+  }
 
   for (folder_name in folder_names) {
     folder <- file.path(local_project_folder, folder_name)
@@ -60,6 +95,59 @@ create_folder_structure <- function(
     if (!remote_dir.exists(folder, session = session)) {
       remote_dir.create(folder, session = session)
     }
+    if (drive == TRUE) {
+      folder <- file.path(drive_project_folder, folder_name)
+      drive_dir.create(dir = folder)
+    }
+  }
+
+  # close session
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+}
+
+#' Delete folder structure
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+delete_folder_structure <- function(
+  account = "p274829",
+  projects_folder_name = "Projects",
+  disk = "D",
+  session = NA,
+  drive = FALSE
+) {
+
+  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  drive_projects_folder <- basename(local_projects_folder)
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  folder_names <- jap::folder_structure()
+
+  # PROJECTS FOLDER
+  ## local
+  unlink(local_projects_folder, recursive = TRUE)
+
+  # peregrine
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "rm -r ", remote_projects_folder
+    )
+  )
+
+  ## drive
+  if (drive == TRUE) {
+    googledrive::drive_rm(drive_projects_folder)
   }
 
   # close session
@@ -212,112 +300,6 @@ remote_list.files <- function(
   files
 }
 
-#' @title Download the results to the results folder of the project
-#' @author Giovanni Laudanno
-#' @description Download the results to the results folder of the project
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-download_results <- function(
-  local_projects_folder = "D:/Projects",
-  remote_projects_folder = file.path("/home", account),
-  project_name = "sls",
-  delete_on_cluster = FALSE,
-  account = "p274829",
-  session = NA
-) {
-
-  # open session
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  jap::create_folder_structure(
-    local_projects_folder = local_projects_folder,
-    remote_projects_folder = remote_projects_folder,
-    project_name = project_name,
-    account = account,
-    session = session
-  )
-
-  # download files
-  ssh::scp_download(
-    session = session,
-    files = file.path(remote_project_folder, "results", "*"),
-    to = file.path(local_project_folder, "results"),
-    verbose = TRUE
-  )
-
-  if (delete_on_cluster) {
-    ssh::ssh_exec_wait(
-      session = session,
-      command = paste0(
-        "rm -rfv ", file.path(remote_results_folder, "*")
-      )
-    )
-  }
-
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-  return()
-}
-
-#' @title Download the log files to the logs folder of the project
-#' @author Giovanni Laudanno
-#' @description Download the log files to the logs folder of the project
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-download_logs <- function(
-  local_projects_folder = "D:/Projects",
-  remote_projects_folder = file.path("/home", account),
-  project_name = "sls",
-  delete_on_cluster = FALSE,
-  account = "p274829",
-  session = NA
-) {
-
-  # open session
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  jap::create_folder_structure(
-    local_projects_folder = local_projects_folder,
-    remote_projects_folder = remote_projects_folder,
-    project_name = project_name,
-    account = account,
-    session = session
-  )
-
-  # download files
-  ssh::scp_download(
-    session = session,
-    files = file.path(remote_project_folder, "logs", "*"),
-    to = file.path(local_project_folder, "logs"),
-    verbose = TRUE
-  )
-
-  if (delete_on_cluster) {
-    ssh::ssh_exec_wait(
-      session = session,
-      command = paste0(
-        "rm -rfv ", file.path(remote_logs_folder, "*")
-      )
-    )
-  }
-
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-  return()
-}
-
 #' @title Export cluster scripts
 #' @author Giovanni Laudanno
 #' @description Export cluster scripts
@@ -439,25 +421,26 @@ args_2_string <- function(
     value <- unlist(args[i])
 
     if (is.character(value)) {
-      if (grepl(x = value[1], pattern = "/")) {
-        out <- jap::path_2_file.path(value)
-      } else if (length(value) > 1) {
+      if (length(value) > 1) {
         out <- paste0(
           name,
           " = ",
           "c(",
-          "\"",
-          paste0(value, collapse = "\", \""),
-          "\"",
+          paste(
+            lapply(value, FUN = function(x) jap::path_2_file.path(x)),
+            collapse = ", "
+          ),
           ")"
         )
-      } else {
+      }
+      if (length(value) == 1) {
         out <- paste0(
           name,
           " = ",
-          "\"",
-          value,
-          "\""
+          paste(
+            lapply(value, FUN = function(x) jap::path_2_file.path(x)),
+            collapse = ", "
+          )
         )
       }
     } else if (length(value) > 1) {
@@ -475,11 +458,121 @@ args_2_string <- function(
         value
       )
     }
+
     if (i > 1) {
       string <- paste0(string, ", ", out)
     } else {
       string <- paste0(string, out)
     }
   }
+
   string
+}
+
+#' @title Download the results to the results folder of the project
+#' @author Giovanni Laudanno
+#' @description Download the results to the results folder of the project
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+download_subfolder <- function(
+  subfolder = "results",
+  projects_folder_name = "Projects",
+  disk = "D",
+  project_name = "sls",
+  delete_on_cluster = FALSE,
+  account = "p274829",
+  session = NA,
+  drive = FALSE
+) {
+
+  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  local_project_folder <- file.path(local_projects_folder, project_name)
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  jap::create_folder_structure(
+    projects_folder_name = projects_folder_name,
+    disk = disk,
+    project_name = project_name,
+    account = account,
+    session = session,
+    drive = drive
+  )
+
+  # download files
+  remote_project_folder <- file.path(remote_projects_folder, project_name)
+  ssh::scp_download(
+    session = session,
+    files = file.path(remote_project_folder, subfolder, "*"),
+    to = file.path(local_project_folder, subfolder),
+    verbose = TRUE
+  )
+
+  if (delete_on_cluster) {
+    ssh::ssh_exec_wait(
+      session = session,
+      command = paste0(
+        "rm -rfv ", file.path(remote_results_folder, "*")
+      )
+    )
+  }
+
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+
+  if (drive == TRUE) {
+    drive_projects_folder <- basename(local_projects_folder)
+    drive_project_folder <- file.path(drive_projects_folder, project_name)
+    local_subfolder <- file.path(local_project_folder, subfolder)
+    drive_subfolder <- file.path(drive_project_folder, subfolder)
+    files <- list.files(local_subfolder)
+    for (file in files) {
+      googledrive::drive_upload(
+        media = file.path(local_subfolder, file),
+        name = file,
+        path = drive_subfolder
+      )
+    }
+  }
+  return()
+}
+
+#' Download the entire project folder
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+download_project_folder <- function(
+  projects_folder_name = "Projects",
+  disk = "D",
+  project_name = "sls",
+  delete_on_cluster = FALSE,
+  account = "p274829",
+  session = NA,
+  drive = FALSE
+) {
+
+  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+
+  subfolders <- jap::folder_structure()
+  for (subfolder in subfolders) {
+    jap::download_subfolder(
+      subfolder = subfolder,
+      local_projects_folder = local_projects_folder,
+      remote_projects_folder = remote_projects_folder,
+      project_name = project_name,
+      account = account,
+      session = session,
+      drive = drive
+    )
+  }
 }

@@ -1,6 +1,6 @@
 # Basic Setting
 library(ssh)
-account <- "p282067"
+account <- "p274829" # account <- "p282067"
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
 local_projects_folder <- "D:/Projects"
@@ -46,7 +46,14 @@ i <- 1
 while (i <= nrow(params)) {
 
   # Select the i-th parsetting
-  pars <- params[i, DAISIErobustness::load_param_space()]
+  pars <- params[
+    i,
+    # DAISIErobustness::load_param_space(param_space_name = "oceanic_ontogeny")
+    # DAISIErobustness::load_param_space(param_space_name = "oceanic_sea_level")
+    # DAISIErobustness::load_param_space(param_space_name = "nonoceanic")
+    # DAISIErobustness::load_param_space(param_space_name = "nonoceanic_sea_level")
+    DAISIErobustness::load_param_space(param_space_name = "nonoceanic_land_bridge")
+    ]
 
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
