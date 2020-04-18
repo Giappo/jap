@@ -5,7 +5,7 @@ drive <- TRUE
 account <- "p274829"
 github_name <- "Giappo"
 project_name <- "sls"
-projects_folder_name = "Projects"
+projects_folder_name <- "Projects"
 remote_projects_folder <- file.path("", "home", account, projects_folder_name)
 remote_project_folder <- file.path(remote_projects_folder, project_name)
 
@@ -77,7 +77,7 @@ while (i <= nrow(params)) {
   n_jobs <- length(check$job_ids)
   cat("Pars are", unlist(sim_pars), "\nThere are", n_jobs, "jobs left\n")
 
-  if (n_jobs < (max_sims * 0.1)) { #send new jobs only if max 100 jobs are already running
+  if (n_jobs < (100)) { #send new jobs only if max 100 jobs are already running
 
     # Download partial results
     jap::download_subfolder(

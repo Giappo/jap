@@ -74,7 +74,7 @@ install_package <- function(
     }
     rep <- rep + 1
   }
-  # library(package_name, character.only = TRUE)
+  library(package_name, character.only = TRUE)
 }
 
 #' Remove a package (and lock file)
