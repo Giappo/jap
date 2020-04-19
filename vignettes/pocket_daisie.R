@@ -2,7 +2,7 @@
 # Basic Settings
 library(ssh); library(googledrive)
 drive <- TRUE
-account <- "p274829" # account <- "p282067"
+account <- "p282067" # account <- "p282067"
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
 projects_folder_name <- "Projects"
@@ -12,7 +12,7 @@ remote_project_folder <- file.path(remote_projects_folder, project_name)
 # Project Settings
 jap::install_package(package_name = project_name, github_name = github_name)
 library(project_name, character.only = TRUE)
-function_name <- "DAISIErobustness::oceanic_sim"
+function_name <- "run_robustness"
 
 # Open Session
 session <- jap::open_session(account = account)
@@ -39,28 +39,26 @@ jap::remote_install.packages(
 
 # Create params for the experiment
 max_sims <- 4
-params <- expand.grid(
-  timeval = 3,
-  lac = c(0.3, 0.6),
-  mu = c(0.1, 0.2),
-  K = 10,
-  gam = 0.001,
-  laa = 1,
-  seed = 1
+param_space <- DAISIErobustness::load_param_space(
+  param_space_name = "oceanic_ontogeny"
 )
-
-i <- 1
-while (i <= nrow(params)) {
+while (i <= nrow(param_space)) {
 
   # Select the i-th parsetting
-  pars <- params[
-    i,
-    DAISIErobustness::load_param_space(param_space_name = "oceanic_ontogeny")
-    ]
+  args <- list(
+    param_space_name = "oceanic_ontogeny",
+    param_set = i,
+    replicates = 1000,
+    save_output = TRUE
+  )
 
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
-  cat("Pars are", unlist(pars), "\nThere are", n_jobs, "jobs left\n")
+  message(
+    "Pars are ",
+    paste0(names(args), " = ", unlist(args), " | "),
+    "\n There are ", n_jobs, " jobs left"
+  )
 
   if (n_jobs < (100)) { #send new jobs only if max 100 jobs are already running
 
@@ -74,25 +72,6 @@ while (i <= nrow(params)) {
       drive = drive
     )
 
-    # Create the argument string
-    fun_arguments <- paste0(
-      "seed = ",
-      seed,
-      ", ",
-      "sim_pars = ",
-      "c(",
-      paste0(pars, collapse = ", "),
-      ")",
-      ", ",
-      ", ",
-      "totaltime = ",
-      ", ",
-      "loglik_functions = ",
-      "DAISIErobustness::oceanic_sim()",
-      ", ",
-      "project_folder = ",
-      jap::path_2_file.path(remote_project_folder)
-    )
 
     # Run the main function
     jap::run_on_cluster(
@@ -101,7 +80,7 @@ while (i <= nrow(params)) {
       function_name = function_name,
       account = account,
       session = session,
-      fun_arguments = fun_arguments
+      fun_arguments = jap::args_2_string(args = args)
     )
     i <- i + 1
   } else {
