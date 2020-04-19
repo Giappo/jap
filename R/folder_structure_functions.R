@@ -120,6 +120,13 @@ delete_folder_structure <- function(
   drive = FALSE
 ) {
 
+  ans <- readline(
+    prompt = "Are you sure you want to delete the entire folder structure on local/remote/drive? y/n"
+  )
+  if (ans != "y") {
+    return()
+  }
+
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
   remote_projects_folder <- file.path("", "home", account, projects_folder_name)
   drive_projects_folder <- basename(local_projects_folder)
