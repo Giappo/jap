@@ -55,11 +55,17 @@ find_github_folder <- function(
   disk = "C"
 ) {
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  name <- "GITHUB_FOLDER="
   y <- jap::my_try_catch(unlist(read.table(rprof_path)))
   if (is.null(y$warning) & is.null(y$error)) {
-    out <- gsub(y$value, pattern = "GITHUB_FOLDER=", replacement = "")
-    out <- gsub(out, pattern = "\"", replacement = "")
-    if (out != "") {return(out)}
+    y1 <- as.character(y$value)
+    y2 <- y1[stringr::str_detect(y1, name)]
+    if (length(y2) == 1) {
+      testit::assert(length(y2) == 1)
+      out <- gsub(y2, pattern = name, replacement = "")
+      out <- gsub(out, pattern = "\"", replacement = "")
+      if (out != "") {return(out)}
+    }
   }
 
   suppressWarnings(
@@ -121,7 +127,7 @@ find_github_folder <- function(
   # path <- usethis:::scoped_path_r(c("user", "project"), ".Renviron", envvar = "R_ENVIRON_USER")
 
   write(
-    paste0("GITHUB_FOLDER=\"", x, "\""),
+    paste0(name, "\"", out, "\""),
     file = rprof_path,
     append = TRUE
   )

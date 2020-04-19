@@ -6,7 +6,7 @@
 #' @export
 run_pirouette_example <- function(
   example_no,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   gl = TRUE
 ) {

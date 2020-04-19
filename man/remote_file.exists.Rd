@@ -4,7 +4,7 @@
 \alias{remote_file.exists}
 \title{Check if file exist on cluster}
 \usage{
-remote_file.exists(file, account = "p274829", session = NA)
+remote_file.exists(file, account = jap::your_account(), session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}

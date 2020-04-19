@@ -18,7 +18,7 @@ folder_structure <- function() {
 #' @return nothing
 #' @export
 create_folder_structure <- function(
-  account = "p274829",
+  account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
   project_name = "sls",
@@ -113,7 +113,7 @@ create_folder_structure <- function(
 #' @return nothing
 #' @export
 delete_folder_structure <- function(
-  account = "p274829",
+  account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
   session = NA,

@@ -4,7 +4,7 @@
 \alias{open_session}
 \title{Open session}
 \usage{
-open_session(account = "p274829")
+open_session(account = jap::your_account())
 }
 \arguments{
 \item{account}{a peregrine account}

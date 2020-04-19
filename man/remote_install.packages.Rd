@@ -8,7 +8,7 @@ remote_install.packages(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 )
 }

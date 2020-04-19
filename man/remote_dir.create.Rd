@@ -4,7 +4,7 @@
 \alias{remote_dir.create}
 \title{Create a directory on cluster}
 \usage{
-remote_dir.create(dir, account = "p274829", session = NA)
+remote_dir.create(dir, account = jap::your_account(), session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}

@@ -1,3 +1,33 @@
+#' Returns your peregrine account
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+your_account <- function() {
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  name <- "YOUR_PEREGRINE_ACCOUNT="
+  y <- jap::my_try_catch(unlist(read.table(rprof_path)))
+  if (is.null(y$warning) & is.null(y$error)) {
+    y1 <- as.character(y$value)
+    y2 <- y1[stringr::str_detect(y1, name)]
+    if (length(y2) == 1) {
+      testit::assert(length(y2) == 1)
+      out <- gsub(y2, pattern = name, replacement = "")
+      out <- gsub(out, pattern = "\"", replacement = "")
+      if (out != "") {return(out)}
+    }
+  }
+
+  out <- readline(prompt = "What's your peregrine account?")
+
+  write(
+    paste0(name, "\"", out, "\""),
+    file = rprof_path,
+    append = TRUE
+  )
+  out
+}
+
 #' @title Check if folder exist on cluster
 #' @description Check if folder exist on cluster
 #' @author Giovanni Laudanno
@@ -6,12 +36,12 @@
 #' @export
 remote_dir.exists <- function(
   dir,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
   jap::remote_file.exists(
     file = dir,
-    account = "p274829",
+    account = jap::your_account(),
     session = session
   )
 }
@@ -24,7 +54,7 @@ remote_dir.exists <- function(
 #' @export
 remote_file.exists <- function(
   file,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
   # open session
@@ -58,7 +88,7 @@ remote_file.exists <- function(
 #' @export
 remote_dir.create <- function(
   dir,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
   # open session
@@ -88,7 +118,7 @@ remote_dir.create <- function(
 #' @export
 remote_dir.remove <- function(
   dir,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
   # open session
@@ -155,7 +185,7 @@ remote_install.packages <- function(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
 
@@ -212,7 +242,7 @@ remote_install.packages <- function(
 #' @export
 upload_cluster_scripts <- function(
   project_name = "sls",
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
 
@@ -326,7 +356,7 @@ download_subfolder <- function(
   disk = "D",
   project_name = "sls",
   delete_on_cluster = FALSE,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   drive = FALSE
 ) {
@@ -400,7 +430,7 @@ download_project_folder <- function(
   disk = "D",
   project_name = "sls",
   delete_on_cluster = FALSE,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   drive = FALSE
 ) {
@@ -428,7 +458,7 @@ download_project_folder <- function(
 #' @author Giovanni Laudanno
 #' @return peregrine cluster address
 #' @export
-get_cluster_address <- function(account = "p274829") {
+get_cluster_address <- function(account = jap::your_account()) {
   if (account == "cyrus" || account == "Cyrus" || account == "Cy" || account == "cy") { # nolint
     account <- "p257011"
   }
@@ -448,7 +478,7 @@ get_cluster_address <- function(account = "p274829") {
 #' @author Giovanni Laudanno
 #' @return the session
 #' @export
-open_session <- function(account = "p274829") {
+open_session <- function(account = jap::your_account()) {
   cluster_address <- jap::get_cluster_address(account = account)
   session <- ssh::ssh_connect(cluster_address)
   session
@@ -471,7 +501,7 @@ close_session <- function(session) {
 #' @return list with job ids, job info and sshare
 #' @export
 check_jobs <- function(
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
 
@@ -534,7 +564,7 @@ check_jobs <- function(
 #' @author Giovanni Laudanno
 #' @return list with job ids, job info and sshare (all empty)
 #' @export
-close_jobs <- function(account = "p274829") {
+close_jobs <- function(account = jap::your_account()) {
 
   session <- jap::open_session(account = account)
 

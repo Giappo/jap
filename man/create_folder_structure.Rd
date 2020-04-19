@@ -5,7 +5,7 @@
 \title{Create folder structure}
 \usage{
 create_folder_structure(
-  account = "p274829",
+  account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
   project_name = "sls",
