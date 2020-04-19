@@ -13,3 +13,17 @@ drive_dir.create <- function(
     googledrive::drive_mkdir(name = add, path = base)
   }
 }
+
+#' List drive files
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return List of files
+#' @export
+drive_list.files <- function(
+  dir = "Projects"
+) {
+
+  # list files
+  googledrive::drive_ls(path = dir)
+
+}

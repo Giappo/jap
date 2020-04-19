@@ -14,38 +14,39 @@ First, specify basic info
 ```{r setup, include = FALSE}
 account <- "p274829"
 project_name <- "mbd"
-local_projects_folder <- "D:/Projects"
-remote_projects_folder <- paste0("/home/", account, "/Projects")
-remote_project_folder <- file.path(remote_projects_folder, project_name)
+projects_folder_name <- "Projects"
+drive <- TRUE # we want to use google drive
 ```
 
-Then open a session. We are gonna use this session every time we want to
-execute tasks on the cluster
+Then open a session. We are gonna use this session every time we want to execute tasks on the cluster
 
 ```{r}
 library(jap)
 session <- jap::open_session(account = account)
 ```
 
-Then we setup the remote folder
+Then we setup the entire folder structure on three different places: local, peregrine and google drive
 
 ```{r}
 jap::create_folder_structure(
   project_name = project_name,
-  local_projects_folder = local_projects_folder,
-  remote_projects_folder = remote_projects_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive,
   account = account,
   session = session
 )
 ```
 
-We can check the structure on the remote folder
+We can check the structure on the remote folder and on the drive folder
 
 ```{r}
 jap::remote_list.files(
-  dir = remote_project_folder,
+  dir = projects_folder_name,
   account = account,
   session = session
+)
+jap::drive_list.files(
+  dir = projects_folder_name
 )
 ```
 
@@ -60,8 +61,7 @@ jap::remote_install.packages(
 )
 ```
 
-We can even install any package from CRAN. To do so it suffices to not specify
-the 'github_name' argument
+We can even install any package from CRAN. To do so it suffices to not specify the 'github_name' argument
 
 ```{r}
 jap::remote_install.packages(

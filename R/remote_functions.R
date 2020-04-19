@@ -1,161 +1,3 @@
-#' Specify subfolder structure
-#' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-folder_structure <- function() {
-  folder_names <- c(
-    "results",
-    "logs",
-    "cluster_scripts",
-    "data"
-  )
-}
-
-#' Create folder structure
-#' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-create_folder_structure <- function(
-  account = "p274829",
-  projects_folder_name = "Projects",
-  disk = "D",
-  project_name = "sls",
-  session = NA,
-  drive = FALSE
-) {
-
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
-
-  # open session
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  folder_names <- jap::folder_structure()
-
-  # PROJECTS FOLDER
-  ## local
-  if (!(dir.exists(local_projects_folder))) {
-    dir.create(local_projects_folder)
-  }
-
-  # peregrine
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-      "chmod +x ", dirname(remote_projects_folder)
-    )
-  )
-  if (!remote_dir.exists(remote_projects_folder, session = session)) {
-    remote_dir.create(remote_projects_folder, session = session)
-  }
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-      "chmod +x ", remote_projects_folder
-    )
-  )
-
-  ## drive
-  if (drive == TRUE) {
-    drive_projects_folder <- basename(local_projects_folder)
-    drive_dir.create(dir = drive_projects_folder)
-  }
-
-  # SPECIFIC PROJECT FOLDER
-  ## local
-  local_project_folder <- file.path(local_projects_folder, project_name)
-  if (!(dir.exists(local_project_folder))) {
-    dir.create(local_project_folder)
-  }
-
-  ## peregrine
-  remote_project_folder <- file.path(remote_projects_folder, project_name)
-  if (!remote_dir.exists(remote_project_folder, session = session)) {
-    remote_dir.create(remote_project_folder, session = session)
-  }
-
-  ## drive
-  if (drive == TRUE) {
-    drive_project_folder <- file.path(drive_projects_folder, project_name)
-    drive_dir.create(dir = drive_project_folder)
-  }
-
-  for (folder_name in folder_names) {
-    folder <- file.path(local_project_folder, folder_name)
-    if (!(dir.exists(folder))) {
-      dir.create(folder)
-    }
-    folder <- file.path(remote_project_folder, folder_name)
-    if (!remote_dir.exists(folder, session = session)) {
-      remote_dir.create(folder, session = session)
-    }
-    if (drive == TRUE) {
-      folder <- file.path(drive_project_folder, folder_name)
-      drive_dir.create(dir = folder)
-    }
-  }
-
-  # close session
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-}
-
-#' Delete folder structure
-#' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
-#' @return nothing
-#' @export
-delete_folder_structure <- function(
-  account = "p274829",
-  projects_folder_name = "Projects",
-  disk = "D",
-  session = NA,
-  drive = FALSE
-) {
-
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
-  drive_projects_folder <- basename(local_projects_folder)
-
-  # open session
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  folder_names <- jap::folder_structure()
-
-  # PROJECTS FOLDER
-  ## local
-  unlink(local_projects_folder, recursive = TRUE)
-
-  # peregrine
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-      "rm -r ", remote_projects_folder
-    )
-  )
-
-  ## drive
-  if (drive == TRUE) {
-    googledrive::drive_rm(drive_projects_folder)
-  }
-
-  # close session
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-}
-
 #' @title Check if folder exist on cluster
 #' @description Check if folder exist on cluster
 #' @author Giovanni Laudanno
@@ -289,7 +131,10 @@ remote_list.files <- function(
   # list files
   files <- capture.output(ssh::ssh_exec_wait(
     session = session,
-    command = paste0("ls ", dir)
+    command = paste0(
+      "ls ",
+      file.path("", "home", account, dir)
+    )
   ))
   files <- files[-length(files)]
 
@@ -298,6 +143,65 @@ remote_list.files <- function(
   }
 
   files
+}
+
+#' @title Install packages for a given project
+#' @description Install packages for a given project
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return nothing
+#' @export
+remote_install.packages <- function(
+  github_name = NA,
+  package_name,
+  must_sleep = TRUE,
+  account = "p274829",
+  session = NA
+) {
+
+  # open session
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  jap::upload_jap_scripts(
+    account = account,
+    session = session
+  )
+
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "chmod +x ", file.path("jap_scripts", "install_packages.bash")
+    ))
+
+  if (is.na(github_name)) {
+    pkg <- package_name
+  } else {
+    pkg <- paste0(github_name, "/", package_name)
+  }
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "./",
+      file.path("jap_scripts", "install_packages.bash"),
+      " ",
+      "'",
+      pkg,
+      "'"
+    )
+  )
+  if (must_sleep == TRUE) {
+    ssh::ssh_exec_wait(session = session, command = "sleep 10")
+  }
+
+  jap::remote_dir.remove(dir = "jap_scripts", session = session)
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+  return()
 }
 
 #' @title Export cluster scripts
@@ -338,65 +242,6 @@ upload_cluster_scripts <- function(
       to = remote_project_folder
     )
   )
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-  return()
-}
-
-#' @title Install packages for a given project
-#' @description Install packages for a given project
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @return nothing
-#' @export
-remote_install.packages <- function(
-  github_name = NA,
-  package_name,
-  must_sleep = TRUE,
-  account = "p274829",
-  session = NA
-) {
-
-  # open session
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  jap::upload_jap_scripts(
-    account = account,
-    session = session
-  )
-
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-    "chmod +x ", file.path("jap_scripts", "install_packages.bash")
-  ))
-
-  if (is.na(github_name)) {
-    pkg <- package_name
-  } else {
-    pkg <- paste0(github_name, "/", package_name)
-  }
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-      "./",
-      file.path("jap_scripts", "install_packages.bash"),
-      " ",
-      "'",
-      pkg,
-      "'"
-    )
-  )
-  if (must_sleep == TRUE) {
-    ssh::ssh_exec_wait(session = session, command = "sleep 10")
-  }
-
-  jap::remote_dir.remove(dir = "jap_scripts", session = session)
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
@@ -574,5 +419,147 @@ download_project_folder <- function(
       session = session,
       drive = drive
     )
+  }
+}
+
+#' @title Get peregrine cluster address
+#' @description Get peregrine cluster address
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return peregrine cluster address
+#' @export
+get_cluster_address <- function(account = "p274829") {
+  if (account == "cyrus" || account == "Cyrus" || account == "Cy" || account == "cy") { # nolint
+    account <- "p257011"
+  }
+  if (account == "giovanni" || account == "Giovanni" || account == "Gio" || account == "gio") { # nolint
+    account <- "p274829"
+  }
+  if (account == "pedro" || account == "Pedro") { # nolint
+    account <- "p282067"
+  }
+  cluster_address <- paste0(account, "@peregrine.hpc.rug.nl")
+  cluster_address
+}
+
+#' @title Open session
+#' @description Open a session for a given account
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return the session
+#' @export
+open_session <- function(account = "p274829") {
+  cluster_address <- jap::get_cluster_address(account = account)
+  session <- ssh::ssh_connect(cluster_address)
+  session
+}
+
+#' @title Close session
+#' @description Close a session for a given account
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return nothing
+#' @export
+close_session <- function(session) {
+  ssh::ssh_disconnect(session); gc()
+}
+
+#' @title Check jobs on cluster
+#' @author Giovanni Laudanno, Pedro Neves
+#' @description Check jobs on cluster
+#' @inheritParams default_params_doc
+#' @return list with job ids, job info and sshare
+#' @export
+check_jobs <- function(
+  account = "p274829",
+  session = NA
+) {
+
+  new_session <- FALSE
+  if (!jap::is_session_open(session = session)) {
+    new_session <- TRUE
+    session <- jap::open_session(account = account)
+  }
+
+  jobs <- utils::capture.output(ssh::ssh_exec_wait(session = session, command = "squeue -u $USER --long"))
+  fun1 <- function(x) {
+    x1 <- strsplit(x, " ")[[1]]
+    x2 <- x1[which(x1 != "")]
+    x2
+  }
+  fun2 <- function(y) {
+    y0 <- y[-c(1, length(y))]
+    y1 <- lapply(X = y0, FUN = fun1)
+
+    if (length(y1[-1]) == 0) {
+      y2 <- data.frame(
+        matrix(NA, ncol = length(y1[[1]]), nrow = 0
+        )
+      )
+    } else {
+      y2 <- data.frame(
+        matrix(unlist(y1[-1]), ncol = length(y1[[1]]), byrow = TRUE),
+        stringsAsFactors = FALSE
+      )
+    }
+    colnames(y2) <- y1[[1]]
+    y2
+  }
+  job_info <- fun2(jobs)
+  job_ids <- job_info$JOBID
+  job_names <- job_info$NAME
+  job_states <- table(job_info$STATE)
+  job_partitions <- table(job_info$PARTITION)
+
+  sshare_output <- utils::capture.output(ssh::ssh_exec_wait(
+    session = session,
+    command = "sshare -u $USER"
+  ))
+  if (new_session == TRUE) {
+    jap::close_session(session = session)
+  }
+  list(
+    job_ids = job_ids,
+    job_names = job_names,
+    job_states = job_states,
+    job_partitions = job_partitions,
+    sshare_output = sshare_output,
+    jobs = job_info
+  )
+}
+
+#' @title Close jobs on cluster
+#' @description Close jobs on cluster
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return list with job ids, job info and sshare (all empty)
+#' @export
+close_jobs <- function(account = "p274829") {
+
+  session <- jap::open_session(account = account)
+
+  ssh::ssh_exec_wait(
+    session = session,
+    command = "scancel --user=$USER --partition=gelifes && scancel --user=$USER --partition=regular" # nolint indeed long command
+  )
+
+  jap::close_session(session = session)
+  jap::check_jobs(account = account)
+}
+
+#' @title Check if session is open or not
+#' @description Check if session is open
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @return TRUE or FALSE
+#' @export
+is_session_open <- function(
+  session
+) {
+  out <- jap::my_try_catch(ssh::ssh_session_info(session))
+  if (!is.null(out$value)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
   }
 }
