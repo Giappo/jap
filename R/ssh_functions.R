@@ -309,6 +309,10 @@ run_on_cluster <- function(
   session = NA
 ) {
 
+  if (is.list(fun_arguments)) {
+    fun_arguments <- jap::args_2_string(fun_arguments)
+  }
+
   while (grepl(x = fun_arguments, pattern = " ")) {
     fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
   }
