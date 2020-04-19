@@ -54,16 +54,12 @@ find_github_folder <- function(
   folder_name = "Githubs",
   disk = "C"
 ) {
-
-  jap_folder <- system.file(package = "jap")
-  extdata_folder <- file.path(jap_folder, "extdata")
-  if (!("extdata" %in% list.files(jap_folder))) {
-    dir.create(extdata_folder)
-  }
-  path_file <- file.path(extdata_folder, "githubs_path")
-  if (file.exists(path_file)) {
-    x <- levels(unname(read.csv(path_file)[[1]]))
-    return(x)
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  y <- jap::my_try_catch(unlist(read.table(rprof_path)))
+  if (is.null(y$warning) & is.null(y$error)) {
+    out <- gsub(y$value, pattern = "GITHUB_FOLDER=", replacement = "")
+    out <- gsub(out, pattern = "\"", replacement = "")
+    if (out != "") {return(out)}
   }
 
   suppressWarnings(
@@ -118,7 +114,17 @@ find_github_folder <- function(
     xx <- readline("More than one folder found. Choose one:\n")
     x <- x[xx]
   }
-  utils::write.csv(x, file = path_file)
+
+  # Sys.setenv(GITHUB_FOLDER = x)
+  # usethis::edit_r_environ()
+  # usethis::edit_r_profile()
+  # path <- usethis:::scoped_path_r(c("user", "project"), ".Renviron", envvar = "R_ENVIRON_USER")
+
+  write(
+    paste0("GITHUB_FOLDER=\"", x, "\""),
+    file = rprof_path,
+    append = TRUE
+  )
   x
 }
 
