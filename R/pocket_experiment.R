@@ -31,8 +31,10 @@ pocket_experiment <- function(
   filename <- "pocket_script.R"
   url <- paste0(
     "https://raw.githubusercontent.com/Giappo/jap/master/job_scripts/",
-    file.path(tempfolder, filename)
+    filename
   )
+  utils::download.file(url, destfile = file.path(tempfolder, filename))
+  # list.files(tempfolder)
 
   rstudioapi::jobRunScript(
     path = file.path(tempfolder, filename),

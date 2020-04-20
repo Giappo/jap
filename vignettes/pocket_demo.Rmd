@@ -1,0 +1,108 @@
+---
+title: "pocket demo"
+author: "Giovanni Laudanno"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pocket demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+First, specify basic info
+
+```{r setup, include = FALSE}
+account <- jap::your_account()
+projects_folder_name <- "Projects"
+drive <- TRUE # we want to use google drive
+library(jap, quietly = TRUE)
+```
+
+Now we can set it up to work using the "sls_main" function from the "sls" package taken from the Github repo named "Giappo":
+
+```{r}
+github_name <- "Giappo"
+project_name <- "sls"
+function_name <- "sls_main"
+max_sims <- 2
+params_grid <- expand.grid(
+  lambda_m = c(0.3, 0.6),
+  mu_m = c(0.1, 0.2),
+  lambda_s = 0.8,
+  mu_s = 0.1,
+  crown_age = 8,
+  shift_time = 5,
+  cond = 3,
+  seed = 1:max_sims
+)
+loglik_functions <- sls::sls_logliks_experiment()
+verbose <- TRUE
+
+params <- list()
+for (i in 1:nrow(params_grid)) {
+  params[[i]] <- as.list(params_grid[i , ])
+  params[[i]]$loglik_functions <- loglik_functions
+  params[[i]]$verbose <- verbose
+}
+```
+
+Now we just need to call the function "pocket_experiment" to run everything
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  projects_folder_name = projects_folder_name, 
+  drive = drive
+)
+```
+
+We can also try to run other projects. For example let's try with "mbd"
+
+```{r}
+github_name <- "Giappo"
+project_name <- "mbd"
+function_name <- "mbd_main"
+max_sims <- 2
+params_grid <- expand.grid(
+  lambda = c(0.2, 0.4),
+  mu = c(0.05, 0.1),
+  nu = c(0.5, 1),
+  q = 0.1,
+  age = 8,
+  cond = 1,
+  seed = 1:max_sims
+)
+loglik_functions <- mbd::mbd_experiment_logliks()
+verbose <- TRUE
+
+params <- list()
+for (i in 1:nrow(params_grid)) {
+  params[[i]] <- as.list(params_grid[i , ])
+  params[[i]]$loglik_functions <- loglik_functions
+  params[[i]]$verbose <- verbose
+}
+```
+
+Again, we just need to run "pocket_experiment" to make everything run
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  projects_folder_name = projects_folder_name, 
+  drive = drive
+)
+```
+
+We can check that everything is running
+
+```{r}
+jap::check_jobs(account = account)
+```
