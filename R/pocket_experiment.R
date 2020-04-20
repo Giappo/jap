@@ -14,14 +14,30 @@ pocket_experiment <- function(
 ) {
 
   tempfolder <- tempdir()
-  for (filename in filenames) {
-    url <- paste0(
-      "https://raw.githubusercontent.com/Giappo/jap/master/cluster_scripts/",
-      filename
-    )
-    utils::download.file(url, destfile = file.path(tempfolder, filename))
-  }
 
-  rstudioapi::jobRunScript()
+  save(
+    file = file.path(tempfolder, "pocket_data.RData"),
+    list = c(
+      "account",
+      "projects_folder_name",
+      "github_name",
+      "project_name",
+      "function_name",
+      "params",
+      "drive"
+    )
+  )
+
+  filename <- "pocket_script.R"
+  url <- paste0(
+    "https://raw.githubusercontent.com/Giappo/jap/master/job_scripts/",
+    file.path(tempfolder, filename)
+  )
+
+  rstudioapi::jobRunScript(
+    path = file.path(tempfolder, filename),
+    name = paste0("pocket_", project_name),
+    importEnv = FALSE
+  )
   return()
 }

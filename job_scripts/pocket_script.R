@@ -1,3 +1,5 @@
+load("pocket_data.RData")
+
 remote_projects_folder <- file.path("", "home", account, projects_folder_name)
 remote_project_folder <- file.path(remote_projects_folder, project_name)
 
@@ -41,7 +43,8 @@ while (i <= length(params)) {
 
     cat(
       "Function arguments are:\n",
-      paste0(names(args), " = ", paste(unlist(args)), sep = " |")
+      paste0(names(args), " = ", paste(unlist(args)), sep = " |"),
+      "\n"
     )
 
     # Download partial results
