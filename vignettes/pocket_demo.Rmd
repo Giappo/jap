@@ -23,6 +23,7 @@ Now we can set it up to work using the "sls_main" function from the "sls" packag
 ```{r}
 github_name <- "Giappo"
 project_name <- "sls"
+library(project_name, character.only = TRUE)
 function_name <- "sls_main"
 max_sims <- 2
 params_grid <- expand.grid(
@@ -37,12 +38,18 @@ params_grid <- expand.grid(
 )
 loglik_functions <- sls::sls_logliks_experiment()
 verbose <- TRUE
+project_folder <- file.path("", "home", account, projects_folder_name, project_name)
 
-params <- list()
+params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
-  params[[i]] <- as.list(params_grid[i , ])
+  params[[i]]$sim_pars <- unlist(params_grid[i , sls::get_param_names()])
+  params[[i]]$crown_age <- params_grid[i , "crown_age"]
+  params[[i]]$shift_time <- params_grid[i , "shift_time"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
   params[[i]]$loglik_functions <- loglik_functions
   params[[i]]$verbose <- verbose
+  params[[i]]$project_folder <- project_folder
 }
 ```
 
@@ -65,6 +72,7 @@ We can also try to run other projects. For example let's try with "mbd"
 ```{r}
 github_name <- "Giappo"
 project_name <- "mbd"
+library(project_name, character.only = TRUE)
 function_name <- "mbd_main"
 max_sims <- 2
 params_grid <- expand.grid(
@@ -78,12 +86,17 @@ params_grid <- expand.grid(
 )
 loglik_functions <- mbd::mbd_experiment_logliks()
 verbose <- TRUE
+project_folder <- file.path("", "home", account, projects_folder_name, project_name)
 
-params <- list()
+params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
-  params[[i]] <- as.list(params_grid[i , ])
+  params[[i]]$sim_pars <- unlist(params_grid[i , mbd::get_param_names()])
+  params[[i]]$age <- params_grid[i , "age"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
   params[[i]]$loglik_functions <- loglik_functions
   params[[i]]$verbose <- verbose
+  params[[i]]$project_folder <- project_folder
 }
 ```
 

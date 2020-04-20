@@ -43,7 +43,7 @@ while (i <= length(params)) {
 
     cat(
       "Function arguments are:\n",
-      paste0(names(args), " = ", paste(unlist(args)), sep = " |"),
+      jap::args_2_string(args),
       "\n"
     )
 
@@ -71,6 +71,17 @@ while (i <= length(params)) {
     Sys.sleep(60) # wait 1 min then retry
   }
 }
+
+# Download results
+
+jap::download_subfolder(
+  subfolder = "results",
+  projects_folder_name = projects_folder_name,
+  project_name = project_name,
+  account = account,
+  session = session,
+  drive = drive
+)
 
 # Close session
 jap::close_session(session = session)
