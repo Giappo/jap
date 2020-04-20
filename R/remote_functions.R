@@ -410,6 +410,16 @@ download_subfolder <- function(
     local_subfolder <- file.path(local_project_folder, subfolder)
     drive_subfolder <- file.path(drive_project_folder, subfolder)
     files <- list.files(local_subfolder)
+
+    already_present <- jap::drive_list.files(
+      dir = file.path(
+        projects_folder_name,
+        project_name,
+        subfolder
+      )
+    )
+    already_present <- unlist(already_present[, 1])
+    files <- files[!(files %in% already_present)]
     for (file in files) {
       googledrive::drive_upload(
         media = file.path(local_subfolder, file),
