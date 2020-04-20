@@ -85,3 +85,5 @@ jap::download_subfolder(
 
 # Close session
 jap::close_session(session = session)
+
+unlink("pocket_data.RData")
