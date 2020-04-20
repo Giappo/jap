@@ -383,6 +383,7 @@ download_subfolder <- function(
 
   # download files
   remote_project_folder <- file.path(remote_projects_folder, project_name)
+  remote_results_folder <- file.path(remote_project_folder, "results")
   ssh::scp_download(
     session = session,
     files = file.path(remote_project_folder, subfolder, "*"),
