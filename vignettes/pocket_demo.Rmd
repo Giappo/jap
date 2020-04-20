@@ -63,7 +63,7 @@ jap::pocket_experiment(
   params = params,
   account = account,
   projects_folder_name = projects_folder_name, 
-  drive = drive
+  drive = FALSE
 )
 ```
 
@@ -111,6 +111,49 @@ jap::pocket_experiment(
   account = account,
   projects_folder_name = projects_folder_name, 
   drive = drive
+)
+```
+
+Let's try with "DAISIErobustness"
+
+```{r}
+drive <- TRUE
+account <- "p282067" # account
+github_name <- "Neves-P"
+project_name <- "DAISIErobustness"
+
+# Project Settings
+jap::install_package(package_name = project_name, github_name = github_name)
+library(project_name, character.only = TRUE)
+function_name <- "run_robustness"
+
+# Create params for the experiment
+param_space <- DAISIErobustness::load_param_space(
+  param_space_name = "oceanic_ontogeny"
+)
+params <- vector("list", nrow(param_space))
+for (i in 1:ncol(param_space)) {
+  params[[i]] <- list(
+    param_space_name = "oceanic_ontogeny",
+    param_set = i,
+    replicates = 2,
+    save_output = TRUE
+  )
+}
+
+```
+
+Again, we just need to run "pocket_experiment" to make everything run
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  projects_folder_name = projects_folder_name, 
+  drive = FALSE
 )
 ```
 

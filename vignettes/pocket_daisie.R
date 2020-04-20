@@ -38,7 +38,6 @@ jap::remote_install.packages(
 )
 
 # Create params for the experiment
-max_sims <- 4
 param_space <- DAISIErobustness::load_param_space(
   param_space_name = "oceanic_ontogeny"
 )

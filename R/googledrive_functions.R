@@ -9,7 +9,9 @@ drive_dir.create <- function(
   base <- dirname(dir)
   if (base == ".") {base <- NULL}
   add <- basename(dir)
-  if (!(add %in% unlist(googledrive::drive_ls(path = base)[, 1]))) {
+  if (!(add %in% unlist(googledrive::drive_ls(path = base,
+                                              n_max = 1000,
+                                              type = "folder")[, 1]))) {
     googledrive::drive_mkdir(name = add, path = base)
   }
 }
