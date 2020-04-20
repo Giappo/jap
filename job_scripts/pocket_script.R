@@ -54,7 +54,8 @@ while (i <= length(params)) {
       project_name = project_name,
       account = account,
       session = session,
-      drive = drive
+      drive = drive,
+      delete_on_cluster = TRUE
     )
 
     # Run the main function
@@ -73,15 +74,27 @@ while (i <= length(params)) {
 }
 
 # Download results
+while (n_jobs > 0) {
+  check <- jap::check_jobs(session = session)
+  n_jobs <- length(check$job_ids)
+  x <- capture.output(print(Sys.time()))
+  cat(x)
+  cat("\nThere are", n_jobs, "jobs left\n")
 
-jap::download_subfolder(
-  subfolder = "results",
-  projects_folder_name = projects_folder_name,
-  project_name = project_name,
-  account = account,
-  session = session,
-  drive = drive
-)
+  if (n_jobs > 0) { # download when they are all completed
+    Sys.sleep(60) # wait 1 min then retry
+  } else {
+    jap::download_subfolder(
+      subfolder = "results",
+      projects_folder_name = projects_folder_name,
+      project_name = project_name,
+      account = account,
+      session = session,
+      drive = drive,
+      delete_on_cluster = TRUE
+    )
+  }
+}
 
 # Close session
 jap::close_session(session = session)
