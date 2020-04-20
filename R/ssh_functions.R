@@ -6,7 +6,7 @@
 #' @export
 upload_bash_scripts <- function(
   project_name,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
 
@@ -92,7 +92,7 @@ upload_bash_scripts <- function(
 #' @return nothing
 #' @export
 upload_jap_scripts <- function(
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
 
@@ -107,8 +107,6 @@ upload_jap_scripts <- function(
   filenames <- c(
     "run_on_cluster.bash",
     "run_on_cluster2.bash",
-    "run_pir_example.bash",
-    "run_pir_example_gl.bash",
     "install_packages.bash"
   )
   tempfolder <- tempdir()
@@ -200,7 +198,7 @@ get_function_list <- function(
 run_project_on_cluster <- function(
   project_name,
   function_name,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   fun_arguments
 ) {
@@ -305,9 +303,13 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
+
+  if (is.list(fun_arguments)) {
+    fun_arguments <- jap::args_2_string(fun_arguments)
+  }
 
   while (grepl(x = fun_arguments, pattern = " ")) {
     fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")

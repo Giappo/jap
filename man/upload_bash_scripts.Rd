@@ -4,7 +4,7 @@
 \alias{upload_bash_scripts}
 \title{Export cluster scripts}
 \usage{
-upload_bash_scripts(project_name, account = "p274829", session = NA)
+upload_bash_scripts(project_name, account = jap::your_account(), session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}

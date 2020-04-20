@@ -4,7 +4,7 @@
 \alias{close_jobs}
 \title{Close jobs on cluster}
 \usage{
-close_jobs(account = "p274829")
+close_jobs(account = jap::your_account())
 }
 \arguments{
 \item{account}{a peregrine account}

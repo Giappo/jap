@@ -18,7 +18,7 @@ folder_structure <- function() {
 #' @return nothing
 #' @export
 create_folder_structure <- function(
-  account = "p274829",
+  account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
   project_name = "sls",
@@ -113,12 +113,19 @@ create_folder_structure <- function(
 #' @return nothing
 #' @export
 delete_folder_structure <- function(
-  account = "p274829",
+  account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
   session = NA,
   drive = FALSE
 ) {
+
+  ans <- readline(
+    prompt = "Are you sure you want to delete the entire folder structure on local/remote/drive? y/n"
+  )
+  if (ans != "y") {
+    return()
+  }
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
   remote_projects_folder <- file.path("", "home", account, projects_folder_name)

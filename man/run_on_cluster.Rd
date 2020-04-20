@@ -9,7 +9,7 @@ run_on_cluster(
   package_name,
   function_name,
   fun_arguments,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 )
 }

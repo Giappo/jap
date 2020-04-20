@@ -4,7 +4,7 @@
 \alias{remote_dir.remove}
 \title{Remove a directory}
 \usage{
-remote_dir.remove(dir, account = "p274829", session = NA)
+remote_dir.remove(dir, account = jap::your_account(), session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}

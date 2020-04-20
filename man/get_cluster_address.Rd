@@ -4,7 +4,7 @@
 \alias{get_cluster_address}
 \title{Get peregrine cluster address}
 \usage{
-get_cluster_address(account = "p274829")
+get_cluster_address(account = jap::your_account())
 }
 \arguments{
 \item{account}{a peregrine account}

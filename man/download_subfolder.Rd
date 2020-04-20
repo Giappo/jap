@@ -10,7 +10,7 @@ download_subfolder(
   disk = "D",
   project_name = "sls",
   delete_on_cluster = FALSE,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   drive = FALSE
 )

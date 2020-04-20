@@ -7,7 +7,7 @@
 run_project_on_cluster(
   project_name,
   function_name,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   fun_arguments
 )

@@ -4,7 +4,7 @@
 \alias{check_jobs}
 \title{Check jobs on cluster}
 \usage{
-check_jobs(account = "p274829", session = NA)
+check_jobs(account = jap::your_account(), session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}

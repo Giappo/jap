@@ -7,13 +7,11 @@ Maintainer: Giovanni Laudanno <glaudanno@gmail.com>
 Depends: 
   R (>= 3.2.0)
 Imports:
-  beastier,
   devtools,
   fs,
   grDevices,
   googledrive,
   lattice,
-  mauricer,
   rappdirs,
   ssh,
   stringi,

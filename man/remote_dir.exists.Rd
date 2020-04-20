@@ -4,7 +4,7 @@
 \alias{remote_dir.exists}
 \title{Check if folder exist on cluster}
 \usage{
-remote_dir.exists(dir, account = "p274829", session = NA)
+remote_dir.exists(dir, account = jap::your_account(), session = NA)
 }
 \arguments{
 \item{account}{a peregrine account}
