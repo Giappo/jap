@@ -107,8 +107,6 @@ upload_jap_scripts <- function(
   filenames <- c(
     "run_on_cluster.bash",
     "run_on_cluster2.bash",
-    "run_pir_example.bash",
-    "run_pir_example_gl.bash",
     "install_packages.bash"
   )
   tempfolder <- tempdir()
