@@ -354,6 +354,7 @@ download_subfolder <- function(
   subfolder = "results",
   projects_folder_name = "Projects",
   disk = "D",
+  cluster_folder = "home",
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
@@ -362,7 +363,12 @@ download_subfolder <- function(
 ) {
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  remote_projects_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name
+  )
   local_project_folder <- file.path(local_projects_folder, project_name)
 
   # open session
@@ -377,6 +383,7 @@ download_subfolder <- function(
     disk = disk,
     project_name = project_name,
     account = account,
+    cluster_folder = cluster_folder,
     session = session,
     drive = drive
   )
@@ -439,6 +446,7 @@ download_subfolder <- function(
 download_project_folder <- function(
   projects_folder_name = "Projects",
   disk = "D",
+  cluster_folder = "home",
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
@@ -447,7 +455,12 @@ download_project_folder <- function(
 ) {
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  remote_projects_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name
+  )
 
   subfolders <- jap::folder_structure()
   for (subfolder in subfolders) {

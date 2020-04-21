@@ -20,6 +20,7 @@ jap::create_folder_structure(
   projects_folder_name = projects_folder_name,
   project_name = project_name,
   account = account,
+  cluster_folder = cluster_folder,
   session = session,
   drive = drive
 )
@@ -57,6 +58,7 @@ while (i <= length(params)) {
       subfolder = "results",
       projects_folder_name = projects_folder_name,
       project_name = project_name,
+      cluster_folder = cluster_folder,
       account = account,
       session = session,
       drive = drive,
