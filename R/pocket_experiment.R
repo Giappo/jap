@@ -10,6 +10,7 @@ pocket_experiment <- function(
   project_name = "sls",
   function_name = "sls_main",
   params,
+  cluster_folder = "home",
   drive = FALSE
 ) {
 
@@ -24,6 +25,7 @@ pocket_experiment <- function(
       "project_name",
       "function_name",
       "params",
+      "cluster_folder",
       "drive"
     )
   )

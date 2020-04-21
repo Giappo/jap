@@ -2,7 +2,8 @@
 #SBATCH --time=00:04:58 --partition=short
 my_email=glaudanno@gmail.com
 chosen_partition=gelifes
-cd /home/$USER/jap_scripts/
+chosen_folder=$3
+cd /$chosen_folder/$USER/jap_scripts/
 
 args_file=$1
 fun_file=$2
@@ -49,6 +50,6 @@ sbatch  --partition=$chosen_partition \
 		--mail-user=$my_email \
 		--output=job-${job_name}.log \
 		$bash_file_name
-		
-cd /home/$USER/
+
+cd /$chosen_folder/$USER/
 # ls | find . -name "slurm*" | xargs rm

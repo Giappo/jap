@@ -21,13 +21,19 @@ create_folder_structure <- function(
   account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
+  cluster_folder = "home",
   project_name = "sls",
   session = NA,
   drive = FALSE
 ) {
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  remote_projects_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name
+  )
 
   # open session
   new_session <- FALSE
@@ -116,6 +122,7 @@ delete_folder_structure <- function(
   account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
+  cluster_folder = "home",
   session = NA,
   drive = FALSE
 ) {
@@ -128,7 +135,12 @@ delete_folder_structure <- function(
   }
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  remote_projects_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name
+  )
   drive_projects_folder <- basename(local_projects_folder)
 
   # open session

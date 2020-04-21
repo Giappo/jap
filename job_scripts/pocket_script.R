@@ -1,6 +1,11 @@
 load("pocket_data.RData")
 
-remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+remote_projects_folder <- file.path(
+  "",
+  cluster_folder,
+  account,
+  projects_folder_name
+)
 remote_project_folder <- file.path(remote_projects_folder, project_name)
 
 # Project Settings
