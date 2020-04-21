@@ -132,7 +132,7 @@ param_space <- DAISIErobustness::load_param_space(
   param_space_name = "oceanic_ontogeny"
 )
 params <- vector("list", nrow(param_space))
-for (i in 1:ncol(param_space)) {
+for (i in 1:nrow(param_space)) {
   params[[i]] <- list(
     param_space_name = "oceanic_ontogeny",
     param_set = i,
