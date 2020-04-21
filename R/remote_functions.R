@@ -148,6 +148,7 @@ remote_dir.remove <- function(
 #' @export
 remote_list.files <- function(
   dir,
+  cluster_folder = "home",
   account = "p274829",
   session = NA
 ) {
@@ -163,7 +164,7 @@ remote_list.files <- function(
     session = session,
     command = paste0(
       "ls ",
-      file.path("", "home", account, dir)
+      file.path("", cluster_folder, account, dir)
     )
   ))
   files <- files[-length(files)]
@@ -357,12 +358,13 @@ download_subfolder <- function(
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
+  cluster_folder = "home",
   session = NA,
   drive = FALSE
 ) {
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  remote_projects_folder <- file.path("", cluster_folder, account, projects_folder_name)
   local_project_folder <- file.path(local_projects_folder, project_name)
 
   # open session
@@ -442,12 +444,13 @@ download_project_folder <- function(
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
+  cluster_folder = "home",
   session = NA,
   drive = FALSE
 ) {
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
-  remote_projects_folder <- file.path("", "home", account, projects_folder_name)
+  remote_projects_folder <- file.path("", cluster_folder, account, projects_folder_name)
 
   subfolders <- jap::folder_structure()
   for (subfolder in subfolders) {
