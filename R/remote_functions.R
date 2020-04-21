@@ -149,7 +149,7 @@ remote_dir.remove <- function(
 remote_list.files <- function(
   dir,
   cluster_folder = "home",
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
   # open session
@@ -210,12 +210,12 @@ remote_install.packages <- function(
     "jap_scripts"
   )
 
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-      "chmod +rwx ", dirname(jap_folder)
-    )
-  )
+  # ssh::ssh_exec_wait(
+  #   session = session,
+  #   command = paste0(
+  #     "chmod 777 ", dirname(jap_folder)
+  #   )
+  # )
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
