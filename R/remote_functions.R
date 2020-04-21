@@ -210,12 +210,6 @@ remote_install.packages <- function(
     "jap_scripts"
   )
 
-  # ssh::ssh_exec_wait(
-  #   session = session,
-  #   command = paste0(
-  #     "chmod 777 ", dirname(jap_folder)
-  #   )
-  # )
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
@@ -237,7 +231,7 @@ remote_install.packages <- function(
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      ".",
+      # ".",
       file.path(jap_folder, "install_packages.bash"),
       " ",
       "'",

@@ -7,7 +7,7 @@
 remote_list.files(
   dir,
   cluster_folder = "home",
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 )
 }

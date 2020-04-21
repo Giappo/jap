@@ -23,7 +23,7 @@ Now we can set it up to work using the "sls_main" function from the "sls" packag
 ```{r}
 github_name <- "Giappo"
 project_name <- "sls"
-cluster_folder <- "home"
+cluster_folder <- "data"
 library(project_name, character.only = TRUE)
 function_name <- "sls_main"
 max_sims <- 3
