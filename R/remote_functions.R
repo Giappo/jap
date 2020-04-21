@@ -148,6 +148,7 @@ remote_dir.remove <- function(
 #' @export
 remote_list.files <- function(
   dir,
+  cluster_folder = "home",
   account = "p274829",
   session = NA
 ) {
@@ -163,7 +164,7 @@ remote_list.files <- function(
     session = session,
     command = paste0(
       "ls ",
-      file.path("", "home", account, dir)
+      file.path("", cluster_folder, account, dir)
     )
   ))
   files <- files[-length(files)]
@@ -467,7 +468,6 @@ download_project_folder <- function(
     jap::download_subfolder(
       subfolder = subfolder,
       local_projects_folder = local_projects_folder,
-      remote_projects_folder = remote_projects_folder,
       project_name = project_name,
       account = account,
       session = session,

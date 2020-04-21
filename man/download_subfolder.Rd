@@ -11,6 +11,7 @@ download_subfolder(
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
+  cluster_folder = "home",
   session = NA,
   drive = FALSE
 )

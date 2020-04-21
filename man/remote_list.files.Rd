@@ -4,7 +4,12 @@
 \alias{remote_list.files}
 \title{List remote files}
 \usage{
-remote_list.files(dir, account = "p274829", session = NA)
+remote_list.files(
+  dir,
+  cluster_folder = "home",
+  account = "p274829",
+  session = NA
+)
 }
 \arguments{
 \item{account}{a peregrine account}
