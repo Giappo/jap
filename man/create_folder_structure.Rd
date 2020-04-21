@@ -8,6 +8,7 @@ create_folder_structure(
   account = jap::your_account(),
   projects_folder_name = "Projects",
   disk = "D",
+  cluster_folder = "home",
   project_name = "sls",
   session = NA,
   drive = FALSE
