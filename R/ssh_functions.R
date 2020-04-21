@@ -303,6 +303,7 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
+  cluster_folder,
   account = jap::your_account(),
   session = NA
 ) {
@@ -370,7 +371,9 @@ run_on_cluster <- function(
     " ",
     args_filename,
     " ",
-    fun_filename
+    fun_filename,
+    " ",
+    cluster_folder
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(

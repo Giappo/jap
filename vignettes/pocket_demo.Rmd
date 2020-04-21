@@ -62,6 +62,7 @@ jap::pocket_experiment(
   function_name = function_name,
   params = params,
   account = account,
+  cluster_folder = "data",
   projects_folder_name = projects_folder_name,
   drive = FALSE
 )

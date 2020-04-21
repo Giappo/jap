@@ -70,6 +70,7 @@ while (i <= length(params)) {
       github_name = github_name,
       package_name = project_name,
       function_name = function_name,
+      cluster_folder = cluster_folder,
       account = account,
       session = session,
       fun_arguments = args
