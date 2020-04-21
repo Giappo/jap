@@ -8,6 +8,7 @@ remote_install.packages(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
+  cluster_folder = "home",
   account = jap::your_account(),
   session = NA
 )

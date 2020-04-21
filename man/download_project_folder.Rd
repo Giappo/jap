@@ -7,10 +7,10 @@
 download_project_folder(
   projects_folder_name = "Projects",
   disk = "D",
+  cluster_folder = "home",
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  cluster_folder = "home",
   session = NA,
   drive = FALSE
 )

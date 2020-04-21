@@ -9,6 +9,7 @@ run_on_cluster(
   package_name,
   function_name,
   fun_arguments,
+  cluster_folder = "home",
   account = jap::your_account(),
   session = NA
 )

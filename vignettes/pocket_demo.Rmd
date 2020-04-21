@@ -23,6 +23,7 @@ Now we can set it up to work using the "sls_main" function from the "sls" packag
 ```{r}
 github_name <- "Giappo"
 project_name <- "sls"
+cluster_folder <- "home"
 library(project_name, character.only = TRUE)
 function_name <- "sls_main"
 max_sims <- 3
@@ -38,7 +39,7 @@ params_grid <- expand.grid(
 )
 loglik_functions <- sls::sls_logliks_experiment()
 verbose <- TRUE
-project_folder <- file.path("", "home", account, projects_folder_name, project_name)
+project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
 
 params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
@@ -62,9 +63,9 @@ jap::pocket_experiment(
   function_name = function_name,
   params = params,
   account = account,
-  cluster_folder = "data",
+  cluster_folder = cluster_folder,
   projects_folder_name = projects_folder_name,
-  drive = FALSE
+  drive = drive
 )
 ```
 

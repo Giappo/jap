@@ -29,6 +29,7 @@ jap::create_folder_structure(
 jap::remote_install.packages(
   github_name = github_name,
   package_name = project_name,
+  cluster_folder = cluster_folder,
   account = account,
   session = session
 )

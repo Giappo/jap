@@ -186,6 +186,7 @@ remote_install.packages <- function(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
+  cluster_folder = "home",
   account = jap::your_account(),
   session = NA
 ) {
@@ -198,15 +199,35 @@ remote_install.packages <- function(
   }
 
   jap::upload_jap_scripts(
+    cluster_folder = cluster_folder,
     account = account,
     session = session
+  )
+  jap_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    "jap_scripts"
   )
 
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      "chmod +x ", file.path("jap_scripts", "install_packages.bash")
-    ))
+      "chmod +rwx ", dirname(jap_folder)
+    )
+  )
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "chmod +rwx ", jap_folder
+    )
+  )
+  ssh::ssh_exec_wait(
+    session = session,
+    command = paste0(
+      "chmod +rwx ", file.path(jap_folder, "install_packages.bash")
+    )
+  )
 
   if (is.na(github_name)) {
     pkg <- package_name
@@ -216,8 +237,8 @@ remote_install.packages <- function(
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      "./",
-      file.path("jap_scripts", "install_packages.bash"),
+      ".",
+      file.path(jap_folder, "install_packages.bash"),
       " ",
       "'",
       pkg,
@@ -228,7 +249,7 @@ remote_install.packages <- function(
     ssh::ssh_exec_wait(session = session, command = "sleep 10")
   }
 
-  jap::remote_dir.remove(dir = "jap_scripts", session = session)
+  jap::remote_dir.remove(dir = jap_folder, session = session) # does not work
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }

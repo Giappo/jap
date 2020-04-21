@@ -107,7 +107,6 @@ upload_jap_scripts <- function(
   # jap scripts
   filenames <- c(
     "run_on_cluster.bash",
-    "run_on_cluster2.bash",
     "install_packages.bash"
   )
   tempfolder <- tempdir()
@@ -120,11 +119,15 @@ upload_jap_scripts <- function(
   }
   scripts_folder <- tempfolder
   remote_folder <- file.path(
+    "",
     cluster_folder,
     account,
     "jap_scripts"
   )
-  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", remote_folder))
+  ssh::ssh_exec_wait(
+    session,
+    command = paste0("mkdir -p ", remote_folder)
+  )
 
   ssh::scp_upload(
     session = session,
@@ -308,7 +311,7 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
-  cluster_folder,
+  cluster_folder = "home",
   account = jap::your_account(),
   session = NA
 ) {
@@ -329,8 +332,17 @@ run_on_cluster <- function(
   }
 
   # upload scripts
-  jap::upload_jap_scripts(account = account, session = session)
-  jap_folder <- "jap_scripts"
+  jap::upload_jap_scripts(
+    cluster_folder = cluster_folder,
+    account = account,
+    session = session
+  )
+  jap_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    "jap_scripts"
+  )
   bash_file <- file.path(
     jap_folder,
     "run_on_cluster.bash"
