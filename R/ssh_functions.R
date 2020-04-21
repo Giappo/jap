@@ -93,6 +93,7 @@ upload_bash_scripts <- function(
 #' @export
 upload_jap_scripts <- function(
   account = jap::your_account(),
+  cluster_folder = "home",
   session = NA
 ) {
 
@@ -118,7 +119,11 @@ upload_jap_scripts <- function(
     utils::download.file(url, destfile = file.path(tempfolder, filename))
   }
   scripts_folder <- tempfolder
-  remote_folder <- "jap_scripts"
+  remote_folder <- file.path(
+    cluster_folder,
+    account,
+    "jap_scripts"
+  )
   ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", remote_folder))
 
   ssh::scp_upload(
