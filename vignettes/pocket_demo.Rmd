@@ -14,7 +14,7 @@ First, specify basic info
 ```{r setup, include = FALSE}
 account <- jap::your_account()
 projects_folder_name <- "Projects"
-drive <- TRUE # we want to use google drive
+drive <- FALSE # we want to use google drive
 library(jap, quietly = TRUE)
 ```
 
@@ -119,7 +119,7 @@ jap::pocket_experiment(
 Let's try with "DAISIErobustness"
 
 ```{r}
-drive <- TRUE
+drive <- FALSE
 account <- jap::your_account()
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
@@ -134,7 +134,7 @@ param_space <- DAISIErobustness::load_param_space(
   param_space_name = "oceanic_ontogeny"
 )
 params <- vector("list", nrow(param_space))
-for (i in 1:nrow(param_space)) {
+for (i in 1:5) {
   params[[i]] <- list(
     param_space_name = "oceanic_ontogeny",
     param_set = i,
@@ -154,8 +154,9 @@ jap::pocket_experiment(
   function_name = function_name,
   params = params,
   account = account,
+  cluster_folder = cluster_folder,
   projects_folder_name = projects_folder_name, 
-  drive = FALSE
+  drive = drive
 )
 ```
 
