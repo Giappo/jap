@@ -12,7 +12,7 @@ vignette: >
 First, specify basic info
 
 ```{r setup, include = FALSE}
-account <- "p274829"
+account <- jap::your_account()
 project_name <- "mbd"
 cluster_folder <- "home"
 projects_folder_name <- "Projects"
@@ -68,8 +68,24 @@ We can even install any package from CRAN. To do so it suffices to not specify t
 
 ```{r}
 jap::remote_install.packages(
-  package_name = "DDD",
+  package_name = "ape",
   account = account,
   session = session
 )
+```
+
+Or we can run a function
+
+```{r}
+cluster_folder <- "data"
+jap::run_on_cluster(
+  package_name = "ape",
+  function_name = "rtree",
+  fun_arguments = "n = 10",
+  cluster_folder = cluster_folder
+)
+```
+
+```{r}
+jap::remote_list.files(dir = "jap_scripts", cluster_folder = cluster_folder)
 ```
