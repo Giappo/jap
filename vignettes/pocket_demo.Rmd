@@ -159,25 +159,13 @@ jap::pocket_experiment(
 )
 ```
 
-We can check that everything is running
-
-```{r}
-jap::check_jobs(account = account)
-```
-
-Or we can check if our results are stored on google drive
-
-```{r}
-jap::drive_list.files(dir = "sls/results")
-jap::drive_list.files(dir = "mbd/results")
-```
-
-BONUS: We can also try to run a DDD experiment
+We can also try to run a DDD experiment. In this case we need a new function that it's on the Giappo github version of DDD, which wraps together simulation and maximum likelihood.
+We build the parameters
 
 ```{r}
 github_name <- "Giappo"
 project_name <- "DDD"
-library(project_name, character.only = TRUE)
+jap::install_package(package_name = project_name, github_name = github_name)
 function_name <- "dd_main"
 max_sims <- 3
 params_grid <- expand.grid(
@@ -202,6 +190,8 @@ for (i in 1:nrow(params_grid)) {
 }
 ```
 
+We run the experiment
+
 ```{r}
 jap::pocket_experiment(
   github_name = github_name,
@@ -215,6 +205,16 @@ jap::pocket_experiment(
 )
 ```
 
+We can check that everything is running
+
 ```{r}
+jap::check_jobs(account = account)
+```
+
+Or we can check if our results are stored on google drive
+
+```{r}
+jap::drive_list.files(dir = "sls/results")
+jap::drive_list.files(dir = "mbd/results")
 jap::drive_list.files(dir = "DDD/results")
 ```
