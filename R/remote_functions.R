@@ -243,7 +243,7 @@ remote_install.packages <- function(
     ssh::ssh_exec_wait(session = session, command = "sleep 10")
   }
 
-  jap::remote_dir.remove(dir = jap_folder, session = session) # does not work
+  # jap::remote_dir.remove(dir = jap_folder, session = session) # does not work
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }

@@ -10,7 +10,8 @@ delete_folder_structure(
   disk = "D",
   cluster_folder = "home",
   session = NA,
-  drive = FALSE
+  drive = FALSE,
+  are_you_sure = "n"
 )
 }
 \arguments{

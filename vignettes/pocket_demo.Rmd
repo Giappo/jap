@@ -88,7 +88,7 @@ params_grid <- expand.grid(
 )
 loglik_functions <- mbd::mbd_experiment_logliks()
 verbose <- TRUE
-project_folder <- file.path("", "home", account, projects_folder_name, project_name)
+project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
 
 params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
@@ -111,7 +111,8 @@ jap::pocket_experiment(
   function_name = function_name,
   params = params,
   account = account,
-  projects_folder_name = projects_folder_name, 
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
   drive = drive
 )
 ```
@@ -119,7 +120,6 @@ jap::pocket_experiment(
 Let's try with "DAISIErobustness"
 
 ```{r}
-drive <- TRUE
 account <- jap::your_account()
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
@@ -142,7 +142,6 @@ for (i in 1:nrow(param_space)) {
     save_output = TRUE
   )
 }
-
 ```
 
 Again, we just need to run "pocket_experiment" to make everything run
@@ -154,8 +153,9 @@ jap::pocket_experiment(
   function_name = function_name,
   params = params,
   account = account,
-  projects_folder_name = projects_folder_name, 
-  drive = FALSE
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
 )
 ```
 
@@ -170,4 +170,51 @@ Or we can check if our results are stored on google drive
 ```{r}
 jap::drive_list.files(dir = "sls/results")
 jap::drive_list.files(dir = "mbd/results")
+```
+
+BONUS: We can also try to run a DDD experiment
+
+```{r}
+github_name <- "Giappo"
+project_name <- "DDD"
+library(project_name, character.only = TRUE)
+function_name <- "dd_main"
+max_sims <- 3
+params_grid <- expand.grid(
+  lambda = c(0.2, 0.4),
+  mu = c(0.05, 0.1),
+  K = c(10, 15),
+  age = 8,
+  cond = 1,
+  seed = 1:max_sims
+)
+output_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name, "results")
+
+params <- vector("list", nrow(params_grid))
+for (i in 1:nrow(params_grid)) {
+  params[[i]]$lambda <- params_grid[i , "lambda"]
+  params[[i]]$mu <- params_grid[i , "mu"]
+  params[[i]]$K <- params_grid[i , "K"]
+  params[[i]]$age <- params_grid[i , "age"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
+  params[[i]]$output_folder <- output_folder
+}
+```
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
+)
+```
+
+```{r}
+jap::drive_list.files(dir = "DDD/results")
 ```
