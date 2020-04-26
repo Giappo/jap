@@ -4,7 +4,11 @@
 \alias{upload_jap_scripts}
 \title{Export cluster scripts}
 \usage{
-upload_jap_scripts(account = "p274829", session = NA)
+upload_jap_scripts(
+  account = jap::your_account(),
+  cluster_folder = "home",
+  session = NA
+)
 }
 \arguments{
 \item{account}{a peregrine account}

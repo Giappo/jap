@@ -7,12 +7,11 @@ Maintainer: Giovanni Laudanno <glaudanno@gmail.com>
 Depends: 
   R (>= 3.2.0)
 Imports:
-  beastier,
   devtools,
   fs,
   grDevices,
+  googledrive,
   lattice,
-  mauricer,
   rappdirs,
   ssh,
   stringi,
@@ -29,5 +28,5 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: no
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr

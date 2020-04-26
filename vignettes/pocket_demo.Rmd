@@ -1,0 +1,220 @@
+---
+title: "pocket demo"
+author: "Giovanni Laudanno"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pocket demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+First, specify basic info
+
+```{r setup, include = FALSE}
+account <- jap::your_account()
+projects_folder_name <- "Projects"
+drive <- TRUE # we want to use google drive
+library(jap, quietly = TRUE)
+```
+
+Now we can set it up to work using the "sls_main" function from the "sls" package taken from the Github repo named "Giappo":
+
+```{r}
+github_name <- "Giappo"
+project_name <- "sls"
+cluster_folder <- "data"
+library(project_name, character.only = TRUE)
+function_name <- "sls_main"
+max_sims <- 3
+params_grid <- expand.grid(
+  lambda_m = c(0.3, 0.6),
+  mu_m = c(0.1, 0.2),
+  lambda_s = 0.8,
+  mu_s = 0.1,
+  crown_age = 8,
+  shift_time = 5,
+  cond = 3,
+  seed = 1:max_sims
+)
+loglik_functions <- sls::sls_logliks_experiment()
+verbose <- TRUE
+project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
+
+params <- vector("list", nrow(params_grid))
+for (i in 1:nrow(params_grid)) {
+  params[[i]]$sim_pars <- unlist(params_grid[i , sls::get_param_names()])
+  params[[i]]$crown_age <- params_grid[i , "crown_age"]
+  params[[i]]$shift_time <- params_grid[i , "shift_time"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
+  params[[i]]$loglik_functions <- loglik_functions
+  params[[i]]$verbose <- verbose
+  params[[i]]$project_folder <- project_folder
+}
+```
+
+Now we just need to call the function "pocket_experiment" to run everything
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
+)
+```
+
+We can also try to run other projects. For example let's try with "mbd"
+
+```{r}
+github_name <- "Giappo"
+project_name <- "mbd"
+library(project_name, character.only = TRUE)
+function_name <- "mbd_main"
+max_sims <- 2
+params_grid <- expand.grid(
+  lambda = c(0.2, 0.4),
+  mu = c(0.05, 0.1),
+  nu = c(0.5, 1),
+  q = 0.1,
+  age = 8,
+  cond = 1,
+  seed = 1:max_sims
+)
+loglik_functions <- mbd::mbd_experiment_logliks()
+verbose <- TRUE
+project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
+
+params <- vector("list", nrow(params_grid))
+for (i in 1:nrow(params_grid)) {
+  params[[i]]$sim_pars <- unlist(params_grid[i , mbd::get_param_names()])
+  params[[i]]$age <- params_grid[i , "age"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
+  params[[i]]$loglik_functions <- loglik_functions
+  params[[i]]$verbose <- verbose
+  params[[i]]$project_folder <- project_folder
+}
+```
+
+Again, we just need to run "pocket_experiment" to make everything run
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
+)
+```
+
+Let's try with "DAISIErobustness"
+
+```{r}
+account <- jap::your_account()
+github_name <- "Neves-P"
+project_name <- "DAISIErobustness"
+
+# Project Settings
+jap::install_package(package_name = project_name, github_name = github_name)
+library(project_name, character.only = TRUE)
+function_name <- "run_robustness"
+
+# Create params for the experiment
+param_space <- DAISIErobustness::load_param_space(
+  param_space_name = "oceanic_ontogeny"
+)
+params <- vector("list", nrow(param_space))
+for (i in 1:nrow(param_space)) {
+  params[[i]] <- list(
+    param_space_name = "oceanic_ontogeny",
+    param_set = i,
+    replicates = 2,
+    save_output = TRUE
+  )
+}
+```
+
+Again, we just need to run "pocket_experiment" to make everything run
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
+)
+```
+
+We can also try to run a DDD experiment. In this case we need a new function that it's on the Giappo github version of DDD, which wraps together simulation and maximum likelihood.
+We build the parameters
+
+```{r}
+github_name <- "Giappo"
+project_name <- "DDD"
+jap::install_package(package_name = project_name, github_name = github_name)
+function_name <- "dd_main"
+max_sims <- 3
+params_grid <- expand.grid(
+  lambda = c(0.2, 0.4),
+  mu = c(0.05, 0.1),
+  K = c(10, 15),
+  age = 8,
+  cond = 1,
+  seed = 1:max_sims
+)
+output_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name, "results")
+
+params <- vector("list", nrow(params_grid))
+for (i in 1:nrow(params_grid)) {
+  params[[i]]$lambda <- params_grid[i , "lambda"]
+  params[[i]]$mu <- params_grid[i , "mu"]
+  params[[i]]$K <- params_grid[i , "K"]
+  params[[i]]$age <- params_grid[i , "age"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
+  params[[i]]$output_folder <- output_folder
+}
+```
+
+We run the experiment
+
+```{r}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
+)
+```
+
+We can check that everything is running
+
+```{r}
+jap::check_jobs(account = account)
+```
+
+Or we can check if our results are stored on google drive
+
+```{r}
+jap::drive_list.files(dir = "sls/results")
+jap::drive_list.files(dir = "mbd/results")
+jap::drive_list.files(dir = "DDD/results")
+```

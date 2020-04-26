@@ -1,130 +1,3 @@
-#' @title Get peregrine cluster address
-#' @description Get peregrine cluster address
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @return peregrine cluster address
-#' @export
-get_cluster_address <- function(account = "p274829") {
-  if (account == "cyrus" || account == "Cyrus" || account == "Cy" || account == "cy") { # nolint
-    account <- "p257011"
-  }
-  if (account == "giovanni" || account == "Giovanni" || account == "Gio" || account == "gio") { # nolint
-    account <- "p274829"
-  }
-  if (account == "pedro" || account == "Pedro") { # nolint
-    account <- "p282067"
-  }
-  cluster_address <- paste0(account, "@peregrine.hpc.rug.nl")
-  cluster_address
-}
-
-#' @title Open session
-#' @description Open a session for a given account
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @return the session
-#' @export
-open_session <- function(account = "p274829") {
-  cluster_address <- jap::get_cluster_address(account = account)
-  session <- ssh::ssh_connect(cluster_address)
-  session
-}
-
-#' @title Close session
-#' @description Close a session for a given account
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @return nothing
-#' @export
-close_session <- function(session) {
-  ssh::ssh_disconnect(session); gc()
-}
-
-#' @title Check jobs on cluster
-#' @author Giovanni Laudanno, Pedro Neves
-#' @description Check jobs on cluster
-#' @inheritParams default_params_doc
-#' @return list with job ids, job info and sshare
-#' @export
-check_jobs <- function(
-  account = "p274829",
-  session = NA
-) {
-
-  new_session <- FALSE
-  if (!jap::is_session_open(session = session)) {
-    new_session <- TRUE
-    session <- jap::open_session(account = account)
-  }
-
-  jobs <- utils::capture.output(ssh::ssh_exec_wait(session = session, command = "squeue -u $USER --long"))
-  if ((length(jobs) - 1) >= 3) {
-    job_ids <- job_names <- c()
-    for (i in 3:(length(jobs) - 1)) {
-      job_id_i <- substr(jobs[i], start = 12, stop = 18)
-      job_ids <- c(job_ids, job_id_i)
-      job_info <- utils::capture.output(ssh::ssh_exec_wait(
-        session = session,
-        command = paste("jobinfo", job_id_i)
-      ))
-      job_name_i <- substr(job_info[1], start = 23, stop = nchar(job_info[1]))
-      job_names <- c(job_names, job_name_i)
-    }
-    job_ids <- as.numeric(job_ids)
-  } else {
-    job_ids <- job_names <- NULL
-  }
-  sshare_output <- utils::capture.output(ssh::ssh_exec_wait(
-    session = session,
-    command = "sshare -u $USER"
-  ))
-  if (new_session == TRUE) {
-    jap::close_session(session = session)
-  }
-  list(
-    job_ids = job_ids,
-    job_names = job_names,
-    sshare_output = sshare_output,
-    jobs = jobs
-  )
-}
-
-#' @title Close jobs on cluster
-#' @description Close jobs on cluster
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @return list with job ids, job info and sshare (all empty)
-#' @export
-close_jobs <- function(account = "p274829") {
-
-  session <- jap::open_session(account = account)
-
-  ssh::ssh_exec_wait(
-    session = session,
-    command = "scancel --user=$USER --partition=gelifes && scancel --user=$USER --partition=regular" # nolint indeed long command
-  )
-
-  jap::close_session(session = session)
-  jap::check_jobs(account = account)
-}
-
-#' @title Check if session is open or not
-#' @description Check if session is open
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @return TRUE or FALSE
-#' @export
-is_session_open <- function(
-  session
-) {
-  out <- jap::my_try_catch(ssh::ssh_session_info(session))
-  if (!is.null(out$value)) {
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
-}
-
 #' @title Export cluster scripts
 #' @author Giovanni Laudanno
 #' @description Export cluster scripts
@@ -133,7 +6,7 @@ is_session_open <- function(
 #' @export
 upload_bash_scripts <- function(
   project_name,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA
 ) {
 
@@ -188,6 +61,24 @@ upload_bash_scripts <- function(
     )
   )
 
+  # list files
+  x <- capture.output(ssh::ssh_exec_wait(
+    session = session,
+    command = paste0("ls ", remote_folder)
+  ))
+  files <- paste0(
+    remote_folder, "/",
+    x[grepl("*.bash", x) | grepl("*.sh", x)]
+  )
+
+  # fix line breaks
+  for (file in files) {
+    ssh::ssh_exec_wait(
+      session = session,
+      command = paste0("sed -i 's/\r$//' ", file)
+    )
+  }
+
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
@@ -201,7 +92,8 @@ upload_bash_scripts <- function(
 #' @return nothing
 #' @export
 upload_jap_scripts <- function(
-  account = "p274829",
+  account = jap::your_account(),
+  cluster_folder = "home",
   session = NA
 ) {
 
@@ -215,9 +107,7 @@ upload_jap_scripts <- function(
   # jap scripts
   filenames <- c(
     "run_on_cluster.bash",
-    "run_on_cluster2.bash",
-    "run_pir_example.bash",
-    "run_pir_example_gl.bash"
+    "install_packages.bash"
   )
   tempfolder <- tempdir()
   for (filename in filenames) {
@@ -228,8 +118,16 @@ upload_jap_scripts <- function(
     utils::download.file(url, destfile = file.path(tempfolder, filename))
   }
   scripts_folder <- tempfolder
-  remote_folder <- "jap_scripts"
-  ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", remote_folder))
+  remote_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    "jap_scripts"
+  )
+  ssh::ssh_exec_wait(
+    session,
+    command = paste0("mkdir -p ", remote_folder)
+  )
 
   ssh::scp_upload(
     session = session,
@@ -308,7 +206,7 @@ get_function_list <- function(
 run_project_on_cluster <- function(
   project_name,
   function_name,
-  account = "p274829",
+  account = jap::your_account(),
   session = NA,
   fun_arguments
 ) {
@@ -413,9 +311,14 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
-  account = "p274829",
+  cluster_folder = "home",
+  account = jap::your_account(),
   session = NA
 ) {
+
+  if (is.list(fun_arguments)) {
+    fun_arguments <- jap::args_2_string(fun_arguments)
+  }
 
   while (grepl(x = fun_arguments, pattern = " ")) {
     fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
@@ -429,8 +332,17 @@ run_on_cluster <- function(
   }
 
   # upload scripts
-  jap::upload_jap_scripts(account = account, session = session)
-  jap_folder <- "jap_scripts"
+  jap::upload_jap_scripts(
+    cluster_folder = cluster_folder,
+    account = account,
+    session = session
+  )
+  jap_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    "jap_scripts"
+  )
   bash_file <- file.path(
     jap_folder,
     "run_on_cluster.bash"
@@ -452,7 +364,13 @@ run_on_cluster <- function(
     install_package =
       eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
   )
-  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+  len_ran <- 10
+  args_filename <- paste0(
+    function_name,
+    "_",
+    stringi::stri_rand_strings(1, len_ran),
+    ".RData"
+  )
   args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
   ssh::scp_upload(
@@ -460,7 +378,12 @@ run_on_cluster <- function(
     files = args_file,
     to = jap_folder
   )
-  fun_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+  fun_filename <- paste0(
+    function_name,
+    "_",
+    stringi::stri_rand_strings(1, len_ran),
+    ".RData"
+    )
   fun_file <- file.path(tempfolder, fun_filename)
   save(fun_list, file = fun_file)
   ssh::scp_upload(
@@ -476,7 +399,9 @@ run_on_cluster <- function(
     " ",
     args_filename,
     " ",
-    fun_filename
+    fun_filename,
+    " ",
+    cluster_folder
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(
