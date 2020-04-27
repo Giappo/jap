@@ -19,6 +19,18 @@ projects_folder_name <- "Projects"
 drive <- TRUE # we want to use google drive
 ```
 
+A note on using the `drive` option. The set of tools of that feature use the
+tidyverse package `googledrive`, which requires a short set-up. First call
+`googledrive::drive_auth()`, this will open a pop-up window asking you to
+sign-in your Google account, and grant permission to `googledrive` to access and
+edit your Drive folders.
+There is a common issues with the Google API, reported [here](https://github.com/tidyverse/googledrive/issues/279) for example. There
+is a fix to this on the latest implementation on GitHub, but not yet on CRAN (as
+of 27/04/2020). So we recommend:
+```{r install_googledrive, eval=FALSE}
+remotes::install_github("tidyverse/googledrive")
+```
+
 Then open a session. We are gonna use this session every time we want to execute tasks on the cluster
 
 ```{r eval=FALSE}
