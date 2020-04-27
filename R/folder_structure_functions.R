@@ -22,7 +22,7 @@ create_folder_structure <- function(
   projects_folder_name = "Projects",
   disk = "D",
   cluster_folder = "home",
-  project_name = "sls",
+  project_name = NA,
   session = NA,
   drive = FALSE
 ) {
@@ -74,36 +74,39 @@ create_folder_structure <- function(
   }
 
   # SPECIFIC PROJECT FOLDER
-  ## local
-  local_project_folder <- file.path(local_projects_folder, project_name)
-  if (!(dir.exists(local_project_folder))) {
-    dir.create(local_project_folder)
-  }
+  if (!is.na(project_name)) {
 
-  ## peregrine
-  remote_project_folder <- file.path(remote_projects_folder, project_name)
-  if (!remote_dir.exists(remote_project_folder, session = session)) {
-    remote_dir.create(remote_project_folder, session = session)
-  }
-
-  ## drive
-  if (drive == TRUE) {
-    drive_project_folder <- file.path(drive_projects_folder, project_name)
-    drive_dir.create(dir = drive_project_folder)
-  }
-
-  for (folder_name in folder_names) {
-    folder <- file.path(local_project_folder, folder_name)
-    if (!(dir.exists(folder))) {
-      dir.create(folder)
+    ## local
+    local_project_folder <- file.path(local_projects_folder, project_name)
+    if (!(dir.exists(local_project_folder))) {
+      dir.create(local_project_folder)
     }
-    folder <- file.path(remote_project_folder, folder_name)
-    if (!remote_dir.exists(folder, session = session)) {
-      remote_dir.create(folder, session = session)
+
+    ## peregrine
+    remote_project_folder <- file.path(remote_projects_folder, project_name)
+    if (!remote_dir.exists(remote_project_folder, session = session)) {
+      remote_dir.create(remote_project_folder, session = session)
     }
+
+    ## drive
     if (drive == TRUE) {
-      folder <- file.path(drive_project_folder, folder_name)
-      drive_dir.create(dir = folder)
+      drive_project_folder <- file.path(drive_projects_folder, project_name)
+      drive_dir.create(dir = drive_project_folder)
+    }
+
+    for (folder_name in folder_names) {
+      folder <- file.path(local_project_folder, folder_name)
+      if (!(dir.exists(folder))) {
+        dir.create(folder)
+      }
+      folder <- file.path(remote_project_folder, folder_name)
+      if (!remote_dir.exists(folder, session = session)) {
+        remote_dir.create(folder, session = session)
+      }
+      if (drive == TRUE) {
+        folder <- file.path(drive_project_folder, folder_name)
+        drive_dir.create(dir = folder)
+      }
     }
   }
 

@@ -9,7 +9,7 @@ create_folder_structure(
   projects_folder_name = "Projects",
   disk = "D",
   cluster_folder = "home",
-  project_name = "sls",
+  project_name = NA,
   session = NA,
   drive = FALSE
 )
