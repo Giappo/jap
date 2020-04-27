@@ -21,14 +21,14 @@ drive <- TRUE # we want to use google drive
 
 Then open a session. We are gonna use this session every time we want to execute tasks on the cluster
 
-```{r}
+```{r eval=FALSE}
 library(jap)
 session <- jap::open_session(account = account)
 ```
 
 Then we setup the entire folder structure on three different places: local, peregrine and google drive
 
-```{r}
+```{r eval=FALSE}
 jap::create_folder_structure(
   project_name = project_name,
   projects_folder_name = projects_folder_name,
@@ -41,7 +41,7 @@ jap::create_folder_structure(
 
 We can check the structure on the remote folder and on the drive folder
 
-```{r}
+```{r eval=FALSE}
 jap::remote_list.files(
   dir = projects_folder_name,
   cluster_folder = cluster_folder,
@@ -55,7 +55,7 @@ jap::drive_list.files(
 
 We can now install the package we need from Github
 
-```{r}
+```{r eval=FALSE}
 jap::remote_install.packages(
   github_name = "Giappo",
   package_name = project_name,
@@ -66,7 +66,7 @@ jap::remote_install.packages(
 
 We can even install any package from CRAN. To do so it suffices to not specify the 'github_name' argument
 
-```{r}
+```{r eval=FALSE}
 jap::remote_install.packages(
   package_name = "ape",
   account = account,
@@ -76,7 +76,7 @@ jap::remote_install.packages(
 
 Or we can run a function
 
-```{r}
+```{r eval=FALSE}
 cluster_folder <- "data"
 jap::run_on_cluster(
   package_name = "ape",
@@ -86,6 +86,6 @@ jap::run_on_cluster(
 )
 ```
 
-```{r}
+```{r eval=FALSE}
 jap::remote_list.files(dir = "jap_scripts", cluster_folder = cluster_folder)
 ```
