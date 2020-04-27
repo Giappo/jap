@@ -19,14 +19,14 @@ folder_structure <- function() {
 create_folder_structure <- function(
   account = jap::your_account(),
   projects_folder_name = "Projects",
-  disk = "D",
+  home_dir = jap::default_home_dir(),
   cluster_folder = "home",
   project_name = NA,
   session = NA,
   drive = FALSE
 ) {
 
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  local_projects_folder <- file.path(home_dir, projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,
