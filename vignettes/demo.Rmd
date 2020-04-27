@@ -14,7 +14,6 @@ First, specify basic info
 ```{r setup, include = FALSE}
 account <- jap::your_account()
 project_name <- "mbd"
-cluster_folder <- "home"
 projects_folder_name <- "Projects"
 drive <- TRUE # we want to use google drive
 ```
@@ -32,7 +31,6 @@ Then we setup the entire folder structure on three different places: local, pere
 jap::create_folder_structure(
   project_name = project_name,
   projects_folder_name = projects_folder_name,
-  cluster_folder = cluster_folder,
   drive = drive,
   account = account,
   session = session
@@ -44,7 +42,6 @@ We can check the structure on the remote folder and on the drive folder
 ```{r}
 jap::remote_list.files(
   dir = projects_folder_name,
-  cluster_folder = cluster_folder,
   account = account,
   session = session
 )

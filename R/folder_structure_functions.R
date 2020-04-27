@@ -127,17 +127,14 @@ delete_folder_structure <- function(
   disk = "D",
   cluster_folder = "home",
   session = NA,
-  drive = FALSE,
-  are_you_sure = "n"
+  drive = FALSE
 ) {
 
-  if (are_you_sure != "y") {
-    ans <- readline(
-      prompt = "Are you sure you want to delete the entire folder structure on local/remote/drive? y/n"
-    )
-    if (ans != "y") {
-      return()
-    }
+  ans <- readline(
+    prompt = "Are you sure you want to delete the entire folder structure on local/remote/drive? y/n"
+  )
+  if (ans != "y") {
+    return()
   }
 
   local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
