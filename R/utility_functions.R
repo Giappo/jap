@@ -240,7 +240,7 @@ build_description_file <- function(project_name, ...) {
 }
 
 #' Convert a path to the equivalent file.path call
-#' @inheritParams default_params_doc.R
+#' @inheritParams default_params_doc
 #' @export
 path_2_file.path <- function(
   path

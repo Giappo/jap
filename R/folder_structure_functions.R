@@ -1,6 +1,5 @@
 #' Specify subfolder structure
 #' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 folder_structure <- function() {
