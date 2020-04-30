@@ -18,7 +18,7 @@ folder_structure <- function() {
 #' @export
 create_folder_structure <- function(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
+  projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
   cluster_folder = "home",
   project_name = NA,
@@ -122,8 +122,8 @@ create_folder_structure <- function(
 #' @export
 delete_folder_structure <- function(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
-  disk = "D",
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
   cluster_folder = "home",
   session = NA,
   drive = FALSE
@@ -136,7 +136,7 @@ delete_folder_structure <- function(
     return()
   }
 
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,

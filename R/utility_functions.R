@@ -109,7 +109,7 @@ build_description_file <- function(project_name, ...) {
     xx4 <- rep(NA, length(x3))
     for (i in seq_along(x3)) {
       xx3 <- x3[i]
-      temp <- tail(strsplit(xx3, split=" ")[[1]], 1)
+      temp <- utils::tail(strsplit(xx3, split = " ")[[1]], 1)
       xx4[i] <- stringi::stri_extract_last_words(temp)
     }
     packages <- unique(c(packages, xx4))
@@ -173,7 +173,7 @@ build_description_file <- function(project_name, ...) {
         xx4 <- rep(NA, length(x3))
         for (i in seq_along(x3)) {
           xx3 <- x3[i]
-          temp <- tail(strsplit(xx3, split = " ")[[1]], 1)
+          temp <- utils::tail(strsplit(xx3, split = " ")[[1]], 1)
           xx4[i] <- stringi::stri_extract_last_words(temp)
         }
         packages <- unique(c(packages, xx4))
@@ -258,8 +258,39 @@ path_2_file.path <- function(
 #' @export
 default_home_dir <- function(){
   os <- rappdirs::app_dir()$os
-  if (os == "windows") {
-    return("D:")
+  if (os %in% c("win", "windows")) {
+
+    rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+    name <- "JAP_DEFAULT_DISK="
+    out <- ""
+    y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
+    if (is.null(y$warning) & is.null(y$error)) {
+      y1 <- as.character(y$value)
+      y2 <- y1[stringr::str_detect(y1, name)]
+      if (length(y2) == 1) {
+        testit::assert(length(y2) == 1)
+        out <- gsub(y2, pattern = name, replacement = "")
+        out <- gsub(out, pattern = "\"", replacement = "")
+        if (out != "") {return(paste0(out, ":"))}
+      }
+    }
+
+    while (!(out %in% jap::find_disks())) {
+      out <- readline(
+        prompt = "What disk do you want to use to host the 'jap' folder structure?\n"
+      )
+      if (!(out %in% jap::find_disks())) {
+        cat("Please select a valid disk.\n")
+      }
+    }
+
+    write(
+      paste0(name, "\"", out, "\""),
+      file = rprof_path,
+      append = TRUE
+    )
+    return(paste0(out, ":"))
+
   } else if (os %in% c("mac", "unix")) {
     return("~")
   } else {
@@ -267,4 +298,62 @@ default_home_dir <- function(){
   }
 }
 
+#' @export
+default_github_folder <- function() {
+  disk <- jap::default_home_folder()
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  name <- "JAP_GITHUB_FOLDER="
+  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
+  out <- ""
+  if (is.null(y$warning) & is.null(y$error)) {
+    y1 <- as.character(y$value)
+    y2 <- y1[stringr::str_detect(y1, name)]
+    if (length(y2) == 1) {
+      testit::assert(length(y2) == 1)
+      out <- gsub(y2, pattern = name, replacement = "")
+      out <- gsub(out, pattern = "\"", replacement = "")
+    }
+  }
+  if (out == "") {
+    out <- readline(
+      prompt = "How do you want to name the folder for your Github repos?\n"
+    )
+    write(
+      paste0(name, "\"", out, "\""),
+      file = rprof_path,
+      append = TRUE
+    )
+  }
 
+  return(out)
+}
+
+#' @export
+default_projects_folder <- function() {
+  disk <- jap::default_home_dir()
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  name <- "JAP_PROJECTS_FOLDER="
+  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
+  out <- ""
+  if (is.null(y$warning) & is.null(y$error)) {
+    y1 <- as.character(y$value)
+    y2 <- y1[stringr::str_detect(y1, name)]
+    if (length(y2) == 1) {
+      testit::assert(length(y2) == 1)
+      out <- gsub(y2, pattern = name, replacement = "")
+      out <- gsub(out, pattern = "\"", replacement = "")
+    }
+  }
+  if (out == "") {
+    out <- readline(
+      prompt = "How do you want to name the folder for your projects?\n"
+    )
+    write(
+      paste0(name, "\"", out, "\""),
+      file = rprof_path,
+      append = TRUE
+    )
+  }
+
+  return(out)
+}

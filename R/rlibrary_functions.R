@@ -2,7 +2,8 @@
 #' @export
 open_rlibrary <- function() {
   shell.exec(.libPaths()[1])
-  .rs.restartR()
+  # .rs.restartR()
+  rstudioapi::restartSession()
 }
 
 #' Install and load a package
@@ -57,7 +58,7 @@ install_package <- function(
 remove_package <- function(
   package_name
 ) {
-  remove.packages(package_name)
+  utils::remove.packages(package_name)
   x <- list.files(.libPaths()[1])
   y <- x[
     # x == package_name |
@@ -65,5 +66,5 @@ remove_package <- function(
     ]
   z <- file.path(.libPaths()[1], y)
   unlink(z, recursive = TRUE, force = TRUE)
-  remove.packages(package_name)
+  utils::remove.packages(package_name)
 }

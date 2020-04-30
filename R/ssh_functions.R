@@ -62,7 +62,7 @@ upload_bash_scripts <- function(
   )
 
   # list files
-  x <- capture.output(ssh::ssh_exec_wait(
+  x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0("ls ", remote_folder)
   ))
@@ -140,7 +140,7 @@ upload_jap_scripts <- function(
   )
 
   # list files
-  x <- capture.output(ssh::ssh_exec_wait(
+  x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0("ls ", remote_folder)
   ))
@@ -289,6 +289,11 @@ run_function <- function(
 run_function_from_file <- function(
   args_file
 ) {
+  github_name <- NULL; rm(github_name) # R check workaround
+  package_name <- NULL; rm(package_name) # R check workaround
+  function_name <- NULL; rm(function_name) # R check workaround
+  fun_arguments <- NULL; rm(fun_arguments) # R check workaround
+
   load(args_file)
   out <- run_function(
     github_name = github_name,

@@ -51,12 +51,13 @@ git_pull <- function(
 #' Find github folder
 #' @export
 find_github_folder <- function(
-  folder_name = "Githubs",
-  disk = "C"
+  folder_name = jap::default_github_folder(),
+  home_dir = jap::default_home_dir()
 ) {
+  disk <- home_dir
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
-  name <- "GITHUB_FOLDER="
-  y <- jap::my_try_catch(unlist(read.table(rprof_path)))
+  name <- "JAP_GITHUB_FOLDER="
+  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
   if (is.null(y$warning) & is.null(y$error)) {
     y1 <- as.character(y$value)
     y2 <- y1[stringr::str_detect(y1, name)]

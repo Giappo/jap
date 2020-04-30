@@ -6,6 +6,9 @@
 #' @param lambda speciation rate
 #' @param mu extinction rate
 #' @param message a message to be print
+#' @param projects_folder_name the name you want to give to the folder
+#'  containing all your projects
+#' @param project_name the name of the project
 #' @param t time
 #' @param verbose choose if you want to print the output or not
 #' @author Documentation by Giovanni Laudanno,
@@ -18,6 +21,8 @@ default_params_doc <- function(
   session,
   lambda,
   mu,
+  projects_folder_name,
+  project_name,
   t,
   message,
   verbose

@@ -6,7 +6,7 @@
 \usage{
 pocket_experiment(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
+  projects_folder_name = jap::default_projects_folder(),
   github_name = "Giappo",
   project_name = "sls",
   function_name = "sls_main",
@@ -17,6 +17,11 @@ pocket_experiment(
 }
 \arguments{
 \item{account}{a peregrine account}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{project_name}{the name of the project}
 }
 \value{
 nothing

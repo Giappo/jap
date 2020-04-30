@@ -3,33 +3,34 @@
 #' @return nothing
 #' @export
 initialize_jap <- function() {
-  remotes::install_github("tidyverse/googledrive")
+
+  remotes::install_github("tidyverse/googledrive", quiet = TRUE)
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+
+  cat("This function will initialize the 'jap' package.\n")
   account <- jap::your_account()
-  folder_name <- readline(
-    "How do you want to name the folder for your Github repos?"
-  )
-  disk <- readline(
-    "On which disk is your Github folder?"
-  )
-  github_folder <- jap::find_github_folder(
-    folder_name = folder_name,
-    disk = disk
-  )
+  cat("'jap' will create two folders: one for your Github repos and one for your projects.\n")
+
+  disk <- jap::default_home_dir()
+  github_folder <- jap::default_github_folder()
+  projects_folder_name <- jap::default_projects_folder()
+
+
   cluster_folder <- "pippo"
   while (cluster_folder != "home" && cluster_folder != "data") {
     cluster_folder <- readline(
       "What folder do you want to use on cluster: 'home' or 'data'?"
     )
   }
-  projects_folder_name <- readline(
-    "How do you want to call your projects folder on the cluster?"
+  drive_ans <- readline(
+    "Do you want to create a folder structure on your google drive (y/n)?\n"
   )
-  drive <- readline(
-    "Do you want to create a folder structure on your google drive?"
-  )
+  if (drive_ans == "y") {
+    drive <- TRUE
+  }
   if (drive) {
     drive_email <- readline(
-      "What's the email connected to your google drive account?"
+      "What's the email connected to your google drive account?\n"
     )
     googledrive::drive_auth(
       email = drive_email,
@@ -40,7 +41,7 @@ initialize_jap <- function() {
   jap::create_folder_structure(
     projects_folder_name = projects_folder_name,
     account = account,
-    disk = disk,
+    home_dir = disk,
     cluster_folder = cluster_folder,
     project_name = NA,
     drive = drive

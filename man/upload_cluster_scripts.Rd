@@ -11,6 +11,8 @@ upload_cluster_scripts(
 )
 }
 \arguments{
+\item{project_name}{the name of the project}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

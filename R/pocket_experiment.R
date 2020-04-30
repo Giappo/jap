@@ -5,7 +5,7 @@
 #' @export
 pocket_experiment <- function(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
+  projects_folder_name = jap::default_projects_folder(),
   github_name = "Giappo",
   project_name = "sls",
   function_name = "sls_main",

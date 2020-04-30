@@ -5,8 +5,8 @@
 \title{Download the entire project folder}
 \usage{
 download_project_folder(
-  projects_folder_name = "Projects",
-  disk = "D",
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
   cluster_folder = "home",
   project_name = "sls",
   delete_on_cluster = FALSE,
@@ -16,6 +16,11 @@ download_project_folder(
 )
 }
 \arguments{
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{project_name}{the name of the project}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

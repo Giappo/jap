@@ -22,7 +22,7 @@ fix_java <- function() {
   }
   path_file <- file.path(extdata_folder, "java_path.txt")
   if (file.exists(path_file)) {
-    x <- levels(unname(read.csv(path_file)[[1]]))
+    x <- levels(unname(utils::read.csv(path_file)[[1]]))
     Sys.setenv(JAVA_HOME = x)
     done <- require("rJava")
     if (isTRUE(done)) {

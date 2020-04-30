@@ -6,7 +6,7 @@
 \usage{
 create_folder_structure(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
+  projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
   cluster_folder = "home",
   project_name = NA,
@@ -16,6 +16,11 @@ create_folder_structure(
 }
 \arguments{
 \item{account}{a peregrine account}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{project_name}{the name of the project}
 
 \item{session}{a ssh session}
 }

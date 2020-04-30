@@ -5,7 +5,18 @@
 \title{This function does nothing. It is intended to inherit is parameters'
 documentation.}
 \usage{
-default_params_doc(account, age, session, lambda, mu, t, message, verbose)
+default_params_doc(
+  account,
+  age,
+  session,
+  lambda,
+  mu,
+  projects_folder_name,
+  project_name,
+  t,
+  message,
+  verbose
+)
 }
 \arguments{
 \item{account}{a peregrine account}
@@ -17,6 +28,11 @@ default_params_doc(account, age, session, lambda, mu, t, message, verbose)
 \item{lambda}{speciation rate}
 
 \item{mu}{extinction rate}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{project_name}{the name of the project}
 
 \item{t}{time}
 
