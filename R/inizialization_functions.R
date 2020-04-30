@@ -6,7 +6,7 @@ initialize_jap <- function() {
   remotes::install_github("tidyverse/googledrive")
   account <- jap::your_account()
   folder_name <- readline(
-    "How do you want to name the folder for your Guthub repos?"
+    "How do you want to name the folder for your Github repos?"
   )
   disk <- readline(
     "On which disk is your Github folder?"
