@@ -1,6 +1,5 @@
 #' Returns your peregrine account
 #' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 your_account <- function() {

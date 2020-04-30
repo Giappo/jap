@@ -1,6 +1,5 @@
 #' Initialize Jap
 #' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 initialize_jap <- function() {
