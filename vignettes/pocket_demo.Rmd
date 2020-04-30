@@ -14,7 +14,7 @@ First, specify basic info
 ```{r setup, include = FALSE}
 account <- jap::your_account()
 projects_folder_name <- "Projects"
-drive <- TRUE # we want to use google drive
+drive <- FALSE # we want to use google drive
 library(jap, quietly = TRUE)
 ```
 
@@ -88,7 +88,7 @@ params_grid <- expand.grid(
 )
 loglik_functions <- mbd::mbd_experiment_logliks()
 verbose <- TRUE
-project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
+project_folder <- file.path("", "home", account, projects_folder_name, project_name)
 
 params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
@@ -111,8 +111,7 @@ jap::pocket_experiment(
   function_name = function_name,
   params = params,
   account = account,
-  cluster_folder = cluster_folder,
-  projects_folder_name = projects_folder_name,
+  projects_folder_name = projects_folder_name, 
   drive = drive
 )
 ```
@@ -134,7 +133,7 @@ param_space <- DAISIErobustness::load_param_space(
   param_space_name = "oceanic_ontogeny"
 )
 params <- vector("list", nrow(param_space))
-for (i in 1:nrow(param_space)) {
+for (i in 1:5) {
   params[[i]] <- list(
     param_space_name = "oceanic_ontogeny",
     param_set = i,
@@ -190,7 +189,7 @@ for (i in 1:nrow(params_grid)) {
 }
 ```
 
-We run the experiment
+Again, we just need to run "pocket_experiment" to make everything run
 
 ```{r eval=FALSE}
 jap::pocket_experiment(
@@ -200,7 +199,7 @@ jap::pocket_experiment(
   params = params,
   account = account,
   cluster_folder = cluster_folder,
-  projects_folder_name = projects_folder_name,
+  projects_folder_name = projects_folder_name, 
   drive = drive
 )
 ```
@@ -216,5 +215,4 @@ Or we can check if our results are stored on google drive
 ```{r eval=FALSE}
 jap::drive_list.files(dir = "sls/results")
 jap::drive_list.files(dir = "mbd/results")
-jap::drive_list.files(dir = "DDD/results")
 ```

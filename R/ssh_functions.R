@@ -363,13 +363,7 @@ run_on_cluster <- function(
     install_package =
       eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
   )
-  len_ran <- 10
-  args_filename <- paste0(
-    function_name,
-    "_",
-    stringi::stri_rand_strings(1, len_ran),
-    ".RData"
-  )
+  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
   ssh::scp_upload(
@@ -377,12 +371,7 @@ run_on_cluster <- function(
     files = args_file,
     to = jap_folder
   )
-  fun_filename <- paste0(
-    function_name,
-    "_",
-    stringi::stri_rand_strings(1, len_ran),
-    ".RData"
-    )
+  fun_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   fun_file <- file.path(tempfolder, fun_filename)
   save(fun_list, file = fun_file)
   ssh::scp_upload(

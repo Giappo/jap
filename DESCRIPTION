@@ -7,17 +7,17 @@ Maintainer: Giovanni Laudanno <glaudanno@gmail.com>
 Depends: 
   R (>= 3.2.0)
 Imports:
-  devtools,
-  fs,
-  grDevices,
-  googledrive,
-  lattice,
-  rappdirs,
-  ssh,
-  stringi,
-  stringr,
-  testit,
-  utils
+    devtools,
+    fs,
+    grDevices,
+    googledrive (>= 1.0.0.9000),
+    lattice,
+    rappdirs,
+    ssh,
+    stringi,
+    stringr,
+    testit,
+    utils
 Suggests:
   knitr,
   lintr,
@@ -30,3 +30,5 @@ LazyData: true
 NeedsCompilation: no
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
+Remotes:  
+    tidyverse/googledrive
