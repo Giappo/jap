@@ -7,7 +7,7 @@
 create_folder_structure(
   account = jap::your_account(),
   projects_folder_name = "Projects",
-  disk = "D",
+  home_dir = jap::default_home_dir(),
   cluster_folder = "home",
   project_name = NA,
   session = NA,

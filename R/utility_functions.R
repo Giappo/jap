@@ -240,7 +240,7 @@ build_description_file <- function(project_name, ...) {
 }
 
 #' Convert a path to the equivalent file.path call
-#' @inheritParams default_params_doc.R
+#' @inheritParams default_params_doc
 #' @export
 path_2_file.path <- function(
   path
@@ -253,3 +253,18 @@ path_2_file.path <- function(
     "\")"
   )
 }
+
+#' Fetch the os-dependent default home directory
+#' @export
+default_home_dir <- function(){
+  os <- rappdirs::app_dir()$os
+  if (os == "windows") {
+    return("D:")
+  } else if (os %in% c("mac", "unix")) {
+    return("~")
+  } else {
+    stop("Sorry, jap is not supported on your OS :/")
+  }
+}
+
+

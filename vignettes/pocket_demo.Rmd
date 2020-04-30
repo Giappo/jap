@@ -20,7 +20,7 @@ library(jap, quietly = TRUE)
 
 Now we can set it up to work using the "sls_main" function from the "sls" package taken from the Github repo named "Giappo":
 
-```{r}
+```{r eval=FALSE}
 github_name <- "Giappo"
 project_name <- "sls"
 cluster_folder <- "data"
@@ -56,7 +56,7 @@ for (i in 1:nrow(params_grid)) {
 
 Now we just need to call the function "pocket_experiment" to run everything
 
-```{r}
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -71,7 +71,7 @@ jap::pocket_experiment(
 
 We can also try to run other projects. For example let's try with "mbd"
 
-```{r}
+```{r eval=FALSE}
 github_name <- "Giappo"
 project_name <- "mbd"
 library(project_name, character.only = TRUE)
@@ -104,7 +104,7 @@ for (i in 1:nrow(params_grid)) {
 
 Again, we just need to run "pocket_experiment" to make everything run
 
-```{r}
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -119,7 +119,7 @@ jap::pocket_experiment(
 
 Let's try with "DAISIErobustness"
 
-```{r}
+```{r eval=FALSE}
 account <- jap::your_account()
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
@@ -146,7 +146,7 @@ for (i in 1:nrow(param_space)) {
 
 Again, we just need to run "pocket_experiment" to make everything run
 
-```{r}
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -162,7 +162,7 @@ jap::pocket_experiment(
 We can also try to run a DDD experiment. In this case we need a new function that it's on the Giappo github version of DDD, which wraps together simulation and maximum likelihood.
 We build the parameters
 
-```{r}
+```{r eval=FALSE}
 github_name <- "Giappo"
 project_name <- "DDD"
 jap::install_package(package_name = project_name, github_name = github_name)
@@ -192,7 +192,7 @@ for (i in 1:nrow(params_grid)) {
 
 We run the experiment
 
-```{r}
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -207,13 +207,13 @@ jap::pocket_experiment(
 
 We can check that everything is running
 
-```{r}
+```{r eval=FALSE}
 jap::check_jobs(account = account)
 ```
 
 Or we can check if our results are stored on google drive
 
-```{r}
+```{r eval=FALSE}
 jap::drive_list.files(dir = "sls/results")
 jap::drive_list.files(dir = "mbd/results")
 jap::drive_list.files(dir = "DDD/results")

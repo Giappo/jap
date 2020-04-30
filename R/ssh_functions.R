@@ -166,7 +166,6 @@ upload_jap_scripts <- function(
 
 #' List all GitHub projects
 #' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 list_projects <- function() {
