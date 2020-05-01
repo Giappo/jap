@@ -4,7 +4,7 @@
 #' @inheritParams nee_params_doc
 #' @return pt
 #' @export
-p_t  <- function(lambda, mu, t) {
+pt  <- function(lambda, mu, t) {
   time <- t
   exp_term <- exp(
     (mu - lambda) * time
@@ -47,7 +47,7 @@ ut  <- function(lambda, mu, t) {
   exp_term <- exp(
     (mu - lambda) * time
   )
-  out    <- (lambda == mu) * (lambda * time / (1 + lambda * time)) +
+  out <- (lambda == mu) * (lambda * time / (1 + lambda * time)) +
     (lambda != mu) * (
       (lambda - lambda * exp_term + (lambda == mu)) /
         (lambda - mu * exp_term * (lambda != mu) + (lambda == mu))

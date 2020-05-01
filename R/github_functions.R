@@ -75,15 +75,6 @@ open_github_folder <- function(...) {
   return()
 }
 
-#' Open github folder
-#' @inheritParams default_params_doc
-#' @author Giovanni Laudanno
-#' @export
-list_githubs <- function(...) {
-  github_folder <- jap::find_github_folder(...)
-  list.dirs(github_folder, recursive = FALSE)
-}
-
 #' Open github project
 #' @description It opens a github project from your github folder.
 #' To specify your github folder see \link{find_github_folder}.
@@ -107,4 +98,22 @@ open_github_project <- function(
     shell(project_file)
   }
   return()
+}
+
+#' Open github folder
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @export
+list_githubs <- function(...) {
+  github_folder <- jap::find_github_folder(...)
+  list.dirs(github_folder, recursive = FALSE)
+}
+
+#' List all GitHub projects
+#' @author Giovanni Laudanno
+#' @return nothing
+#' @export
+list_projects <- function() {
+  github_folder <- jap::find_github_folder()
+  list.files(github_folder)
 }
