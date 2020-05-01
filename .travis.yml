@@ -12,6 +12,7 @@ jobs:
   - r: release
     os: osx
     osx_image: xcode11.3
+cache: packages
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update; fi
