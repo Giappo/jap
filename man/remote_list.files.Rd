@@ -12,6 +12,11 @@ remote_list.files(
 )
 }
 \arguments{
+\item{dir}{a directory}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

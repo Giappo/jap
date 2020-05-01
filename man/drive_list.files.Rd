@@ -6,6 +6,9 @@
 \usage{
 drive_list.files(dir = jap::default_projects_folder())
 }
+\arguments{
+\item{dir}{a directory}
+}
 \value{
 List of files
 }

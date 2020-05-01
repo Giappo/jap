@@ -13,6 +13,9 @@ upload_jap_scripts(
 \arguments{
 \item{account}{a peregrine account}
 
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
 \item{session}{a ssh session}
 }
 \value{

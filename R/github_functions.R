@@ -1,4 +1,6 @@
 #' Clone a repo
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
 #' @export
 git_clone <- function(
   github_name,
@@ -31,6 +33,8 @@ git_clone <- function(
 }
 
 #' Pull a repo
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
 #' @export
 git_pull <- function(
   github_name,
@@ -49,6 +53,8 @@ git_pull <- function(
 }
 
 #' Find github folder
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
 #' @export
 find_github_folder <- function(
   folder_name = jap::default_github_folder(),
@@ -138,6 +144,8 @@ find_github_folder <- function(
 #' Open github folder
 #' @description It opens your github folder.
 #' To specify your github folder see \link{find_github_folder}.
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
 #' @export
 open_github_folder <- function(...) {
   github_folder <- jap::find_github_folder(...)
@@ -146,6 +154,8 @@ open_github_folder <- function(...) {
 }
 
 #' Open github folder
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
 #' @export
 list_githubs <- function(...) {
   github_folder <- jap::find_github_folder(...)
@@ -155,6 +165,8 @@ list_githubs <- function(...) {
 #' Open github project
 #' @description It opens a github project from your github folder.
 #' To specify your github folder see \link{find_github_folder}.
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
 #' @export
 open_github_project <- function(
   github_repo,

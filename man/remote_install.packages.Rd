@@ -14,6 +14,14 @@ remote_install.packages(
 )
 }
 \arguments{
+\item{github_name}{the github account name where the repo is}
+
+\item{must_sleep}{force the function to wait after instaling
+the package}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

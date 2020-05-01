@@ -9,3 +9,6 @@ list_githubs(...)
 \description{
 Open github folder
 }
+\author{
+Giovanni Laudanno
+}

@@ -202,6 +202,8 @@ remote_list.files <- function(
 #' @title Install packages for a given project
 #' @description Install packages for a given project
 #' @inheritParams default_params_doc
+#' @param must_sleep force the function to wait after instaling
+#'  the package
 #' @author Giovanni Laudanno
 #' @return nothing
 #' @export
@@ -346,7 +348,7 @@ upload_cluster_scripts <- function(
 }
 
 #' Convert list to string
-#' @inheritParams default_params_doc
+#' @param args a list of function arguments
 #' @author Giovanni Laudanno
 #' @return A fun_argument string
 #' @export

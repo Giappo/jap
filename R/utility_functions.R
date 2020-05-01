@@ -45,6 +45,7 @@ my_try_catch <- function(expr) {
 }
 
 #' Just plot a matrix without rotating it
+#' @param mat a matrix
 #' @param logs do you want to plot in log scale?
 #' @param low_triangular do you want to plot only the low triangular?
 #' @export
@@ -81,6 +82,7 @@ find_disks <- function() {
 }
 
 #' Adds all require dependencies to the DESCRIPTION file
+#' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
 #' @export
 build_description_file <- function(project_name, ...) {

@@ -18,6 +18,9 @@ get_remote_project_folder(
 containing all your projects}
 
 \item{account}{a peregrine account}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
 }
 \description{
 Find remote project folder

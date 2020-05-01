@@ -6,7 +6,13 @@
 \usage{
 open_github_project(github_repo, ...)
 }
+\arguments{
+\item{github_repo}{a github repository}
+}
 \description{
 It opens a github project from your github folder.
 To specify your github folder see \link{find_github_folder}.
+}
+\author{
+Giovanni Laudanno
 }

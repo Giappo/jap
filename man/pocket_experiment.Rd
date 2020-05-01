@@ -21,7 +21,15 @@ pocket_experiment(
 \item{projects_folder_name}{the name you want to give to the folder
 containing all your projects}
 
+\item{github_name}{the github account name where the repo is}
+
 \item{project_name}{the name of the project}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
+\item{drive}{do you want to use google drive to store the data of your
+prokects? It can be either TRUE or FALSE}
 }
 \value{
 nothing

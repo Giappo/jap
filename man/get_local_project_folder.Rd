@@ -15,6 +15,9 @@ get_local_project_folder(
 
 \item{projects_folder_name}{the name you want to give to the folder
 containing all your projects}
+
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
 }
 \description{
 Find local project folder

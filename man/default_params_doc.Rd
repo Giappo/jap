@@ -39,6 +39,28 @@ containing all your projects}
 \item{message}{a message to be print}
 
 \item{verbose}{choose if you want to print the output or not}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
+\item{delete_on_cluster}{do you want to delete the files from the cluster
+after the download?}
+
+\item{dir}{a directory}
+
+\item{drive}{do you want to use google drive to store the data of your
+prokects? It can be either TRUE or FALSE}
+
+\item{file}{a file}
+
+\item{github_name}{the github account name where the repo is}
+
+\item{github_repo}{a github repository}
+
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
+
+\item{subfolder}{a subfolder of the project folder}
 }
 \description{
 This function does nothing. It is intended to inherit is parameters'
