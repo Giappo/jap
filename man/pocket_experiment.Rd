@@ -25,6 +25,10 @@ containing all your projects}
 
 \item{project_name}{the name of the project}
 
+\item{function_name}{the name of the function}
+
+\item{params}{parameters for the function in the list format}
+
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
 

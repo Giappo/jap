@@ -4,3 +4,5 @@
 ^appveyor\.yml$
 ^pics$
 ^cluster_scripts$
+^job_scripts$
+^demos$

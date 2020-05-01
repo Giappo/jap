@@ -8,13 +8,27 @@ documentation.}
 default_params_doc(
   account,
   age,
-  session,
+  cluster_folder,
+  delete_on_cluster,
+  dir,
+  drive,
+  file,
+  function_name,
+  fun_arguments,
+  github_name,
+  github_repo,
+  github_folder_name,
+  home_dir,
   lambda,
+  message,
   mu,
+  package_name,
+  path,
   projects_folder_name,
   project_name,
+  session,
+  subfolder,
   t,
-  message,
   verbose
 )
 }
@@ -22,23 +36,6 @@ default_params_doc(
 \item{account}{a peregrine account}
 
 \item{age}{the age of the phylogeny}
-
-\item{session}{a ssh session}
-
-\item{lambda}{speciation rate}
-
-\item{mu}{extinction rate}
-
-\item{projects_folder_name}{the name you want to give to the folder
-containing all your projects}
-
-\item{project_name}{the name of the project}
-
-\item{t}{time}
-
-\item{message}{a message to be print}
-
-\item{verbose}{choose if you want to print the output or not}
 
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
@@ -53,14 +50,43 @@ prokects? It can be either TRUE or FALSE}
 
 \item{file}{a file}
 
+\item{function_name}{the name of the function}
+
+\item{fun_arguments}{the arguments of the function passed either as
+list or as string (in the format 'arg1 = x, arg2 = y')}
+
 \item{github_name}{the github account name where the repo is}
 
 \item{github_repo}{a github repository}
 
+\item{github_folder_name}{name of the local folder containing all the
+github repos}
+
 \item{home_dir}{path to the home directory. On windows usually is
 a disk like C or D. On mac is always ~.}
 
+\item{lambda}{speciation rate}
+
+\item{message}{a message to be print}
+
+\item{mu}{extinction rate}
+
+\item{package_name}{the name of the package}
+
+\item{path}{a path}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{project_name}{the name of the project}
+
+\item{session}{a ssh session}
+
 \item{subfolder}{a subfolder of the project folder}
+
+\item{t}{time}
+
+\item{verbose}{choose if you want to print the output or not}
 }
 \description{
 This function does nothing. It is intended to inherit is parameters'

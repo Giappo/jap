@@ -6,6 +6,9 @@
 \usage{
 remove_package(package_name)
 }
+\arguments{
+\item{package_name}{the name of the package}
+}
 \value{
 nothing
 }
