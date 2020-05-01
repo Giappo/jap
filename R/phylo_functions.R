@@ -1,5 +1,4 @@
 #' Create an empty phylogeny
-#' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
 #' @export
 create_empty_phylo <- function() {

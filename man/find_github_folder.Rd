@@ -4,8 +4,18 @@
 \alias{find_github_folder}
 \title{Find github folder}
 \usage{
-find_github_folder(folder_name = "Githubs", disk = "C")
+find_github_folder(
+  folder_name = jap::default_github_folder(),
+  home_dir = jap::default_home_dir()
+)
+}
+\arguments{
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
 }
 \description{
 Find github folder
+}
+\author{
+Giovanni Laudanno
 }

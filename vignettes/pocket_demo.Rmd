@@ -20,7 +20,7 @@ library(jap, quietly = TRUE)
 
 Now we can set it up to work using the "sls_main" function from the "sls" package taken from the Github repo named "Giappo":
 
-```{r}
+```{r eval=FALSE}
 github_name <- "Giappo"
 project_name <- "sls"
 cluster_folder <- "data"
@@ -56,7 +56,7 @@ for (i in 1:nrow(params_grid)) {
 
 Now we just need to call the function "pocket_experiment" to run everything
 
-```{r}
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -71,7 +71,7 @@ jap::pocket_experiment(
 
 We can also try to run other projects. For example let's try with "mbd"
 
-```{r}
+```{r eval=FALSE}
 github_name <- "Giappo"
 project_name <- "mbd"
 library(project_name, character.only = TRUE)
@@ -104,7 +104,7 @@ for (i in 1:nrow(params_grid)) {
 
 Again, we just need to run "pocket_experiment" to make everything run
 
-```{r}
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -118,8 +118,7 @@ jap::pocket_experiment(
 
 Let's try with "DAISIErobustness"
 
-```{r}
-drive <- FALSE
+```{r eval=FALSE}
 account <- jap::your_account()
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
@@ -142,12 +141,57 @@ for (i in 1:5) {
     save_output = TRUE
   )
 }
-
 ```
 
 Again, we just need to run "pocket_experiment" to make everything run
 
-```{r}
+```{r eval=FALSE}
+jap::pocket_experiment(
+  github_name = github_name,
+  project_name = project_name,
+  function_name = function_name,
+  params = params,
+  account = account,
+  cluster_folder = cluster_folder,
+  projects_folder_name = projects_folder_name,
+  drive = drive
+)
+```
+
+We can also try to run a DDD experiment. In this case we need a new function that it's on the Giappo github version of DDD, which wraps together simulation and maximum likelihood.
+We build the parameters
+
+```{r eval=FALSE}
+github_name <- "Giappo"
+project_name <- "DDD"
+jap::install_package(package_name = project_name, github_name = github_name)
+function_name <- "dd_main"
+max_sims <- 3
+params_grid <- expand.grid(
+  lambda = c(0.2, 0.4),
+  mu = c(0.05, 0.1),
+  K = c(10, 15),
+  age = 8,
+  cond = 1,
+  seed = 1:max_sims
+)
+output_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name, "results")
+
+params <- vector("list", nrow(params_grid))
+for (i in 1:nrow(params_grid)) {
+  params[[i]]$lambda <- params_grid[i , "lambda"]
+  params[[i]]$mu <- params_grid[i , "mu"]
+  params[[i]]$K <- params_grid[i , "K"]
+  params[[i]]$age <- params_grid[i , "age"]
+  params[[i]]$cond <- params_grid[i , "cond"]
+  params[[i]]$seed <- params_grid[i , "seed"]
+  params[[i]]$output_folder <- output_folder
+}
+```
+
+Again, we just need to run "pocket_experiment" to make everything run
+
+```{r eval=FALSE}
 jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
@@ -162,13 +206,13 @@ jap::pocket_experiment(
 
 We can check that everything is running
 
-```{r}
+```{r eval=FALSE}
 jap::check_jobs(account = account)
 ```
 
 Or we can check if our results are stored on google drive
 
-```{r}
+```{r eval=FALSE}
 jap::drive_list.files(dir = "sls/results")
 jap::drive_list.files(dir = "mbd/results")
 ```

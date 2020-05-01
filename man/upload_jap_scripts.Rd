@@ -6,12 +6,15 @@
 \usage{
 upload_jap_scripts(
   account = jap::your_account(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 )
 }
 \arguments{
 \item{account}{a peregrine account}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
 
 \item{session}{a ssh session}
 }

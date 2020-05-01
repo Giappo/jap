@@ -8,12 +8,20 @@ remote_install.packages(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 )
 }
 \arguments{
+\item{github_name}{the github account name where the repo is}
+
+\item{must_sleep}{force the function to wait after instaling
+the package}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

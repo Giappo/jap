@@ -6,6 +6,9 @@
 \usage{
 build_description_file(project_name, ...)
 }
+\arguments{
+\item{project_name}{the name of the project}
+}
 \description{
 Adds all require dependencies to the DESCRIPTION file
 }

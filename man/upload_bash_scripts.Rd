@@ -7,6 +7,8 @@
 upload_bash_scripts(project_name, account = jap::your_account(), session = NA)
 }
 \arguments{
+\item{project_name}{the name of the project}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

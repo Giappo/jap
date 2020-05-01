@@ -7,6 +7,8 @@
 remote_file.exists(file, account = jap::your_account(), session = NA)
 }
 \arguments{
+\item{file}{a file}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

@@ -2,7 +2,6 @@
 #' @author Giovanni Laudanno
 #' @description Fix End of Line documentation problem. Don't forget to refresh
 #' your Git tab in Rstudio afterwards.
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 fix_documentation <- function() {
@@ -12,7 +11,6 @@ fix_documentation <- function() {
 #' @title Fix Java (NOT WORKING YET)
 #' @author Giovanni Laudanno
 #' @description Fix Java
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 fix_java <- function() {
@@ -24,7 +22,7 @@ fix_java <- function() {
   }
   path_file <- file.path(extdata_folder, "java_path.txt")
   if (file.exists(path_file)) {
-    x <- levels(unname(read.csv(path_file)[[1]]))
+    x <- levels(unname(utils::read.csv(path_file)[[1]]))
     Sys.setenv(JAVA_HOME = x)
     done <- require("rJava")
     if (isTRUE(done)) {

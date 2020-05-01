@@ -5,13 +5,13 @@
 #' @export
 pocket_experiment <- function(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
+  projects_folder_name = jap::default_projects_folder(),
   github_name = "Giappo",
   project_name = "sls",
   function_name = "sls_main",
   params,
-  cluster_folder = "home",
-  drive = FALSE
+  cluster_folder = jap::default_cluster_folder(),
+  drive = jap::default_drive_choice()
 ) {
 
   tempfolder <- tempdir()

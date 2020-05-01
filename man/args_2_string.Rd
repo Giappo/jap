@@ -6,6 +6,9 @@
 \usage{
 args_2_string(args)
 }
+\arguments{
+\item{args}{a list of function arguments}
+}
 \value{
 A fun_argument string
 }

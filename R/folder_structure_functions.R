@@ -1,6 +1,5 @@
 #' Specify subfolder structure
 #' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 folder_structure <- function() {
@@ -19,15 +18,15 @@ folder_structure <- function() {
 #' @export
 create_folder_structure <- function(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
-  disk = "D",
-  cluster_folder = "home",
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
+  cluster_folder = jap::default_cluster_folder(),
   project_name = NA,
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  local_projects_folder <- file.path(home_dir, projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,
@@ -123,11 +122,11 @@ create_folder_structure <- function(
 #' @export
 delete_folder_structure <- function(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
-  disk = "D",
-  cluster_folder = "home",
-  session = NA,
-  drive = FALSE
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
+  cluster_folder = jap::default_cluster_folder(),
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
   ans <- readline(
@@ -137,7 +136,7 @@ delete_folder_structure <- function(
     return()
   }
 
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,
@@ -176,4 +175,37 @@ delete_folder_structure <- function(
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
+}
+
+#' Find local project folder
+#' @inheritParams default_params_doc
+#' @export
+get_local_project_folder <- function(
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir()
+) {
+  file.path(
+    home_dir,
+    projects_folder_name,
+    project_name
+  )
+}
+
+#' Find remote project folder
+#' @inheritParams default_params_doc
+#' @export
+get_remote_project_folder <- function(
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder()
+) {
+  file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name,
+    project_name
+  )
 }

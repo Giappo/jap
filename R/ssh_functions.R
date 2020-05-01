@@ -62,7 +62,7 @@ upload_bash_scripts <- function(
   )
 
   # list files
-  x <- capture.output(ssh::ssh_exec_wait(
+  x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0("ls ", remote_folder)
   ))
@@ -93,7 +93,7 @@ upload_bash_scripts <- function(
 #' @export
 upload_jap_scripts <- function(
   account = jap::your_account(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
 
@@ -140,7 +140,7 @@ upload_jap_scripts <- function(
   )
 
   # list files
-  x <- capture.output(ssh::ssh_exec_wait(
+  x <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0("ls ", remote_folder)
   ))
@@ -166,7 +166,6 @@ upload_jap_scripts <- function(
 
 #' List all GitHub projects
 #' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 list_projects <- function() {
@@ -290,6 +289,11 @@ run_function <- function(
 run_function_from_file <- function(
   args_file
 ) {
+  github_name <- NULL; rm(github_name) # R check workaround
+  package_name <- NULL; rm(package_name) # R check workaround
+  function_name <- NULL; rm(function_name) # R check workaround
+  fun_arguments <- NULL; rm(fun_arguments) # R check workaround
+
   load(args_file)
   out <- run_function(
     github_name = github_name,
@@ -311,7 +315,7 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 ) {

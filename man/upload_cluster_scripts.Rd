@@ -7,11 +7,29 @@
 upload_cluster_scripts(
   project_name = "sls",
   account = jap::your_account(),
+  projects_folder_name = jap::default_projects_folder(),
+  cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  drive = jap::default_drive_choice(),
   session = NA
 )
 }
 \arguments{
+\item{project_name}{the name of the project}
+
 \item{account}{a peregrine account}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
+
+\item{drive}{do you want to use google drive to store the data of your
+prokects? It can be either TRUE or FALSE}
 
 \item{session}{a ssh session}
 }
