@@ -189,6 +189,7 @@ default_drive_choice <- function() {
       out <- gsub(y2, pattern = name, replacement = "")
       out <- gsub(out, pattern = "\"", replacement = "")
     }
+    drive <- out
   }
   if (out == "") {
     drive_ans <- readline(
@@ -219,6 +220,7 @@ default_drive_choice <- function() {
         out <- gsub(y2, pattern = name, replacement = "")
         out <- gsub(out, pattern = "\"", replacement = "")
       }
+      drive_email <- out
     }
     if (out == "") {
       drive_email <- "pippo@baudo@capellone"

@@ -297,16 +297,17 @@ upload_cluster_scripts <- function(
   }
 
   # folder structure
-  project_folder <- jap::get_local_project_folder(project_name)
+  local_project_folder <- jap::get_local_project_folder(project_name)
   remote_project_folder <- jap::get_remote_project_folder(account = account, project_name = project_name)
-  local_cluster_folder <- file.path(project_folder, "cluster_scripts")
-  testit::assert(dir.exists(local_cluster_folder))
-  if (!
-  jap::remote_dir.exists(
-    dir = remote_project_folder,
-    account = account,
-    session = session
-  )
+  local_cluster_folder <- file.path(local_project_folder, "cluster_scripts")
+  remote_cluster_folder <- file.path(remote_project_folder, "cluster_scripts")
+  if (
+    !dir.exists(local_cluster_folder) ||
+    !jap::remote_dir.exists(
+      dir = remote_project_folder,
+      account = account,
+      session = session
+    )
   ) {
     jap::create_folder_structure(
       account = account,
@@ -314,28 +315,30 @@ upload_cluster_scripts <- function(
       home_dir = home_dir,
       cluster_folder = cluster_folder,
       project_name = project_name,
-      session = session,
-      drive = drive
+      drive = drive,
+      session = session
     )
   }
 
   ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
 
-  system.time(
+  files <- unique(c(
+    list.files(local_cluster_folder, pattern = ".bash"),
+    list.files(local_cluster_folder, pattern = ".sh")
+  ))
+
+  if (length(files) > 0) {
     ssh::scp_upload(
       session = session,
       files = paste0(
         local_cluster_folder,
         "/",
-        # "*"
-        c(
-          list.files(local_cluster_folder, pattern = ".bash"),
-          list.files(local_cluster_folder, pattern = ".sh")
-        )
+        files
       ),
-      to = remote_project_folder
+      to = remote_cluster_folder
     )
-  )
+  }
+
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
