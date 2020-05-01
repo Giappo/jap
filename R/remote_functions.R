@@ -431,7 +431,7 @@ download_subfolder <- function(
   session = NA
 ) {
 
-  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
+  local_projects_folder <- file.path(home_dir, projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,
