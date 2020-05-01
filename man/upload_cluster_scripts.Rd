@@ -7,6 +7,10 @@
 upload_cluster_scripts(
   project_name = "sls",
   account = jap::your_account(),
+  projects_folder_name = jap::default_projects_folder(),
+  cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  drive = jap::default_drive_choice(),
   session = NA
 )
 }
@@ -14,6 +18,9 @@ upload_cluster_scripts(
 \item{project_name}{the name of the project}
 
 \item{account}{a peregrine account}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
 
 \item{session}{a ssh session}
 }

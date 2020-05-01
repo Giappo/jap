@@ -11,7 +11,7 @@ pocket_experiment <- function(
   function_name = "sls_main",
   params,
   cluster_folder = jap::default_cluster_folder(),
-  drive = FALSE
+  drive = jap::default_drive_choice()
 ) {
 
   tempfolder <- tempdir()

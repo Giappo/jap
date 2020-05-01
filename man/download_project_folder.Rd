@@ -11,8 +11,8 @@ download_project_folder(
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 )
 }
 \arguments{

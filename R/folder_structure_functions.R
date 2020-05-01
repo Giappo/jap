@@ -22,8 +22,8 @@ create_folder_structure <- function(
   home_dir = jap::default_home_dir(),
   cluster_folder = jap::default_cluster_folder(),
   project_name = NA,
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
   local_projects_folder <- file.path(home_dir, projects_folder_name)
@@ -125,8 +125,8 @@ delete_folder_structure <- function(
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
   cluster_folder = jap::default_cluster_folder(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
   ans <- readline(

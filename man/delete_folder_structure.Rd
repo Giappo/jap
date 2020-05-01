@@ -9,8 +9,8 @@ delete_folder_structure(
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
   cluster_folder = jap::default_cluster_folder(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 )
 }
 \arguments{

@@ -282,6 +282,10 @@ remote_install.packages <- function(
 upload_cluster_scripts <- function(
   project_name = "sls",
   account = jap::your_account(),
+  projects_folder_name = jap::default_projects_folder(),
+  cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  drive = jap::default_drive_choice(),
   session = NA
 ) {
 
@@ -294,9 +298,26 @@ upload_cluster_scripts <- function(
 
   # folder structure
   project_folder <- jap::get_local_project_folder(project_name)
-  remote_project_folder <- file.path(project_name)
+  remote_project_folder <- jap::get_remote_project_folder(account = account, project_name = project_name)
   local_cluster_folder <- file.path(project_folder, "cluster_scripts")
   testit::assert(dir.exists(local_cluster_folder))
+  if (!
+  jap::remote_dir.exists(
+    dir = remote_project_folder,
+    account = account,
+    session = session
+  )
+  ) {
+    jap::create_folder_structure(
+      account = account,
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir,
+      cluster_folder = cluster_folder,
+      project_name = project_name,
+      session = session,
+      drive = drive
+    )
+  }
 
   ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
 
@@ -306,6 +327,7 @@ upload_cluster_scripts <- function(
       files = paste0(
         local_cluster_folder,
         "/",
+        # "*"
         c(
           list.files(local_cluster_folder, pattern = ".bash"),
           list.files(local_cluster_folder, pattern = ".sh")
@@ -400,8 +422,8 @@ download_subfolder <- function(
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
   local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
@@ -492,8 +514,8 @@ download_project_folder <- function(
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
   local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)

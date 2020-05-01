@@ -10,8 +10,8 @@ create_folder_structure(
   home_dir = jap::default_home_dir(),
   cluster_folder = jap::default_cluster_folder(),
   project_name = NA,
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 )
 }
 \arguments{
