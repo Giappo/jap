@@ -16,6 +16,8 @@ remote_install.packages(
 \arguments{
 \item{github_name}{the github account name where the repo is}
 
+\item{package_name}{the name of the package}
+
 \item{must_sleep}{force the function to wait after instaling
 the package}
 

@@ -35,6 +35,7 @@ fix_java <- function() {
   # browseURL(
   # "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=241533_1f5b5a70bf22433b84d0e960903adac8"
   # )
+
   i <- 1
   done <- FALSE
   while (i <= length(disks) & done == FALSE) {

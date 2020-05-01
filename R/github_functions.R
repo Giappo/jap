@@ -57,88 +57,10 @@ git_pull <- function(
 #' @author Giovanni Laudanno
 #' @export
 find_github_folder <- function(
-  folder_name = jap::default_github_folder(),
+  github_folder_name = jap::default_github_folder(),
   home_dir = jap::default_home_dir()
 ) {
-  disk <- home_dir
-  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
-  name <- "JAP_GITHUB_FOLDER="
-  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
-  if (is.null(y$warning) & is.null(y$error)) {
-    y1 <- as.character(y$value)
-    y2 <- y1[stringr::str_detect(y1, name)]
-    if (length(y2) == 1) {
-      testit::assert(length(y2) == 1)
-      out <- gsub(y2, pattern = name, replacement = "")
-      out <- gsub(out, pattern = "\"", replacement = "")
-      if (out != "") {return(out)}
-    }
-  }
-
-  suppressWarnings(
-    pre <- fs::dir_ls(
-      path = paste0(disk, ":/"), #c("D:/"), # c("C:/", "E:/"),
-      type = "directory",
-      recurse = TRUE,
-      regexp = folder_name,
-      fail = FALSE
-    )
-  )
-  disks <- jap::find_disks()
-  disks <- disks[disks != disk]
-  i <- 1
-  while (length(pre) == 0) {
-    disk2 <- disks[i]
-    suppressWarnings(
-      pre <- fs::dir_ls(
-        path = paste0(disk2, ":/"), #c("D:/"), # c("C:/", "E:/"),
-        type = "directory",
-        recursive = TRUE, regexp = folder_name, fail = FALSE
-      )
-    )
-    i <- i + 1
-  }
-  if (length(pre) == 0) {
-    stop("Folder not found")
-  }
-
-  substr_right <- function(x, n){
-    substr(x, nchar(x) - n + 1, nchar(x))
-  }
-
-  y <- stringr::str_length(folder_name) + 1
-  x <- pre[which(grepl(x = substr_right(pre, y), pattern = folder_name))]
-  project_checks <- rep(FALSE, length(x))
-  for (i in seq_along(x)) {
-    z <- fs::dir_ls(
-      path = x[i], #c("D:/"), # c("C:/", "E:/"),
-      # type = "directory",
-      glob = "*.Rproj",
-      recurse = TRUE,
-      fail = FALSE
-    )
-    project_checks[i] <- length(z) > 0
-  }
-  x <- x[project_checks]
-  if (length(x) > 1) {
-    for (i in seq_along(x)) {
-      print(paste0(i, ": ", x[i]))
-    }
-    xx <- readline("More than one folder found. Choose one:\n")
-    x <- x[xx]
-  }
-
-  # Sys.setenv(GITHUB_FOLDER = x)
-  # usethis::edit_r_environ()
-  # usethis::edit_r_profile()
-  # path <- usethis:::scoped_path_r(c("user", "project"), ".Renviron", envvar = "R_ENVIRON_USER")
-
-  write(
-    paste0(name, "\"", out, "\""),
-    file = rprof_path,
-    append = TRUE
-  )
-  x
+  file.path(home_dir, folder_name)
 }
 
 #' Open github folder

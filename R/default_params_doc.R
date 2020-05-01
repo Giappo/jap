@@ -10,13 +10,20 @@
 #' @param drive do you want to use google drive to store the data of your
 #'  prokects? It can be either TRUE or FALSE
 #' @param file a file
+#' @param function_name the name of the function
+#' @param fun_arguments the arguments of the function passed either as
+#'  list or as string (in the format 'arg1 = x, arg2 = y')
 #' @param github_name the github account name where the repo is
 #' @param github_repo a github repository
+#' @param github_folder_name name of the local folder containing all the
+#'  github repos
 #' @param home_dir path to the home directory. On windows usually is
 #'  a disk like C or D. On mac is always ~.
 #' @param lambda speciation rate
 #' @param mu extinction rate
 #' @param message a message to be print
+#' @param package_name the name of the package
+#' @param path a path
 #' @param projects_folder_name the name you want to give to the folder
 #'  containing all your projects
 #' @param project_name the name of the project
@@ -31,13 +38,27 @@
 default_params_doc <- function(
   account,
   age,
-  session,
+  cluster_folder,
+  delete_on_cluster,
+  dir,
+  drive,
+  file,
+  function_name,
+  fun_arguments,
+  github_name,
+  github_repo,
+  github_folder_name,
+  home_dir,
   lambda,
+  message,
   mu,
+  package_name,
+  path,
   projects_folder_name,
   project_name,
+  session,
+  subfolder,
   t,
-  message,
   verbose
 ) {
   # Nothing

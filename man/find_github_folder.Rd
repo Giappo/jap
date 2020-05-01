@@ -5,11 +5,14 @@
 \title{Find github folder}
 \usage{
 find_github_folder(
-  folder_name = jap::default_github_folder(),
+  github_folder_name = jap::default_github_folder(),
   home_dir = jap::default_home_dir()
 )
 }
 \arguments{
+\item{github_folder_name}{name of the local folder containing all the
+github repos}
+
 \item{home_dir}{path to the home directory. On windows usually is
 a disk like C or D. On mac is always ~.}
 }

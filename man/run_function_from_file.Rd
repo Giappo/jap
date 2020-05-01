@@ -6,6 +6,9 @@
 \usage{
 run_function_from_file(args_file)
 }
+\arguments{
+\item{args_file}{the file containing the parameters}
+}
 \value{
 nothing
 }

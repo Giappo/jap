@@ -15,9 +15,14 @@ run_project_on_cluster(
 \arguments{
 \item{project_name}{the name of the project}
 
+\item{function_name}{the name of the function}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}
+
+\item{fun_arguments}{the arguments of the function passed either as
+list or as string (in the format 'arg1 = x, arg2 = y')}
 }
 \value{
 nothing
