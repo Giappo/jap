@@ -60,7 +60,7 @@ find_github_folder <- function(
   github_folder_name = jap::default_github_folder(),
   home_dir = jap::default_home_dir()
 ) {
-  file.path(home_dir, folder_name)
+  file.path(home_dir, github_folder_name)
 }
 
 #' Open github folder

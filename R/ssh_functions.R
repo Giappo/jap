@@ -251,7 +251,6 @@ run_function <- function(
 #' @title run a function from file
 #' @author Giovanni Laudanno
 #' @description run a function from file
-#' @inheritParams default_params_doc
 #' @param args_file the file containing the parameters
 #' @return nothing
 #' @export
