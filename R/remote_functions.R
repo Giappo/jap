@@ -4,8 +4,8 @@
 #' @export
 your_account <- function() {
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
-  name <- "YOUR_PEREGRINE_ACCOUNT="
-  y <- jap::my_try_catch(unlist(read.table(rprof_path)))
+  name <- "JAP_PEREGRINE_ACCOUNT="
+  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
   if (is.null(y$warning) & is.null(y$error)) {
     y1 <- as.character(y$value)
     y2 <- y1[stringr::str_detect(y1, name)]
@@ -15,9 +15,33 @@ your_account <- function() {
       out <- gsub(out, pattern = "\"", replacement = "")
       if (out != "") {return(out)}
     }
+    if (length(y2) > 1) {
+      write(
+        y1[!(y1 %in% y2)],
+        file = rprof_path,
+        append = FALSE
+      )
+    }
   }
 
-  out <- readline(prompt = "What's your peregrine account?")
+  valid_account <- FALSE
+  while (!valid_account) {
+    out <- readline(
+      prompt = "What's your peregrine account?\n"
+    )
+    first <- substr(out, start = 1, stop = 1)
+    numbers <- as.numeric(substr(out, start = 2, stop = 1e3))
+    n_digits <- floor(log10(abs(numbers))) + 1
+    if (
+      (first != "p" && first != "s") ||
+      (numbers %% 1 != 0) ||
+      n_digits != 6
+    ) {
+      cat("Please select a valid peregrine account.\n")
+    } else {
+      valid_account <- TRUE
+    }
+  }
 
   write(
     paste0(name, "\"", out, "\""),
@@ -63,7 +87,7 @@ remote_file.exists <- function(
     session <- jap::open_session(account = account)
   }
 
-  files <- capture.output(ssh::ssh_exec_wait(
+  files <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0(
       "ls ", dirname(file)
@@ -147,7 +171,7 @@ remote_dir.remove <- function(
 #' @export
 remote_list.files <- function(
   dir,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 ) {
@@ -159,7 +183,7 @@ remote_list.files <- function(
   }
 
   # list files
-  files <- capture.output(ssh::ssh_exec_wait(
+  files <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0(
       "ls ",
@@ -178,6 +202,8 @@ remote_list.files <- function(
 #' @title Install packages for a given project
 #' @description Install packages for a given project
 #' @inheritParams default_params_doc
+#' @param must_sleep force the function to wait after instaling
+#'  the package
 #' @author Giovanni Laudanno
 #' @return nothing
 #' @export
@@ -185,7 +211,7 @@ remote_install.packages <- function(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 ) {
@@ -258,6 +284,10 @@ remote_install.packages <- function(
 upload_cluster_scripts <- function(
   project_name = "sls",
   account = jap::your_account(),
+  projects_folder_name = jap::default_projects_folder(),
+  cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  drive = jap::default_drive_choice(),
   session = NA
 ) {
 
@@ -269,24 +299,48 @@ upload_cluster_scripts <- function(
   }
 
   # folder structure
-  project_folder <- get_project_folder(project_name)
-  remote_project_folder <- file.path(project_name)
-  local_cluster_folder <- file.path(project_folder, "cluster_scripts")
-  testit::assert(dir.exists(local_cluster_folder))
+  local_project_folder <- jap::get_local_project_folder(project_name)
+  remote_project_folder <- jap::get_remote_project_folder(account = account, project_name = project_name)
+  local_cluster_folder <- file.path(local_project_folder, "cluster_scripts")
+  remote_cluster_folder <- file.path(remote_project_folder, "cluster_scripts")
+  if (
+    !dir.exists(local_cluster_folder) ||
+    !jap::remote_dir.exists(
+      dir = remote_project_folder,
+      account = account,
+      session = session
+    )
+  ) {
+    jap::create_folder_structure(
+      account = account,
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir,
+      cluster_folder = cluster_folder,
+      project_name = project_name,
+      drive = drive,
+      session = session
+    )
+  }
 
   ssh::ssh_exec_wait(session, command = paste0("mkdir -p ", project_name))
 
-  system.time(
+  files <- unique(c(
+    list.files(local_cluster_folder, pattern = ".bash"),
+    list.files(local_cluster_folder, pattern = ".sh")
+  ))
+
+  if (length(files) > 0) {
     ssh::scp_upload(
       session = session,
       files = paste0(
         local_cluster_folder,
         "/",
-        list.files(local_cluster_folder, pattern = ".bash")
+        files
       ),
-      to = remote_project_folder
+      to = remote_cluster_folder
     )
-  )
+  }
+
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
@@ -294,7 +348,7 @@ upload_cluster_scripts <- function(
 }
 
 #' Convert list to string
-#' @inheritParams default_params_doc
+#' @param args a list of function arguments
 #' @author Giovanni Laudanno
 #' @return A fun_argument string
 #' @export
@@ -367,17 +421,17 @@ args_2_string <- function(
 #' @export
 download_subfolder <- function(
   subfolder = "results",
-  projects_folder_name = "Projects",
-  disk = "D",
-  cluster_folder = "home",
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
+  cluster_folder = jap::default_cluster_folder(),
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,
@@ -395,7 +449,7 @@ download_subfolder <- function(
 
   jap::create_folder_structure(
     projects_folder_name = projects_folder_name,
-    disk = disk,
+    home_dir = home_dir,
     project_name = project_name,
     account = account,
     cluster_folder = cluster_folder,
@@ -459,17 +513,17 @@ download_subfolder <- function(
 #' @return nothing
 #' @export
 download_project_folder <- function(
-  projects_folder_name = "Projects",
-  disk = "D",
-  cluster_folder = "home",
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
+  cluster_folder = jap::default_cluster_folder(),
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 ) {
 
-  local_projects_folder <- file.path(paste0(disk, ":"), projects_folder_name)
+  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,

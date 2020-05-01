@@ -6,6 +6,14 @@
 \usage{
 git_clone(github_name, github_repo, ...)
 }
+\arguments{
+\item{github_name}{the github account name where the repo is}
+
+\item{github_repo}{a github repository}
+}
 \description{
 Clone a repo
+}
+\author{
+Giovanni Laudanno
 }

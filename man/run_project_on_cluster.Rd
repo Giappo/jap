@@ -13,6 +13,8 @@ run_project_on_cluster(
 )
 }
 \arguments{
+\item{project_name}{the name of the project}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

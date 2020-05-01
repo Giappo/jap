@@ -6,17 +6,30 @@
 \usage{
 pocket_experiment(
   account = jap::your_account(),
-  projects_folder_name = "Projects",
+  projects_folder_name = jap::default_projects_folder(),
   github_name = "Giappo",
   project_name = "sls",
   function_name = "sls_main",
   params,
-  cluster_folder = "home",
-  drive = FALSE
+  cluster_folder = jap::default_cluster_folder(),
+  drive = jap::default_drive_choice()
 )
 }
 \arguments{
 \item{account}{a peregrine account}
+
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{github_name}{the github account name where the repo is}
+
+\item{project_name}{the name of the project}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
+\item{drive}{do you want to use google drive to store the data of your
+prokects? It can be either TRUE or FALSE}
 }
 \value{
 nothing

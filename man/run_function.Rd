@@ -6,6 +6,9 @@
 \usage{
 run_function(github_name = NA, package_name, function_name, fun_arguments)
 }
+\arguments{
+\item{github_name}{the github account name where the repo is}
+}
 \value{
 nothing
 }

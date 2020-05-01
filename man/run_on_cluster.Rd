@@ -9,12 +9,17 @@ run_on_cluster(
   package_name,
   function_name,
   fun_arguments,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 )
 }
 \arguments{
+\item{github_name}{the github account name where the repo is}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

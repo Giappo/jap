@@ -45,6 +45,7 @@ my_try_catch <- function(expr) {
 }
 
 #' Just plot a matrix without rotating it
+#' @param mat a matrix
 #' @param logs do you want to plot in log scale?
 #' @param low_triangular do you want to plot only the low triangular?
 #' @export
@@ -81,6 +82,7 @@ find_disks <- function() {
 }
 
 #' Adds all require dependencies to the DESCRIPTION file
+#' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
 #' @export
 build_description_file <- function(project_name, ...) {
@@ -109,7 +111,7 @@ build_description_file <- function(project_name, ...) {
     xx4 <- rep(NA, length(x3))
     for (i in seq_along(x3)) {
       xx3 <- x3[i]
-      temp <- tail(strsplit(xx3, split=" ")[[1]], 1)
+      temp <- utils::tail(strsplit(xx3, split = " ")[[1]], 1)
       xx4[i] <- stringi::stri_extract_last_words(temp)
     }
     packages <- unique(c(packages, xx4))
@@ -173,7 +175,7 @@ build_description_file <- function(project_name, ...) {
         xx4 <- rep(NA, length(x3))
         for (i in seq_along(x3)) {
           xx3 <- x3[i]
-          temp <- tail(strsplit(xx3, split = " ")[[1]], 1)
+          temp <- utils::tail(strsplit(xx3, split = " ")[[1]], 1)
           xx4[i] <- stringi::stri_extract_last_words(temp)
         }
         packages <- unique(c(packages, xx4))
@@ -253,18 +255,3 @@ path_2_file.path <- function(
     "\")"
   )
 }
-
-#' Fetch the os-dependent default home directory
-#' @export
-default_home_dir <- function(){
-  os <- rappdirs::app_dir()$os
-  if (os == "windows") {
-    return("D:")
-  } else if (os %in% c("mac", "unix")) {
-    return("~")
-  } else {
-    stop("Sorry, jap is not supported on your OS :/")
-  }
-}
-
-

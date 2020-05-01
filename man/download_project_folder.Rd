@@ -5,18 +5,35 @@
 \title{Download the entire project folder}
 \usage{
 download_project_folder(
-  projects_folder_name = "Projects",
-  disk = "D",
-  cluster_folder = "home",
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir(),
+  cluster_folder = jap::default_cluster_folder(),
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
-  session = NA,
-  drive = FALSE
+  drive = jap::default_drive_choice(),
+  session = NA
 )
 }
 \arguments{
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
+
+\item{project_name}{the name of the project}
+
+\item{delete_on_cluster}{do you want to delete the files from the cluster
+after the download?}
+
 \item{account}{a peregrine account}
+
+\item{drive}{do you want to use google drive to store the data of your
+prokects? It can be either TRUE or FALSE}
 
 \item{session}{a ssh session}
 }

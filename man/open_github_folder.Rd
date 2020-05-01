@@ -10,3 +10,6 @@ open_github_folder(...)
 It opens your github folder.
 To specify your github folder see \link{find_github_folder}.
 }
+\author{
+Giovanni Laudanno
+}

@@ -7,6 +7,8 @@
 plot_matrix(mat, logs = TRUE, low_triangular = FALSE)
 }
 \arguments{
+\item{mat}{a matrix}
+
 \item{logs}{do you want to plot in log scale?}
 
 \item{low_triangular}{do you want to plot only the low triangular?}

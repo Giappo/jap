@@ -6,6 +6,9 @@
 \usage{
 drive_dir.create(dir)
 }
+\arguments{
+\item{dir}{a directory}
+}
 \value{
 nothing
 }

@@ -6,6 +6,9 @@
 \usage{
 install_package(package_name, github_name = NA)
 }
+\arguments{
+\item{github_name}{the github account name where the repo is}
+}
 \value{
 nothing
 }

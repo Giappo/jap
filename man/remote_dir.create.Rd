@@ -7,6 +7,8 @@
 remote_dir.create(dir, account = jap::your_account(), session = NA)
 }
 \arguments{
+\item{dir}{a directory}
+
 \item{account}{a peregrine account}
 
 \item{session}{a ssh session}

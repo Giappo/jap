@@ -42,7 +42,7 @@ while (i <= length(params)) {
 
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
-  x <- capture.output(print(Sys.time()))
+  x <- utils::capture.output(print(Sys.time()))
   cat(x)
   cat("\nThere are", n_jobs, "jobs left\n")
 
@@ -86,7 +86,7 @@ while (i <= length(params)) {
 while (n_jobs > 0) {
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
-  x <- capture.output(print(Sys.time()))
+  x <- utils::capture.output(print(Sys.time()))
   cat(x)
   cat("\nThere are", n_jobs, "jobs left\n")
 

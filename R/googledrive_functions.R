@@ -26,7 +26,7 @@ drive_dir.create <- function(
 #' @return List of files
 #' @export
 drive_list.files <- function(
-  dir = "Projects"
+  dir = jap::default_projects_folder()
 ) {
 
   # list files
