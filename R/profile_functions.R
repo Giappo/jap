@@ -6,6 +6,7 @@ initialize_jap <- function() {
 
   remotes::install_github("tidyverse/googledrive", quiet = TRUE)
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  # requireNamespace("usethis"); rprof_path <- scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
 
   cat("This function will initialize the 'jap' package.\n")
   account <- jap::your_account()

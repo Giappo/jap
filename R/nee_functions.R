@@ -81,7 +81,7 @@ one_minus_ut  <- function(lambda, mu, t) {
 #' @return pn
 #' @export
 pn <- function(lambda, mu, t, n) {
-  out <- (n > 0) * jap::p_t(t = t, lambda = lambda, mu = mu) *
+  out <- (n > 0) * jap::pt(t = t, lambda = lambda, mu = mu) *
     jap::one_minus_ut(t = t, lambda = lambda, mu = mu) *
     jap::ut(t = t, lambda = lambda, mu = mu) ^ (n - 1 + 2 * (n == 0)) +
     (n == 0) * (jap::one_minus_pt(t = t, lambda = lambda, mu = mu))
@@ -96,13 +96,14 @@ pn <- function(lambda, mu, t, n) {
 #' @return pn times probability of extinction for n-1 species after the shift
 #' @export
 pn_bar <- function(lambda, mu, t, n, tbar = 0) {
-  out <- (n > 0) * jap::p_t(t = t, lambda = lambda, mu = mu) *
+  out <- (n > 0) * jap::pt(t = t, lambda = lambda, mu = mu) *
     (jap::one_minus_ut(t = t, lambda = lambda, mu = mu)) *
     n *
     jap::ut(t = t, lambda = lambda, mu = mu) ^ (n - 1) *
     jap::one_minus_pt(
       t = tbar,
-      lambda = lambda, mu = mu
+      lambda = lambda,
+      mu = mu
     ) ^ (n - 1 + (n == 0)) +
     (n == 0) * (jap::one_minus_pt(t = t, lambda = lambda, mu = mu)) * n
   return(out)

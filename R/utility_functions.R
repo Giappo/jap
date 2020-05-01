@@ -76,7 +76,7 @@ plot_matrix <- function(
 #' @author Giovanni Laudanno
 #' @export
 find_disks <- function() {
-  x <- system("wmic logicaldisk get caption", inter = TRUE)
+  x <- system("wmic logicaldisk get caption", intern = TRUE)
   x <- x[2:(length(x) - 1)]
   gsub(x = x, pattern = ":.*", replacement = "")
 }
@@ -267,7 +267,7 @@ get_function_list <- function(
 ) {
 
   devtools::install_github(
-    paste0(my_github, "/", project_name)
+    paste0(github_name, "/", package_name)
   )
   jap::install_package(
     package_name = package_name,
