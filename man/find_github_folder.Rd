@@ -4,7 +4,10 @@
 \alias{find_github_folder}
 \title{Find github folder}
 \usage{
-find_github_folder(folder_name = "Githubs", disk = "C")
+find_github_folder(
+  folder_name = jap::default_github_folder(),
+  home_dir = jap::default_home_dir()
+)
 }
 \description{
 Find github folder

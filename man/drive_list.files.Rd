@@ -4,7 +4,7 @@
 \alias{drive_list.files}
 \title{List drive files}
 \usage{
-drive_list.files(dir = "Projects")
+drive_list.files(dir = jap::default_projects_folder())
 }
 \value{
 List of files

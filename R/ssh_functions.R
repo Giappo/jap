@@ -93,7 +93,7 @@ upload_bash_scripts <- function(
 #' @export
 upload_jap_scripts <- function(
   account = jap::your_account(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
 
@@ -315,7 +315,7 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 ) {

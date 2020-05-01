@@ -20,7 +20,7 @@ create_folder_structure <- function(
   account = jap::your_account(),
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   project_name = NA,
   session = NA,
   drive = FALSE
@@ -124,7 +124,7 @@ delete_folder_structure <- function(
   account = jap::your_account(),
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   session = NA,
   drive = FALSE
 ) {
@@ -175,4 +175,37 @@ delete_folder_structure <- function(
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
+}
+
+#' Find local project folder
+#' @inheritParams default_params_doc
+#' @export
+get_local_project_folder <- function(
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir()
+) {
+  file.path(
+    home_dir,
+    projects_folder_name,
+    project_name
+  )
+}
+
+#' Find remote project folder
+#' @inheritParams default_params_doc
+#' @export
+get_remote_project_folder <- function(
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder()
+) {
+  file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name,
+    project_name
+  )
 }

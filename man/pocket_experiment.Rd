@@ -11,7 +11,7 @@ pocket_experiment(
   project_name = "sls",
   function_name = "sls_main",
   params,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   drive = FALSE
 )
 }

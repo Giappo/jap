@@ -7,7 +7,7 @@
 download_project_folder(
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),

@@ -171,7 +171,7 @@ remote_dir.remove <- function(
 #' @export
 remote_list.files <- function(
   dir,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 ) {
@@ -209,7 +209,7 @@ remote_install.packages <- function(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 ) {
@@ -293,7 +293,7 @@ upload_cluster_scripts <- function(
   }
 
   # folder structure
-  project_folder <- jap::get_project_folder(project_name)
+  project_folder <- jap::get_local_project_folder(project_name)
   remote_project_folder <- file.path(project_name)
   local_cluster_folder <- file.path(project_folder, "cluster_scripts")
   testit::assert(dir.exists(local_cluster_folder))
@@ -306,7 +306,10 @@ upload_cluster_scripts <- function(
       files = paste0(
         local_cluster_folder,
         "/",
-        list.files(local_cluster_folder, pattern = ".bash")
+        c(
+          list.files(local_cluster_folder, pattern = ".bash"),
+          list.files(local_cluster_folder, pattern = ".sh")
+        )
       ),
       to = remote_project_folder
     )
@@ -393,7 +396,7 @@ download_subfolder <- function(
   subfolder = "results",
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),
@@ -485,7 +488,7 @@ download_subfolder <- function(
 download_project_folder <- function(
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   project_name = "sls",
   delete_on_cluster = FALSE,
   account = jap::your_account(),

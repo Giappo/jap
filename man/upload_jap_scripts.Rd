@@ -6,7 +6,7 @@
 \usage{
 upload_jap_scripts(
   account = jap::your_account(),
-  cluster_folder = "home",
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 )
 }

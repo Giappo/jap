@@ -14,14 +14,8 @@ initialize_jap <- function() {
   disk <- jap::default_home_dir()
   github_folder <- jap::default_github_folder()
   projects_folder_name <- jap::default_projects_folder()
+  cluster_folder <- jap::default_cluster_folder()
 
-
-  cluster_folder <- "pippo"
-  while (cluster_folder != "home" && cluster_folder != "data") {
-    cluster_folder <- readline(
-      "What folder do you want to use on cluster: 'home' or 'data'?"
-    )
-  }
   drive_ans <- readline(
     "Do you want to create a folder structure on your google drive (y/n)?\n"
   )

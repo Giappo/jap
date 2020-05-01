@@ -357,3 +357,39 @@ default_projects_folder <- function() {
 
   return(out)
 }
+
+#' @export
+default_cluster_folder <- function() {
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  name <- "JAP_CLUSTER_FOLDER="
+  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
+  out <- ""
+  if (is.null(y$warning) & is.null(y$error)) {
+    y1 <- as.character(y$value)
+    y2 <- y1[stringr::str_detect(y1, name)]
+    if (length(y2) == 1) {
+      testit::assert(length(y2) == 1)
+      out <- gsub(y2, pattern = name, replacement = "")
+      out <- gsub(out, pattern = "\"", replacement = "")
+    }
+  }
+  if (out == "") {
+    cluster_folder <- "pippo"
+    while (cluster_folder != "home" && cluster_folder != "data") {
+      cluster_folder <- readline(
+        "What folder do you want to use as a default on cluster: 'home' or 'data'?\n"
+      )
+      if (cluster_folder != "home" && cluster_folder != "data") {
+        cat("Please choose between 'home' and 'data'\n")
+      }
+    }
+    out <- cluster_folder
+    write(
+      paste0(name, "\"", out, "\""),
+      file = rprof_path,
+      append = TRUE
+    )
+  }
+
+  return(out)
+}
