@@ -13,6 +13,9 @@ jobs:
     os: osx
     osx_image: xcode11.3
 
+before_install:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get libssh; fi
+
 script:
   - travis_wait 30 R CMD build .
   - travis_wait 100 R CMD check *tar.gz
