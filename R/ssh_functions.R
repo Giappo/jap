@@ -164,38 +164,6 @@ upload_jap_scripts <- function(
   return()
 }
 
-#' List all GitHub projects
-#' @author Giovanni Laudanno
-#' @return nothing
-#' @export
-list_projects <- function() {
-  github_folder <- jap::find_github_folder()
-  list.files(github_folder)
-}
-
-#' Get function list from the specified package
-#' @author Giovanni Laudanno
-#' @inheritParams default_params_doc
-#' @return function list
-#' @export
-get_function_list <- function(
-  package_name,
-  github_name = NA
-) {
-
-  devtools::install_github(
-    paste0(my_github, "/", project_name)
-  )
-  jap::install_package(
-    package_name = package_name,
-    github_name = github_name
-  )
-  library(package_name, character.only = TRUE)
-
-  fun_list <- ls(paste0("package:", package_name)) # nolint internal function
-  fun_list
-}
-
 #' @title run pirouette example
 #' @author Giovanni Laudanno
 #' @description NOT WORKING YET
@@ -263,7 +231,7 @@ run_function <- function(
   fun_arguments
 ) {
 
-  install_package(
+  jap::install_package(
     github_name = github_name,
     package_name = package_name
   )
@@ -296,7 +264,7 @@ run_function_from_file <- function(
   fun_arguments <- NULL; rm(fun_arguments) # R check workaround
 
   load(args_file)
-  out <- run_function(
+  out <- jap::run_function(
     github_name = github_name,
     package_name = package_name,
     function_name = function_name,

@@ -255,3 +255,26 @@ path_2_file.path <- function(
     "\")"
   )
 }
+
+#' Get function list from the specified package
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return function list
+#' @export
+get_function_list <- function(
+  package_name,
+  github_name = NA
+) {
+
+  devtools::install_github(
+    paste0(my_github, "/", project_name)
+  )
+  jap::install_package(
+    package_name = package_name,
+    github_name = github_name
+  )
+  library(package_name, character.only = TRUE)
+
+  fun_list <- ls(paste0("package:", package_name)) # nolint internal function
+  fun_list
+}
