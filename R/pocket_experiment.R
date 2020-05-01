@@ -1,5 +1,6 @@
 #' Run an experiment on cluster
 #' @inheritParams default_params_doc
+#' @param params parameters for the function in the list format
 #' @author Giovanni Laudanno
 #' @return nothing
 #' @export

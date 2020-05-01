@@ -7,17 +7,20 @@ Maintainer: Giovanni Laudanno <glaudanno@gmail.com>
 Depends: 
   R (>= 3.2.0)
 Imports:
-    devtools,
-    fs,
-    grDevices,
-    googledrive (>= 1.0.0.9000),
-    lattice,
-    rappdirs,
-    ssh,
-    stringi,
-    stringr,
-    testit,
-    utils
+  devtools,
+  fs,
+  grDevices,
+  googledrive (>= 1.0.0.9000),
+  lattice,
+  rappdirs,
+  remotes,
+  rstudioapi,
+  ssh,
+  stringi,
+  stringr,
+  testit,
+  usethis,
+  utils
 Suggests:
   knitr,
   lintr,

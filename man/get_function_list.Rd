@@ -2,15 +2,20 @@
 % Please edit documentation in R/ssh_functions.R
 \name{get_function_list}
 \alias{get_function_list}
-\title{Get function list}
+\title{Get function list from the specified package}
 \usage{
-get_function_list(project_name, my_github = "Giappo")
+get_function_list(package_name, github_name = NA)
+}
+\arguments{
+\item{package_name}{the name of the package}
+
+\item{github_name}{the github account name where the repo is}
 }
 \value{
 function list
 }
 \description{
-NOT WORKING YET
+Get function list from the specified package
 }
 \author{
 Giovanni Laudanno

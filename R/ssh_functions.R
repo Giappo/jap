@@ -173,27 +173,27 @@ list_projects <- function() {
   list.files(github_folder)
 }
 
-#' @title Get function list
+#' Get function list from the specified package
 #' @author Giovanni Laudanno
-#' @description NOT WORKING YET
+#' @inheritParams default_params_doc
 #' @return function list
 #' @export
 get_function_list <- function(
-  project_name,
-  my_github = "Giappo"
+  package_name,
+  github_name = NA
 ) {
 
   devtools::install_github(
     paste0(my_github, "/", project_name)
   )
-  library(project_name, character.only = TRUE)
+  jap::install_package(
+    package_name = package_name,
+    github_name = github_name
+  )
+  library(package_name, character.only = TRUE)
 
-  fun_list <- ls(paste0("package:", project_name)) # nolint internal function
-  err_funs <- fun_list[sapply(
-    fun_list, function(x)
-      any(grepl("errors", x))
-  )]
-  err_funs
+  fun_list <- ls(paste0("package:", package_name)) # nolint internal function
+  fun_list
 }
 
 #' @title run pirouette example
@@ -284,6 +284,7 @@ run_function <- function(
 #' @author Giovanni Laudanno
 #' @description run a function from file
 #' @inheritParams default_params_doc
+#' @param args_file the file containing the parameters
 #' @return nothing
 #' @export
 run_function_from_file <- function(

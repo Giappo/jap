@@ -6,6 +6,9 @@
 \usage{
 path_2_file.path(path)
 }
+\arguments{
+\item{path}{a path}
+}
 \description{
 Convert a path to the equivalent file.path call
 }

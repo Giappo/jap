@@ -11,7 +11,7 @@ vignette: >
 
 First, specify basic info
 
-```{r setup, include = FALSE}
+```{r setup, eval = FALSE}
 account <- jap::your_account()
 project_name <- "mbd"
 projects_folder_name <- "Projects"

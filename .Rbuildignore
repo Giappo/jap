@@ -1,3 +1,8 @@
-^jap\.Rproj$
+^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
+^appveyor\.yml$
+^pics$
+^cluster_scripts$
+^job_scripts$
+^demos$
