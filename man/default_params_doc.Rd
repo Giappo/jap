@@ -87,6 +87,10 @@ containing all your projects}
 \item{t}{time}
 
 \item{verbose}{choose if you want to print the output or not}
+
+\item{cluster_partition}{A string, with name of partition in which to run
+the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
+\code{"short"} and remaining Peregrine partitions.}
 }
 \description{
 This function does nothing. It is intended to inherit is parameters'

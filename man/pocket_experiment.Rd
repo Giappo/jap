@@ -12,6 +12,7 @@ pocket_experiment(
   function_name = "sls_main",
   params,
   cluster_folder = jap::default_cluster_folder(),
+  cluster_partition = "gelifes",
   drive = jap::default_drive_choice()
 )
 }
@@ -31,6 +32,10 @@ containing all your projects}
 
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
+
+\item{cluster_partition}{A string, with name of partition in which to run
+the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
+\code{"short"} and remaining Peregrine partitions.}
 
 \item{drive}{do you want to use google drive to store the data of your
 prokects? It can be either TRUE or FALSE}
