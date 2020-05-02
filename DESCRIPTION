@@ -24,6 +24,7 @@ Imports:
 Suggests:
   knitr,
   lintr,
+  rJava,
   testthat
 Description: 
   Giappo's personal package.
