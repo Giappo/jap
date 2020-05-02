@@ -12,7 +12,7 @@ initialize_jap <- function() {
   account <- jap::your_account()
   cat("'jap' will create two folders: one for your Github repos and one for your projects.\n")
 
-  disk <- jap::default_home_dir()
+  home_dir <- jap::default_home_dir()
   github_folder <- jap::default_github_folder()
   projects_folder_name <- jap::default_projects_folder()
   cluster_folder <- jap::default_cluster_folder()
@@ -21,7 +21,7 @@ initialize_jap <- function() {
   jap::create_folder_structure(
     projects_folder_name = projects_folder_name,
     account = account,
-    home_dir = disk,
+    home_dir = home_dir,
     cluster_folder = cluster_folder,
     project_name = NA,
     drive = drive
@@ -255,4 +255,5 @@ default_drive_choice <- function() {
 edit_profile <- function() {
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
   shell.exec(rprof_path)
+  system(paste("nano", rprof_path))
 }
