@@ -11,7 +11,7 @@ vignette: >
 
 First, specify basic info
 
-```{r setup, include = FALSE}
+```{r setup, eval = FALSE}
 account <- jap::your_account()
 projects_folder_name <- "Projects"
 drive <- FALSE # we want to use google drive
@@ -130,12 +130,12 @@ function_name <- "run_robustness"
 
 # Create params for the experiment
 param_space <- DAISIErobustness::load_param_space(
-  param_space_name = "oceanic_ontogeny"
+  param_space_name = "nonoceanic"
 )
-params <- vector("list", nrow(param_space))
-for (i in 1:5) {
+params <- vector("list", 2)
+for (i in 1:2) {
   params[[i]] <- list(
-    param_space_name = "oceanic_ontogeny",
+    param_space_name = "nonoceanic",
     param_set = i,
     replicates = 2,
     save_output = TRUE
@@ -146,15 +146,10 @@ for (i in 1:5) {
 Again, we just need to run "pocket_experiment" to make everything run
 
 ```{r eval=FALSE}
-jap::pocket_experiment(
-  github_name = github_name,
+jap::pocket_experiment(github_name = "Neves-P",
   project_name = project_name,
   function_name = function_name,
-  params = params,
-  account = account,
-  cluster_folder = cluster_folder,
-  projects_folder_name = projects_folder_name,
-  drive = drive
+  params = params, cluster_folder = "data"
 )
 ```
 
