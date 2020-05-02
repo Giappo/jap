@@ -254,6 +254,12 @@ default_drive_choice <- function() {
 #' @export
 edit_profile <- function() {
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
-  shell.exec(rprof_path)
-  system(paste("nano", rprof_path))
+  os <- rappdirs::app_dir()$os
+  if (os == "windows") {
+    shell.exec(rprof_path)
+  } else if (os %in% c("mac", "unix")) {
+    system(paste("open", rprof_path))
+  } else {
+    stop("Sorry, jap is not supported on your OS :/")
+  }
 }
