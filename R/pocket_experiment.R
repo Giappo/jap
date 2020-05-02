@@ -12,6 +12,7 @@ pocket_experiment <- function(
   function_name = "sls_main",
   params,
   cluster_folder = jap::default_cluster_folder(),
+  cluster_partition = "gelifes",
   drive = jap::default_drive_choice()
 ) {
 
@@ -27,6 +28,7 @@ pocket_experiment <- function(
       "function_name",
       "params",
       "cluster_folder",
+      "cluster_partition",
       "drive"
     )
   )

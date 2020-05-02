@@ -72,6 +72,7 @@ while (i <= length(params)) {
       package_name = project_name,
       function_name = function_name,
       cluster_folder = cluster_folder,
+      cluster_partition = cluster_partition,
       account = account,
       session = session,
       fun_arguments = args

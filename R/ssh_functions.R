@@ -284,6 +284,7 @@ run_on_cluster <- function(
   function_name,
   fun_arguments,
   cluster_folder = jap::default_cluster_folder(),
+  cluster_partition = "gelifes",
   account = jap::your_account(),
   session = NA
 ) {
@@ -362,7 +363,9 @@ run_on_cluster <- function(
     " ",
     fun_filename,
     " ",
-    cluster_folder
+    cluster_folder,
+    " ",
+    cluster_partition
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(

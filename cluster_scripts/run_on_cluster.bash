@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --time=00:04:58 --partition=short
 my_email=glaudanno@gmail.com
-chosen_partition=gelifes
+chosen_partition=$4
 chosen_folder=$3
 cd /$chosen_folder/$USER/jap_scripts/
 
