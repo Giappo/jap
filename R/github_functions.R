@@ -1,5 +1,6 @@
 #' Clone a repo
 #' @inheritParams default_params_doc
+#' @param ... additional arguments to be passed to \link{find_github_folder}
 #' @author Giovanni Laudanno
 #' @export
 git_clone <- function(
@@ -65,8 +66,7 @@ find_github_folder <- function(
 
 #' Open github folder
 #' @description It opens your github folder.
-#' To specify your github folder see \link{find_github_folder}.
-#' @inheritParams default_params_doc
+#' @param ... additional arguments to be passed to \link{find_github_folder}
 #' @author Giovanni Laudanno
 #' @export
 open_github_folder <- function(...) {
@@ -79,6 +79,7 @@ open_github_folder <- function(...) {
 #' @description It opens a github project from your github folder.
 #' To specify your github folder see \link{find_github_folder}.
 #' @inheritParams default_params_doc
+#' @param ... additional arguments to be passed to \link{find_github_folder}
 #' @author Giovanni Laudanno
 #' @export
 open_github_project <- function(
@@ -101,7 +102,7 @@ open_github_project <- function(
 }
 
 #' Open github folder
-#' @inheritParams default_params_doc
+#' @param ... additional arguments to be passed to \link{find_github_folder}
 #' @author Giovanni Laudanno
 #' @export
 list_githubs <- function(...) {

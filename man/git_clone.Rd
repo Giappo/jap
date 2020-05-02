@@ -10,6 +10,8 @@ git_clone(github_name, github_repo, ...)
 \item{github_name}{the github account name where the repo is}
 
 \item{github_repo}{a github repository}
+
+\item{...}{additional arguments to be passed to \link{find_github_folder}}
 }
 \description{
 Clone a repo

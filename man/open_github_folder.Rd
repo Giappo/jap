@@ -6,9 +6,11 @@
 \usage{
 open_github_folder(...)
 }
+\arguments{
+\item{...}{additional arguments to be passed to \link{find_github_folder}}
+}
 \description{
 It opens your github folder.
-To specify your github folder see \link{find_github_folder}.
 }
 \author{
 Giovanni Laudanno
