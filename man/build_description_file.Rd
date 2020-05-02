@@ -8,6 +8,8 @@ build_description_file(project_name, ...)
 }
 \arguments{
 \item{project_name}{the name of the project}
+
+\item{...}{additional arguments to be passed to \link{find_github_folder}}
 }
 \description{
 Adds all require dependencies to the DESCRIPTION file

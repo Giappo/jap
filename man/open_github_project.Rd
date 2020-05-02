@@ -8,6 +8,8 @@ open_github_project(github_repo, ...)
 }
 \arguments{
 \item{github_repo}{a github repository}
+
+\item{...}{additional arguments to be passed to \link{find_github_folder}}
 }
 \description{
 It opens a github project from your github folder.

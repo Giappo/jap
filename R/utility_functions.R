@@ -83,9 +83,13 @@ find_disks <- function() {
 
 #' Adds all require dependencies to the DESCRIPTION file
 #' @inheritParams default_params_doc
+#' @param ... additional arguments to be passed to \link{find_github_folder}
 #' @author Giovanni Laudanno
 #' @export
-build_description_file <- function(project_name, ...) {
+build_description_file <- function(
+  project_name,
+  ...
+) {
   github_repo <- project_name
   github_folder <- jap::find_github_folder(...)
   project_folder <- file.path(github_folder, github_repo)

@@ -6,6 +6,9 @@
 \usage{
 list_githubs(...)
 }
+\arguments{
+\item{...}{additional arguments to be passed to \link{find_github_folder}}
+}
 \description{
 Open github folder
 }
