@@ -291,9 +291,15 @@ get_function_list <- function(
 open_file <- function(
   file
 ){
+
+  os <- rappdirs::app_dir()$os
   if (.Platform['OS.type'] == "windows"){
     shell.exec(file)
+  } else if (os %in% c("mac", "unix")) {
+    system(paste("open", file))
   } else {
-    system(paste(Sys.getenv("R_BROWSER"), file))
+    stop("Sorry, 'jap' is not supported on your OS :/")
   }
+
+  return()
 }
