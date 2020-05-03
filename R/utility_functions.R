@@ -282,3 +282,24 @@ get_function_list <- function(
   fun_list <- ls(paste0("package:", package_name)) # nolint internal function
   fun_list
 }
+
+#' Open a file
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+open_file <- function(
+  file
+){
+
+  os <- rappdirs::app_dir()$os
+  if (.Platform['OS.type'] == "windows"){
+    shell.exec(file)
+  } else if (os %in% c("mac", "unix")) {
+    system(paste("open", file))
+  } else {
+    stop("Sorry, 'jap' is not supported on your OS :/")
+  }
+
+  return()
+}

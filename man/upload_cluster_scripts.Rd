@@ -2,10 +2,14 @@
 % Please edit documentation in R/remote_functions.R
 \name{upload_cluster_scripts}
 \alias{upload_cluster_scripts}
-\title{Export cluster scripts}
+\title{Upload cluster scripts
+
+Upload `.sh` and `.bash` files from local `project_name/cluster_scripts/` to
+the corresponding folder on the cluster. If `drive = TRUE`, the scripts also
+be uploaded to the correspoonding drive folder.}
 \usage{
 upload_cluster_scripts(
-  project_name = "sls",
+  project_name,
   account = jap::your_account(),
   projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),

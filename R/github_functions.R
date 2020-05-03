@@ -53,6 +53,30 @@ git_pull <- function(
   return()
 }
 
+#' Pull a repo
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+git_pull_request <- function(
+  github_name,
+  github_repo,
+  from,
+  to
+) {
+
+  cat("it does not work yet")
+  return()
+
+  command <- paste0(
+    "git pull --allow-unrelated-histories https://github.com/",
+    github_name,
+    "/",
+    github_repo,
+    ".git"
+  )
+  system(command)
+  return()
+}
+
 #' Find github folder
 #' @inheritParams default_params_doc
 #' @author Giovanni Laudanno
@@ -71,7 +95,7 @@ find_github_folder <- function(
 #' @export
 open_github_folder <- function(...) {
   github_folder <- jap::find_github_folder(...)
-  shell.exec(github_folder)
+  jap::open_file(github_folder)
   return()
 }
 
@@ -93,11 +117,7 @@ open_github_project <- function(
     jap::git_clone(github_name = github_name, github_repo = github_repo)
   }
   project_file <- file.path(project_folder, paste0(github_repo,".Rproj"))
-  if (rappdirs::app_dir()$os == "win") {
-    shell.exec(project_file)
-  } else {
-    shell(project_file)
-  }
+  jap::open_file(project_file)
   return()
 }
 

@@ -10,6 +10,7 @@ run_on_cluster(
   function_name,
   fun_arguments,
   cluster_folder = jap::default_cluster_folder(),
+  cluster_partition = "gelifes",
   account = jap::your_account(),
   session = NA
 )
@@ -26,6 +27,10 @@ list or as string (in the format 'arg1 = x, arg2 = y')}
 
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
+
+\item{cluster_partition}{A string, with name of partition in which to run
+the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
+\code{"short"} and remaining Peregrine partitions.}
 
 \item{account}{a peregrine account}
 
