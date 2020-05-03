@@ -42,6 +42,7 @@ default_params_doc <- function(
   account,
   age,
   cluster_folder,
+  cluster_partition,
   delete_on_cluster,
   dir,
   drive,

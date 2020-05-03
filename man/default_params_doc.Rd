@@ -9,6 +9,7 @@ default_params_doc(
   account,
   age,
   cluster_folder,
+  cluster_partition,
   delete_on_cluster,
   dir,
   drive,
@@ -39,6 +40,10 @@ default_params_doc(
 
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
+
+\item{cluster_partition}{A string, with name of partition in which to run
+the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
+\code{"short"} and remaining Peregrine partitions.}
 
 \item{delete_on_cluster}{do you want to delete the files from the cluster
 after the download?}
@@ -87,10 +92,6 @@ containing all your projects}
 \item{t}{time}
 
 \item{verbose}{choose if you want to print the output or not}
-
-\item{cluster_partition}{A string, with name of partition in which to run
-the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
-\code{"short"} and remaining Peregrine partitions.}
 }
 \description{
 This function does nothing. It is intended to inherit is parameters'
