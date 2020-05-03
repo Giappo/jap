@@ -282,3 +282,18 @@ get_function_list <- function(
   fun_list <- ls(paste0("package:", package_name)) # nolint internal function
   fun_list
 }
+
+#' Open a file
+#' @author Giovanni Laudanno
+#' @inheritParams default_params_doc
+#' @return nothing
+#' @export
+open_file <- function(
+  file
+){
+  if (.Platform['OS.type'] == "windows"){
+    shell.exec(file)
+  } else {
+    system(paste(Sys.getenv("R_BROWSER"), file))
+  }
+}

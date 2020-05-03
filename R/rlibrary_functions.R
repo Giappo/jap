@@ -1,7 +1,7 @@
 #' Open R library
 #' @export
 open_rlibrary <- function() {
-  shell.exec(.libPaths()[1])
+  jap::open_file(.libPaths()[1])
   # .rs.restartR()
   rstudioapi::restartSession()
 }

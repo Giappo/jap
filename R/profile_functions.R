@@ -254,5 +254,5 @@ default_drive_choice <- function() {
 #' @export
 edit_profile <- function() {
   rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
-  shell.exec(rprof_path)
+  jap::open_file(rprof_path)
 }
