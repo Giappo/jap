@@ -275,14 +275,19 @@ remote_install.packages <- function(
   return()
 }
 
-#' @title Export cluster scripts
+#' @title Upload cluster scripts
+#'
+#' Upload `.sh` and `.bash` files from local `project_name/cluster_scripts/` to
+#' the corresponding folder on the cluster. If `drive = TRUE`, the scripts also
+#' be uploaded to the correspoonding drive folder.
+#'
 #' @author Giovanni Laudanno
 #' @description Export cluster scripts
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 upload_cluster_scripts <- function(
-  project_name = "sls",
+  project_name,
   account = jap::your_account(),
   projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
@@ -339,7 +344,23 @@ upload_cluster_scripts <- function(
       ),
       to = remote_cluster_folder
     )
+    if (drive == TRUE) {
+      googledrive::drive_upload(
+        media = paste0(
+          local_cluster_folder,
+          "/",
+          files
+        ),
+        path = paste0(
+          projects_folder_name, "/",
+          project_name, "/",
+          "cluster_scripts/"
+        ),
+        overwrite = TRUE
+      )
+    }
   }
+
 
   if (new_session == TRUE) {
     jap::close_session(session = session)
