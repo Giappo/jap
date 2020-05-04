@@ -170,7 +170,7 @@ remote_dir.remove <- function(
 #' @return List of files
 #' @export
 remote_list.files <- function(
-  dir,
+  dir = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
