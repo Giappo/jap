@@ -208,6 +208,6 @@ jap::check_jobs(account = account)
 Or we can check if our results are stored on google drive
 
 ```{r eval=FALSE}
-jap::drive_list.files(dir = "sls/results")
-jap::drive_list.files(dir = "mbd/results")
+jap::drive_list_files(dir = "sls/results")
+jap::drive_list_files(dir = "mbd/results")
 ```

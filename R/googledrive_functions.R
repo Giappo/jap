@@ -3,7 +3,7 @@
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
-drive_dir.create <- function(
+drive_dir_create <- function(
   dir
 ) {
   base <- dirname(dir)
@@ -25,7 +25,7 @@ drive_dir.create <- function(
 #' @inheritParams default_params_doc
 #' @return List of files
 #' @export
-drive_list.files <- function(
+drive_list_files <- function(
   dir = jap::default_projects_folder()
 ) {
 

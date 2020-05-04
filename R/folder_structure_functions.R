@@ -56,8 +56,8 @@ create_folder_structure <- function(
       "chmod +x ", dirname(remote_projects_folder)
     )
   )
-  if (!remote_dir.exists(remote_projects_folder, session = session)) {
-    remote_dir.create(remote_projects_folder, session = session)
+  if (!remote_dir_exists(remote_projects_folder, session = session)) {
+    remote_dir_create(remote_projects_folder, session = session)
   }
   ssh::ssh_exec_wait(
     session = session,
@@ -69,7 +69,7 @@ create_folder_structure <- function(
   ## drive
   if (drive == TRUE) {
     drive_projects_folder <- basename(local_projects_folder)
-    drive_dir.create(dir = drive_projects_folder)
+    drive_dir_create(dir = drive_projects_folder)
   }
 
   # SPECIFIC PROJECT FOLDER
@@ -83,14 +83,14 @@ create_folder_structure <- function(
 
     ## peregrine
     remote_project_folder <- file.path(remote_projects_folder, project_name)
-    if (!remote_dir.exists(remote_project_folder, session = session)) {
-      remote_dir.create(remote_project_folder, session = session)
+    if (!remote_dir_exists(remote_project_folder, session = session)) {
+      remote_dir_create(remote_project_folder, session = session)
     }
 
     ## drive
     if (drive == TRUE) {
       drive_project_folder <- file.path(drive_projects_folder, project_name)
-      drive_dir.create(dir = drive_project_folder)
+      drive_dir_create(dir = drive_project_folder)
     }
 
     for (folder_name in folder_names) {
@@ -99,12 +99,12 @@ create_folder_structure <- function(
         dir.create(folder)
       }
       folder <- file.path(remote_project_folder, folder_name)
-      if (!remote_dir.exists(folder, session = session)) {
-        remote_dir.create(folder, session = session)
+      if (!remote_dir_exists(folder, session = session)) {
+        remote_dir_create(folder, session = session)
       }
       if (drive == TRUE) {
         folder <- file.path(drive_project_folder, folder_name)
-        drive_dir.create(dir = folder)
+        drive_dir_create(dir = folder)
       }
     }
   }

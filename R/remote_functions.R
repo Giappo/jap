@@ -57,12 +57,12 @@ your_account <- function() {
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
-remote_dir.exists <- function(
+remote_dir_exists <- function(
   dir,
   account = jap::your_account(),
   session = NA
 ) {
-  jap::remote_file.exists(
+  jap::remote_file_exists(
     file = dir,
     account = jap::your_account(),
     session = session
@@ -75,7 +75,7 @@ remote_dir.exists <- function(
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
-remote_file.exists <- function(
+remote_file_exists <- function(
   file,
   account = jap::your_account(),
   session = NA
@@ -109,7 +109,7 @@ remote_file.exists <- function(
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
-remote_dir.create <- function(
+remote_dir_create <- function(
   dir,
   account = jap::your_account(),
   session = NA
@@ -139,7 +139,7 @@ remote_dir.create <- function(
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
-remote_dir.remove <- function(
+remote_dir_remove <- function(
   dir,
   account = jap::your_account(),
   session = NA
@@ -169,7 +169,7 @@ remote_dir.remove <- function(
 #' @inheritParams default_params_doc
 #' @return List of files
 #' @export
-remote_list.files <- function(
+remote_list_files <- function(
   dir = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
@@ -207,7 +207,7 @@ remote_list.files <- function(
 #' @author Giovanni Laudanno
 #' @return nothing
 #' @export
-remote_install.packages <- function(
+remote_install_packages <- function(
   github_name = NA,
   package_name,
   must_sleep = TRUE,
@@ -268,7 +268,7 @@ remote_install.packages <- function(
     ssh::ssh_exec_wait(session = session, command = "sleep 10")
   }
 
-  jap::remote_dir.remove(dir = jap_folder, session = session) # does not work
+  jap::remote_dir_remove(dir = jap_folder, session = session) # does not work
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
@@ -310,7 +310,7 @@ upload_cluster_scripts <- function(
   remote_cluster_folder <- file.path(remote_project_folder, "cluster_scripts")
   if (
     !dir.exists(local_cluster_folder) ||
-    !jap::remote_dir.exists(
+    !jap::remote_dir_exists(
       dir = remote_project_folder,
       account = account,
       session = session
@@ -508,7 +508,7 @@ download_subfolder <- function(
     drive_subfolder <- file.path(drive_project_folder, subfolder)
     files <- list.files(local_subfolder)
 
-    already_present <- jap::drive_list.files(
+    already_present <- jap::drive_list_files(
       dir = file.path(
         projects_folder_name,
         project_name,

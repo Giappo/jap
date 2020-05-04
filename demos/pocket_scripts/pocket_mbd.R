@@ -30,7 +30,7 @@ jap::create_folder_structure(
 )
 
 # Install on cluster
-jap::remote_install.packages(
+jap::remote_install_packages(
   github_name = github_name,
   package_name = project_name,
   account = account,

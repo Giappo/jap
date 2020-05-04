@@ -52,12 +52,12 @@ jap::create_folder_structure(
 We can check the structure on the remote folder and on the drive folder
 
 ```{r eval=FALSE}
-jap::remote_list.files(
+jap::remote_list_files(
   dir = projects_folder_name,
   account = account,
   session = session
 )
-jap::drive_list.files(
+jap::drive_list_files(
   dir = projects_folder_name
 )
 ```
@@ -65,7 +65,7 @@ jap::drive_list.files(
 We can now install the package we need from Github
 
 ```{r eval=FALSE}
-jap::remote_install.packages(
+jap::remote_install_packages(
   github_name = "Giappo",
   package_name = project_name,
   account = account,
@@ -76,7 +76,7 @@ jap::remote_install.packages(
 We can even install any package from CRAN. To do so it suffices to not specify the 'github_name' argument
 
 ```{r eval=FALSE}
-jap::remote_install.packages(
+jap::remote_install_packages(
   package_name = "ape",
   account = account,
   session = session
