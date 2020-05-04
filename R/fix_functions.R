@@ -24,7 +24,7 @@ fix_java <- function() {
   if (file.exists(path_file)) {
     x <- levels(unname(utils::read.csv(path_file)[[1]]))
     Sys.setenv(JAVA_HOME = x)
-    done <- require("rJava")
+    done <- requireNamespace("rJava", quietly = TRUE)
     if (isTRUE(done)) {
       return(x)
     }
@@ -63,7 +63,7 @@ fix_java <- function() {
       j <- 1
       while (j <= length(pre) & done == FALSE) {
         Sys.setenv(JAVA_HOME = pre[j])
-        done <- require("rJava")
+        done <- requireNamespace("rJava", quietly = TRUE)
         if (isTRUE(done)) {
           invisible(suppressWarnings(file.remove(path_file)))
           utils::write.csv2(
@@ -91,7 +91,7 @@ fix_java <- function() {
       j <- 1
       while (j <= length(pre) & done == FALSE) {
         Sys.setenv(JAVA_HOME = pre[j])
-        done <- require("rJava")
+        done <- requireNamespace("rJava", quietly = TRUE)
         if (isTRUE(done)) {
           invisible(suppressWarnings(file.remove(path_file)))
           utils::write.csv2(
@@ -106,7 +106,7 @@ fix_java <- function() {
     }
     i <- i + 1
   }
-  if (!require("rJava")) {
+  if (!requireNamespace("rJava", quietly = TRUE)) {
     stop("FAILED")
   }
 }
