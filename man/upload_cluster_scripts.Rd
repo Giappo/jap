@@ -5,8 +5,8 @@
 \title{Upload cluster scripts
 
 Upload `.sh` and `.bash` files from local `project_name/cluster_scripts/` to
-the corresponding folder on the cluster. If `drive = TRUE`, the scripts also
-be uploaded to the correspoonding drive folder.}
+the corresponding folder on the cluster. If `drive = TRUE`, the scripts are
+also uploaded to the corresponding drive folder.}
 \usage{
 upload_cluster_scripts(
   project_name,

@@ -27,6 +27,7 @@
 #' @param message a message to be print
 #' @param package_name the name of the package
 #' @param path a path
+#' @param path_to_dir path to the directory location, from `default_cluster_folder()`
 #' @param projects_folder_name the name you want to give to the folder
 #'  containing all your projects
 #' @param project_name the name of the project
@@ -58,6 +59,7 @@ default_params_doc <- function(
   mu,
   package_name,
   path,
+  path_to_dir,
   projects_folder_name,
   project_name,
   session,

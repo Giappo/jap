@@ -53,7 +53,7 @@ We can check the structure on the remote folder and on the drive folder
 
 ```{r eval=FALSE}
 jap::remote_list_files(
-  dir = projects_folder_name,
+  path_to_dir = projects_folder_name,
   account = account,
   session = session
 )

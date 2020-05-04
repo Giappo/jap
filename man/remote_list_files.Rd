@@ -5,14 +5,14 @@
 \title{List remote files}
 \usage{
 remote_list_files(
-  dir = jap::default_projects_folder(),
+  path_to_dir = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
 )
 }
 \arguments{
-\item{dir}{a directory}
+\item{path_to_dir}{path to the directory location, from `default_cluster_folder()`}
 
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}

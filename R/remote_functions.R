@@ -55,7 +55,6 @@ your_account <- function() {
 #' @description Check if folder exist on cluster
 #' @author Giovanni Laudanno
 #' @inheritParams default_params_doc
-#' @param path_to_dir path to the target directory from \code{default_cluster_folder()}
 #' @return nothing
 #' @export
 remote_dir_exists <- function(
@@ -95,7 +94,7 @@ remote_file_exists <- function(
   files <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      "ls ", "/", cluster_folder, "/", account, "/", dirname(path_to_file)
+      "ls ", file.path("", cluster_folder, account, dirname(path_to_file))
     )
   ))
   file_exist <- basename(path_to_file) %in% files
@@ -109,14 +108,16 @@ remote_file_exists <- function(
 }
 
 #' @title Create a directory on cluster
+#'
 #' @description Create a directory on cluster
 #' @author Giovanni Laudanno
 #' @inheritParams default_params_doc
 #' @return nothing
 #' @export
 remote_dir_create <- function(
-  dir,
+  path_to_dir,
   account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
   # open session
@@ -129,7 +130,7 @@ remote_dir_create <- function(
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      "mkdir ", dir
+      "mkdir ", file.path("", cluster_folder, account, path_to_dir)
     )
   )
 
@@ -145,8 +146,9 @@ remote_dir_create <- function(
 #' @return nothing
 #' @export
 remote_dir_remove <- function(
-  dir,
+  path_to_dir,
   account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
   # open session
@@ -159,7 +161,7 @@ remote_dir_remove <- function(
   ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      "rm -r ", dir
+      "rm -r ", file.path("", cluster_folder, account, path_to_dir)
     )
   )
 
@@ -175,7 +177,7 @@ remote_dir_remove <- function(
 #' @return List of files
 #' @export
 remote_list_files <- function(
-  dir = jap::default_projects_folder(),
+  path_to_dir = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   account = jap::your_account(),
   session = NA
@@ -192,7 +194,7 @@ remote_list_files <- function(
     session = session,
     command = paste0(
       "ls ",
-      file.path("", cluster_folder, account, dir)
+      file.path("", cluster_folder, account, path_to_dir)
     )
   ))
   files <- files[-length(files)]
@@ -273,7 +275,7 @@ remote_install_packages <- function(
     ssh::ssh_exec_wait(session = session, command = "sleep 10")
   }
 
-  jap::remote_dir_remove(dir = jap_folder, session = session) # does not work
+  jap::remote_dir_remove(path_to_dir = jap_folder, session = session) # does not work
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
@@ -283,8 +285,8 @@ remote_install_packages <- function(
 #' @title Upload cluster scripts
 #'
 #' Upload `.sh` and `.bash` files from local `project_name/cluster_scripts/` to
-#' the corresponding folder on the cluster. If `drive = TRUE`, the scripts also
-#' be uploaded to the correspoonding drive folder.
+#' the corresponding folder on the cluster. If `drive = TRUE`, the scripts are
+#' also uploaded to the corresponding drive folder.
 #'
 #' @author Giovanni Laudanno
 #' @description Export cluster scripts
@@ -316,7 +318,7 @@ upload_cluster_scripts <- function(
   if (
     !dir.exists(local_cluster_folder) ||
     !jap::remote_dir_exists(
-      dir = remote_project_folder,
+      path_to_dir = remote_project_folder,
       account = account,
       session = session
     )

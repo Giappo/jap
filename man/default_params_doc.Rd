@@ -25,6 +25,7 @@ default_params_doc(
   mu,
   package_name,
   path,
+  path_to_dir,
   projects_folder_name,
   project_name,
   session,
@@ -79,6 +80,8 @@ a disk like C or D. On mac is always ~.}
 \item{package_name}{the name of the package}
 
 \item{path}{a path}
+
+\item{path_to_dir}{path to the directory location, from `default_cluster_folder()`}
 
 \item{projects_folder_name}{the name you want to give to the folder
 containing all your projects}

@@ -12,7 +12,7 @@ remote_dir_exists(
 )
 }
 \arguments{
-\item{path_to_dir}{path to the target directory from \code{default_cluster_folder()}}
+\item{path_to_dir}{path to the directory location, from `default_cluster_folder()`}
 
 \item{account}{a peregrine account}
 
