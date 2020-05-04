@@ -231,7 +231,7 @@ run_function <- function(
   fun_arguments
 ) {
 
-  jap::install_package(
+  install_package(
     github_name = github_name,
     package_name = package_name
   )
@@ -263,7 +263,7 @@ run_function_from_file <- function(
   fun_arguments <- NULL; rm(fun_arguments) # R check workaround
 
   load(args_file)
-  out <- jap::run_function(
+  out <- run_function(
     github_name = github_name,
     package_name = package_name,
     function_name = function_name,
