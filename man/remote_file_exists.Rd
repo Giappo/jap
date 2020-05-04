@@ -4,12 +4,20 @@
 \alias{remote_file_exists}
 \title{Check if file exist on cluster}
 \usage{
-remote_file_exists(file, account = jap::your_account(), session = NA)
+remote_file_exists(
+  path_to_file,
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
+  session = NA
+)
 }
 \arguments{
-\item{file}{a file}
+\item{path_to_file}{path to the target file from \code{default_cluster_folder()}}
 
 \item{account}{a peregrine account}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
 
 \item{session}{a ssh session}
 }

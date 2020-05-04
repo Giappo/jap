@@ -4,12 +4,20 @@
 \alias{remote_dir_exists}
 \title{Check if folder exist on cluster}
 \usage{
-remote_dir_exists(dir, account = jap::your_account(), session = NA)
+remote_dir_exists(
+  path_to_dir,
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
+  session = NA
+)
 }
 \arguments{
-\item{dir}{a directory}
+\item{path_to_dir}{path to the target directory from \code{default_cluster_folder()}}
 
 \item{account}{a peregrine account}
+
+\item{cluster_folder}{main folder on the cluster. It can be either 'home'
+or 'data'}
 
 \item{session}{a ssh session}
 }

@@ -55,16 +55,19 @@ your_account <- function() {
 #' @description Check if folder exist on cluster
 #' @author Giovanni Laudanno
 #' @inheritParams default_params_doc
+#' @param path_to_dir path to the target directory from \code{default_cluster_folder()}
 #' @return nothing
 #' @export
 remote_dir_exists <- function(
-  dir,
+  path_to_dir,
   account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
   jap::remote_file_exists(
-    file = dir,
-    account = jap::your_account(),
+    path_to_file = path_to_dir,
+    account = account,
+    cluster_folder = cluster_folder,
     session = session
   )
 }
@@ -73,11 +76,13 @@ remote_dir_exists <- function(
 #' @description Check if file exist on cluster
 #' @author Giovanni Laudanno
 #' @inheritParams default_params_doc
+#' @param path_to_file path to the target file from \code{default_cluster_folder()}
 #' @return nothing
 #' @export
 remote_file_exists <- function(
-  file,
+  path_to_file,
   account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
   # open session
@@ -90,10 +95,10 @@ remote_file_exists <- function(
   files <- utils::capture.output(ssh::ssh_exec_wait(
     session = session,
     command = paste0(
-      "ls ", dirname(file)
+      "ls ", "/", cluster_folder, "/", account, "/", dirname(path_to_file)
     )
   ))
-  file_exist <- basename(file) %in% files
+  file_exist <- basename(path_to_file) %in% files
 
   # close session
   if (new_session == TRUE) {
