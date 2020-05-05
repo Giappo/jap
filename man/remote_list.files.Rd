@@ -4,20 +4,10 @@
 \alias{remote_list.files}
 \title{List remote files}
 \usage{
-remote_list.files(
-  dir,
-  cluster_folder = jap::default_cluster_folder(),
-  account = jap::your_account(),
-  session = NA
-)
+remote_list.files(dir, full.names = TRUE, session = NA)
 }
 \arguments{
 \item{dir}{a directory}
-
-\item{cluster_folder}{main folder on the cluster. It can be either 'home'
-or 'data'}
-
-\item{account}{a peregrine account}
 
 \item{session}{a ssh session}
 }

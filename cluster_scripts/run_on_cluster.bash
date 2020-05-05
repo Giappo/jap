@@ -1,9 +1,12 @@
 #!/bin/bash
 #SBATCH --time=00:04:58 --partition=short
-my_email=glaudanno@gmail.com
+my_email=$3
 chosen_partition=$4
-chosen_folder=$3
-cd /$chosen_folder/$USER/jap_scripts/
+cluster_folder=$5
+account=$6
+package_name=$7
+function_name=$8
+cd /$cluster_folder/$account/jap_scripts/
 
 args_file=$1
 fun_file=$2
@@ -27,10 +30,11 @@ rm $bash_file_name #remove previous versions
 
 echo "args <- commandArgs(TRUE)" > $R_file_name
 echo "print(args)" >> $R_file_name
-echo "load(file.path(getwd(), \"${fun_file}\"))" >> $R_file_name
+echo "load(file.path(\"\", \"${cluster_folder}\", \"${account}\", \"jap_scripts\", \"${fun_file}\"))" >> $R_file_name
 echo "x <- fun_list\$run_function_from_file(args_file = args)" >> $R_file_name
 echo "print(x)" >> $R_file_name
-echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
+#echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
+echo "save(x, file = file.path(\"\", \"${cluster_folder}\", \"${account}\", \"${package_name}\", \"${function_name}\", \"results\", \"${out_name}\"))" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
@@ -51,5 +55,5 @@ sbatch  --partition=$chosen_partition \
 		--output=job-${job_name}.log \
 		$bash_file_name
 
-cd /$chosen_folder/$USER/
+cd /$cluster_folder/$USER/
 # ls | find . -name "slurm*" | xargs rm

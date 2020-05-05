@@ -6,7 +6,6 @@ folder_structure <- function() {
   folder_names <- c(
     "results",
     "logs",
-    "cluster_scripts",
     "data"
   )
 }
@@ -22,6 +21,7 @@ create_folder_structure <- function(
   home_dir = jap::default_home_dir(),
   cluster_folder = jap::default_cluster_folder(),
   project_name = NA,
+  function_name = NA,
   drive = jap::default_drive_choice(),
   session = NA
 ) {
@@ -93,18 +93,65 @@ create_folder_structure <- function(
       drive_dir.create(dir = drive_project_folder)
     }
 
-    for (folder_name in folder_names) {
-      folder <- file.path(local_project_folder, folder_name)
-      if (!(dir.exists(folder))) {
-        dir.create(folder)
+    # PROJECT SPECIFIC CLUSTER SCRIPTS FOLDER
+    ## local
+    local_scripts_folder <- file.path(local_project_folder, "cluster_scripts")
+    if (!(dir.exists(local_scripts_folder))) {
+      dir.create(local_scripts_folder)
+    }
+
+    ## peregrine
+    remote_scripts_folder <- file.path(remote_project_folder, "cluster_scripts")
+    if (!remote_dir.exists(remote_scripts_folder, session = session)) {
+      remote_dir.create(remote_scripts_folder, session = session)
+    }
+
+    ## drive
+    if (drive == TRUE) {
+      drive_scripts_folder <- file.path(drive_project_folder, "cluster_scripts")
+      drive_dir.create(dir = drive_scripts_folder)
+    }
+
+    # SPECIFIC FUNCTION FOLDER
+    if (!is.na(function_name)) {
+
+      ## local
+      local_function_folder <- file.path(local_project_folder, function_name)
+      if (!(dir.exists(local_function_folder))) {
+        dir.create(local_function_folder)
       }
-      folder <- file.path(remote_project_folder, folder_name)
-      if (!remote_dir.exists(folder, session = session)) {
-        remote_dir.create(folder, session = session)
+
+      ## peregrine
+      remote_function_folder <- file.path(remote_project_folder, function_name)
+      if (!remote_dir.exists(remote_function_folder, session = session)) {
+        remote_dir.create(remote_function_folder, session = session)
       }
+
+      ## drive
       if (drive == TRUE) {
-        folder <- file.path(drive_project_folder, folder_name)
-        drive_dir.create(dir = folder)
+        drive_function_folder <- file.path(drive_project_folder, function_name)
+        drive_dir.create(dir = drive_function_folder)
+      }
+
+      # SUBFOLDER STRUCTURE
+      for (folder_name in folder_names) {
+        ## local
+        folder <- file.path(local_function_folder, folder_name)
+        if (!(dir.exists(folder))) {
+          dir.create(folder)
+        }
+
+        ## peregrine
+        folder <- file.path(remote_function_folder, folder_name)
+        if (!remote_dir.exists(folder, session = session)) {
+          remote_dir.create(folder, session = session)
+        }
+
+        ## drive
+        if (drive == TRUE) {
+          folder <- file.path(drive_function_folder, folder_name)
+          drive_dir.create(dir = folder)
+        }
       }
     }
   }
@@ -121,6 +168,9 @@ create_folder_structure <- function(
 #' @return nothing
 #' @export
 delete_folder_structure <- function(
+  delete_on_local = TRUE,
+  delete_on_remote = TRUE,
+  delete_on_drive = TRUE,
   account = jap::your_account(),
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),
@@ -136,12 +186,14 @@ delete_folder_structure <- function(
     return()
   }
 
-  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
-  remote_projects_folder <- file.path(
-    "",
-    cluster_folder,
-    account,
-    projects_folder_name
+  local_projects_folder <- jap::get_local_projects_folder(
+    projects_folder_name = projects_folder_name,
+    home_dir = home_dir
+  )
+  remote_projects_folder <- jap::get_remote_projects_folder(
+    projects_folder_name = projects_folder_name,
+    account = account,
+    cluster_folder = cluster_folder
   )
   drive_projects_folder <- basename(local_projects_folder)
 
@@ -156,25 +208,44 @@ delete_folder_structure <- function(
 
   # PROJECTS FOLDER
   ## local
-  unlink(local_projects_folder, recursive = TRUE)
+  if (delete_on_local) {
+    unlink(local_projects_folder, recursive = TRUE)
+  }
 
   # peregrine
-  ssh::ssh_exec_wait(
-    session = session,
-    command = paste0(
-      "rm -r ", remote_projects_folder
+  if (delete_on_remote) {
+    ssh::ssh_exec_wait(
+      session = session,
+      command = paste0(
+        "rm -r ", remote_projects_folder
+      )
     )
-  )
+  }
 
   ## drive
   if (drive == TRUE) {
-    googledrive::drive_rm(drive_projects_folder)
+    if (delete_on_drive) {
+      googledrive::drive_rm(drive_projects_folder)
+    }
   }
 
   # close session
   if (new_session == TRUE) {
     jap::close_session(session = session)
   }
+}
+
+#' Find local projects folder
+#' @inheritParams default_params_doc
+#' @export
+get_local_projects_folder <- function(
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir()
+) {
+  file.path(
+    home_dir,
+    projects_folder_name
+  )
 }
 
 #' Find local project folder
@@ -186,9 +257,67 @@ get_local_project_folder <- function(
   home_dir = jap::default_home_dir()
 ) {
   file.path(
-    home_dir,
-    projects_folder_name,
+    jap::get_local_projects_folder(
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir
+    ),
     project_name
+  )
+}
+
+#' Find local project folder
+#' @inheritParams default_params_doc
+#' @export
+get_local_function_folder <- function(
+  function_name,
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir()
+) {
+  file.path(
+    jap::get_local_project_folder(
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir
+    ),
+    function_name
+  )
+}
+
+#' Find local subfolder
+#' @inheritParams default_params_doc
+#' @export
+get_local_subfolder <- function(
+  subfolder = "results",
+  function_name,
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  home_dir = jap::default_home_dir()
+) {
+  file.path(
+    jap::get_local_function_folder(
+      function_name = function_name,
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir
+    ),
+    subfolder
+  )
+}
+
+#' Find remote projects folder
+#' @inheritParams default_params_doc
+#' @export
+get_remote_projects_folder <- function(
+  projects_folder_name = jap::default_projects_folder(),
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder()
+) {
+  file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name
   )
 }
 
@@ -202,10 +331,55 @@ get_remote_project_folder <- function(
   cluster_folder = jap::default_cluster_folder()
 ) {
   file.path(
-    "",
-    cluster_folder,
-    account,
-    projects_folder_name,
+    jap::get_remote_projects_folder(
+      projects_folder_name = projects_folder_name,
+      account = account,
+      cluster_folder = cluster_folder
+    ),
     project_name
+  )
+}
+
+#' Find remote function folder
+#' @inheritParams default_params_doc
+#' @export
+get_remote_function_folder <- function(
+  function_name,
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder()
+) {
+  file.path(
+    jap::get_remote_project_folder(
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      account = account,
+      cluster_folder = cluster_folder
+    ),
+    function_name
+  )
+}
+
+#' Find remote subfolder
+#' @inheritParams default_params_doc
+#' @export
+get_remote_subfolder <- function(
+  subfolder = "results",
+  function_name,
+  project_name,
+  projects_folder_name = jap::default_projects_folder(),
+  account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder()
+) {
+  file.path(
+    jap::get_remote_function_folder(
+      function_name = function_name,
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      account = account,
+      cluster_folder = cluster_folder
+    ),
+    subfolder
   )
 }

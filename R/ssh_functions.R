@@ -287,6 +287,7 @@ run_on_cluster <- function(
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
   account = jap::your_account(),
+  my_email = jap::default_my_email(),
   session = NA
 ) {
 
@@ -360,13 +361,21 @@ run_on_cluster <- function(
     "sbatch ",
     bash_file,
     " ",
-    args_filename,
+    args_filename, #1
     " ",
-    fun_filename,
+    fun_filename, #2
     " ",
-    cluster_folder,
+    my_email, #3
     " ",
-    cluster_partition
+    cluster_partition, #4
+    " ",
+    cluster_folder, #5
+    " ",
+    account, #6
+    " ",
+    package_name, #7
+    " ",
+    function_name #8
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(
