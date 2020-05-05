@@ -32,6 +32,8 @@ job_name=${args_string}
 log_name=${args_string}.log
 out_name=${args_string}.RData
 
+echo "/${cluster_folder}/${account}/${projects_folder_name}/${package_name}/${function_name}/logs/${log_name}"
+
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
 
