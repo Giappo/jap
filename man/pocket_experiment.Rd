@@ -12,7 +12,10 @@ pocket_experiment(
   function_name = "sls_main",
   params,
   cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  my_email = jap::default_my_email(),
   cluster_partition = "gelifes",
+  jap_branch = "master",
   drive = jap::default_drive_choice()
 )
 }
@@ -32,6 +35,9 @@ containing all your projects}
 
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
+
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
 
 \item{cluster_partition}{A string, with name of partition in which to run
 the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
