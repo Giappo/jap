@@ -19,6 +19,9 @@ echo ${fun_file}
 args_file=$( printf $args_file )
 fun_file=$( printf $fun_file )
 
+cluster_folder=$( printf $cluster_folder )
+account=$( printf $account )
+
 R_file_name=R-${args_string}.R
 bash_file_name=bash-${args_string}.bash
 job_name=${args_string}

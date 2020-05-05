@@ -284,12 +284,16 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
+  projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
+  home_dir = jap::default_home_dir(),
   account = jap::your_account(),
   my_email = jap::default_my_email(),
+  drive = jap::default_drive_choice(),
   session = NA
 ) {
+  project_name <- package_name
 
   if (is.list(fun_arguments)) {
     fun_arguments <- jap::args_2_string(fun_arguments)
@@ -304,6 +308,28 @@ run_on_cluster <- function(
   if (!jap::is_session_open(session = session)) {
     new_session <- TRUE
     session <- jap::open_session(account = account)
+  }
+
+  # create folder structure
+  if (!jap::remote_dir.exists(
+    jap::get_remote_function_folder(
+      function_name = function_name,
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      account = account,
+      cluster_folder = cluster_folder
+    )
+  )) {
+    jap::create_folder_structure(
+      account = account,
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir,
+      cluster_folder = cluster_folder,
+      project_name = project_name,
+      function_name = function_name,
+      drive = drive,
+      session = session
+    )
   }
 
   # upload scripts
