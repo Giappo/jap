@@ -2,7 +2,7 @@
 # Basic Settings
 library(ssh); library(googledrive)
 drive <- TRUE
-account <- "p274829"
+account <- jap::your_account()
 github_name <- "Giappo"
 project_name <- "sls"
 projects_folder_name <- "Projects"
@@ -22,6 +22,7 @@ session <- jap::open_session(account = account)
 
 # Create remote folder structure for the project
 jap::create_folder_structure(
+  function_name = function_name,
   projects_folder_name = projects_folder_name,
   project_name = project_name,
   account = account,
@@ -82,6 +83,7 @@ while (i <= nrow(params)) {
     # Download partial results
     jap::download_subfolder(
       subfolder = "results",
+      function_name = function_name,
       projects_folder_name = projects_folder_name,
       project_name = project_name,
       account = account,
@@ -96,6 +98,7 @@ while (i <= nrow(params)) {
       function_name = function_name,
       account = account,
       session = session,
+      cluster_partition = "regular",
       fun_arguments = jap::args_2_string(args = args)
     )
     i <- i + 1
