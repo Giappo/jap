@@ -5,6 +5,9 @@
 \title{Delete folder structure}
 \usage{
 delete_folder_structure(
+  delete_on_local = TRUE,
+  delete_on_remote = TRUE,
+  delete_on_drive = TRUE,
   account = jap::your_account(),
   projects_folder_name = jap::default_projects_folder(),
   home_dir = jap::default_home_dir(),

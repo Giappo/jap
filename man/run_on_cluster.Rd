@@ -12,6 +12,7 @@ run_on_cluster(
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
   account = jap::your_account(),
+  my_email = jap::default_my_email(),
   session = NA
 )
 }

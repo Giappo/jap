@@ -27,7 +27,7 @@ your_account <- function() {
   valid_account <- FALSE
   while (!valid_account) {
     out <- readline(
-      prompt = "What's your peregrine account?\n"
+      prompt = "What's your peregrine account (p-number or s-number)?\n"
     )
     first <- substr(out, start = 1, stop = 1)
     numbers <- as.numeric(substr(out, start = 2, stop = 1e3))
@@ -171,8 +171,7 @@ remote_dir.remove <- function(
 #' @export
 remote_list.files <- function(
   dir,
-  cluster_folder = jap::default_cluster_folder(),
-  account = jap::your_account(),
+  full.names = TRUE,
   session = NA
 ) {
   # open session
@@ -187,10 +186,14 @@ remote_list.files <- function(
     session = session,
     command = paste0(
       "ls ",
-      file.path("", cluster_folder, account, dir)
+      dir
     )
   ))
   files <- files[-length(files)]
+
+  if (full.names) {
+    files <- file.path(dir, files)
+  }
 
   if (new_session == TRUE) {
     jap::close_session(session = session)
@@ -442,24 +445,16 @@ args_2_string <- function(
 #' @export
 download_subfolder <- function(
   subfolder = "results",
+  function_name = NA,
+  project_name = NA,
   projects_folder_name = jap::default_projects_folder(),
-  home_dir = jap::default_home_dir(),
-  cluster_folder = jap::default_cluster_folder(),
-  project_name = "sls",
-  delete_on_cluster = FALSE,
   account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  delete_on_cluster = FALSE,
   drive = jap::default_drive_choice(),
   session = NA
 ) {
-
-  local_projects_folder <- file.path(home_dir, projects_folder_name)
-  remote_projects_folder <- file.path(
-    "",
-    cluster_folder,
-    account,
-    projects_folder_name
-  )
-  local_project_folder <- file.path(local_projects_folder, project_name)
 
   # open session
   new_session <- FALSE
@@ -469,22 +464,38 @@ download_subfolder <- function(
   }
 
   jap::create_folder_structure(
-    projects_folder_name = projects_folder_name,
-    home_dir = home_dir,
+    function_name = function_name,
     project_name = project_name,
     account = account,
+    projects_folder_name = projects_folder_name,
     cluster_folder = cluster_folder,
+    home_dir = home_dir,
     session = session,
     drive = drive
   )
 
   # download files
+  ## local
+  local_projects_folder <- file.path(home_dir, projects_folder_name)
+  local_project_folder <- file.path(local_projects_folder, project_name)
+  local_function_folder <- file.path(local_project_folder, function_name)
+  local_subfolder <- file.path(local_function_folder, subfolder)
+
+  ## peregrine
+  remote_projects_folder <- file.path(
+    "",
+    cluster_folder,
+    account,
+    projects_folder_name
+  )
   remote_project_folder <- file.path(remote_projects_folder, project_name)
-  remote_results_folder <- file.path(remote_project_folder, "results")
+  remote_function_folder <- file.path(remote_project_folder, function_name)
+  remote_subfolder <- file.path(remote_function_folder, subfolder)
+
   ssh::scp_download(
     session = session,
-    files = file.path(remote_project_folder, subfolder, "*"),
-    to = file.path(local_project_folder, subfolder),
+    files = file.path(remote_subfolder, "*"),
+    to = local_subfolder,
     verbose = TRUE
   )
 
@@ -492,7 +503,7 @@ download_subfolder <- function(
     ssh::ssh_exec_wait(
       session = session,
       command = paste0(
-        "rm -rfv ", file.path(remote_results_folder, "*")
+        "rm -rfv ", file.path(remote_subfolder, "*")
       )
     )
   }
@@ -504,16 +515,12 @@ download_subfolder <- function(
   if (drive == TRUE) {
     drive_projects_folder <- basename(local_projects_folder)
     drive_project_folder <- file.path(drive_projects_folder, project_name)
-    local_subfolder <- file.path(local_project_folder, subfolder)
-    drive_subfolder <- file.path(drive_project_folder, subfolder)
+    drive_function_folder <- file.path(drive_project_folder, function_name)
+    drive_subfolder <- file.path(drive_function_folder, subfolder)
     files <- list.files(local_subfolder)
 
     already_present <- jap::drive_list.files(
-      dir = file.path(
-        projects_folder_name,
-        project_name,
-        subfolder
-      )
+      dir = drive_subfolder
     )
     already_present <- unlist(already_present[, 1])
     files <- files[!(files %in% already_present)]
@@ -534,34 +541,49 @@ download_subfolder <- function(
 #' @return nothing
 #' @export
 download_project_folder <- function(
+  function_name = NA,
+  project_name = NA,
   projects_folder_name = jap::default_projects_folder(),
-  home_dir = jap::default_home_dir(),
-  cluster_folder = jap::default_cluster_folder(),
-  project_name = "sls",
-  delete_on_cluster = FALSE,
   account = jap::your_account(),
+  cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  delete_on_cluster = FALSE,
   drive = jap::default_drive_choice(),
   session = NA
 ) {
 
-  local_projects_folder <- file.path(paste0(home_dir, ":"), projects_folder_name)
+  local_projects_folder <- file.path(home_dir, projects_folder_name)
   remote_projects_folder <- file.path(
     "",
     cluster_folder,
     account,
     projects_folder_name
   )
+  remote_project_folder <- jap::get_remote_project_folder(
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      account = account,
+      cluster_folder = cluster_folder
+    )
+  function_names <- remote_list.files(dir = remote_project_folder, full.names = FALSE)
+  function_names <- function_names[function_names != "cluster_scripts"]
 
   subfolders <- jap::folder_structure()
-  for (subfolder in subfolders) {
-    jap::download_subfolder(
-      subfolder = subfolder,
-      local_projects_folder = local_projects_folder,
-      project_name = project_name,
-      account = account,
-      session = session,
-      drive = drive
-    )
+  for (function_name in function_names) {
+    for (subfolder in subfolders) {
+      jap::download_subfolder(
+        subfolder = subfolder,
+        function_name = function_name,
+        project_name = project_name,
+        projects_folder_name = projects_folder_name,
+        account = account,
+        cluster_folder = cluster_folder,
+        home_dir = home_dir,
+        delete_on_cluster = delete_on_cluster,
+        session = session,
+        drive = drive
+      )
+    }
   }
 }
 
