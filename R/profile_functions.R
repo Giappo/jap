@@ -4,11 +4,13 @@
 #' @export
 initialize_jap <- function() {
 
+  cat("This function will initialize the 'jap' package.\n")
+
+  cat("First packages will be installed.\n")
   remotes::install_github("tidyverse/googledrive", quiet = TRUE)
-  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  # rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
   # requireNamespace("usethis"); rprof_path <- scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
 
-  cat("This function will initialize the 'jap' package.\n")
   account <- jap::your_account()
   cat("'jap' will create two folders: one for your Github repos and one for your projects.\n")
 
@@ -17,6 +19,7 @@ initialize_jap <- function() {
   projects_folder_name <- jap::default_projects_folder()
   cluster_folder <- jap::default_cluster_folder()
   drive <- jap::default_drive_choice()
+  my_email <- jap::default_my_email()
 
   jap::create_folder_structure(
     projects_folder_name = projects_folder_name,
@@ -27,6 +30,7 @@ initialize_jap <- function() {
     drive = drive
   )
 
+  cat("Profile created!\n")
   cat("To change your profile information run 'jap::edit_profile()'\n")
 
   return()
@@ -55,7 +59,7 @@ default_home_dir <- function(){
 
     while (!(out %in% jap::find_disks())) {
       out <- readline(
-        prompt = "What disk do you want to use to host the 'jap' folder structure?\n"
+        prompt = "What disk do you want to use to host the 'jap' folder structure (e.g. C or D)?\n"
       )
       if (!(out %in% jap::find_disks())) {
         cat("Please select a valid disk.\n")
@@ -95,7 +99,7 @@ default_github_folder <- function() {
   }
   if (out == "") {
     out <- readline(
-      prompt = "How do you want to name the folder for your Github repos?\n"
+      prompt = "How do you want to name the folder for your Github repos (e.g. Githubs)?\n"
     )
     write(
       paste0(name, "\"", out, "\""),
@@ -126,7 +130,7 @@ default_projects_folder <- function() {
   }
   if (out == "") {
     out <- readline(
-      prompt = "How do you want to name the folder for your projects?\n"
+      prompt = "How do you want to name the folder for your projects (e.g. Projects)?\n"
     )
     write(
       paste0(name, "\"", out, "\""),
@@ -165,6 +169,49 @@ default_cluster_folder <- function() {
       }
     }
     out <- cluster_folder
+    write(
+      paste0(name, "\"", out, "\""),
+      file = rprof_path,
+      append = TRUE
+    )
+  }
+
+  return(out)
+}
+
+#' Set the default email to receive results
+#' @export
+default_my_email <- function() {
+  rprof_path <- usethis:::scoped_path_r(c("user", "project"), ".Rprofile", envvar = "R_PROFILE_USER")
+  name <- "JAP_MY_EMAIL="
+  y <- jap::my_try_catch(unlist(utils::read.table(rprof_path)))
+  out <- ""
+  if (is.null(y$warning) & is.null(y$error)) {
+    y1 <- as.character(y$value)
+    y2 <- y1[stringr::str_detect(y1, name)]
+    if (length(y2) == 1) {
+      testit::assert(length(y2) == 1)
+      out <- gsub(y2, pattern = name, replacement = "")
+      out <- gsub(out, pattern = "\"", replacement = "")
+    }
+  }
+  if (out == "") {
+    wrong_email <- TRUE
+    while (wrong_email) {
+      my_email <- readline(
+        "Which email address do you want to use to receive the results from cluster?\n"
+      )
+      if (
+        stringr::str_count(string = my_email, pattern = "@") != 1 ||
+        stringr::str_count(string = my_email, pattern = ".") < 1
+      ) {
+        wrong_email <- TRUE
+        cat("Please provide a valid email address\n")
+      } else {
+        wrong_email <- FALSE
+      }
+    }
+    out <- my_email
     write(
       paste0(name, "\"", out, "\""),
       file = rprof_path,

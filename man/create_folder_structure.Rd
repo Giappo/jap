@@ -10,6 +10,7 @@ create_folder_structure(
   home_dir = jap::default_home_dir(),
   cluster_folder = jap::default_cluster_folder(),
   project_name = NA,
+  function_name = NA,
   drive = jap::default_drive_choice(),
   session = NA
 )
@@ -27,6 +28,8 @@ a disk like C or D. On mac is always ~.}
 or 'data'}
 
 \item{project_name}{the name of the project}
+
+\item{function_name}{the name of the function}
 
 \item{drive}{do you want to use google drive to store the data of your
 prokects? It can be either TRUE or FALSE}
