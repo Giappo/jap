@@ -287,6 +287,7 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
+  run_name = "default",
   projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
@@ -305,6 +306,10 @@ run_on_cluster <- function(
 
   while (grepl(x = fun_arguments, pattern = " ")) {
     fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
+  }
+
+  if (run_name == "default") {
+    run_name <- paste0(function_name, "-", fun_arguments)
   }
 
   # open session
@@ -370,7 +375,13 @@ run_on_cluster <- function(
     install_package =
       eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
   )
-  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+
+  # give name to run and args file
+  if (is.na(run_name)) {
+    args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+  } else {
+    args_filename <- run_name
+  }
   args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
   ssh::scp_upload(
