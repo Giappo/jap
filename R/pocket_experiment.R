@@ -12,7 +12,10 @@ pocket_experiment <- function(
   function_name = "sls_main",
   params,
   cluster_folder = jap::default_cluster_folder(),
+  home_dir = jap::default_home_dir(),
+  my_email = jap::default_my_email(),
   cluster_partition = "gelifes",
+  jap_branch = "master",
   drive = jap::default_drive_choice()
 ) {
 
@@ -29,13 +32,18 @@ pocket_experiment <- function(
       "params",
       "cluster_folder",
       "cluster_partition",
+      "home_dir",
+      "my_email",
+      "jap_branch",
       "drive"
     )
   )
 
   filename <- "pocket_script.R"
   url <- paste0(
-    "https://raw.githubusercontent.com/Giappo/jap/master/job_scripts/",
+    "https://raw.githubusercontent.com/Giappo/jap/",
+    jap_branch,
+    "/job_scripts/",
     filename
   )
   utils::download.file(url, destfile = file.path(tempfolder, filename))
