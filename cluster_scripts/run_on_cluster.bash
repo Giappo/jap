@@ -20,19 +20,18 @@ echo ${fun_file}
 args_file=$( printf $args_file )
 fun_file=$( printf $fun_file )
 
+R_file_name=R-${args_string}.R
+bash_file_name=bash-${args_string}.bash
+job_name=${args_string}
+#log_name=${args_string}.log
+out_name=${args_string}.RData
+log_name=/${cluster_folder}/${account}/${projects_folder_name}/${package_name}/${function_name}/logs/${args_string}.log
+
 cluster_folder=$( printf $cluster_folder )
 account=$( printf $account )
 projects_folder_name=$( printf $projects_folder_name )
 package_name=$( printf $package_name )
 function_name=$( printf $function_name )
-
-R_file_name=R-${args_string}.R
-bash_file_name=bash-${args_string}.bash
-job_name=${args_string}
-log_name=${args_string}.log
-out_name=${args_string}.RData
-
-echo "/${cluster_folder}/${account}/${projects_folder_name}/${package_name}/${function_name}/logs/${log_name}"
 
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
@@ -49,7 +48,7 @@ echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
-echo "#SBATCH --output=/${cluster_folder}/${account}/${projects_folder_name}/${package_name}/${function_name}/logs/${log_name}" >> $bash_file_name
+echo "#SBATCH --output=${log_name}" >> $bash_file_name
 echo "module load R" >> $bash_file_name
 echo "Rscript ${R_file_name} ${args_file}" >> $bash_file_name
 echo "rm ${R_file_name}" >> $bash_file_name
