@@ -93,6 +93,7 @@ upload_bash_scripts <- function(
 #' @export
 upload_jap_scripts <- function(
   account = jap::your_account(),
+  jap_branch = "master",
   cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
@@ -112,7 +113,9 @@ upload_jap_scripts <- function(
   tempfolder <- tempdir()
   for (filename in filenames) {
     url <- paste0(
-      "https://raw.githubusercontent.com/Giappo/jap/master/cluster_scripts/",
+      "https://raw.githubusercontent.com/Giappo/jap/",
+      jap_branch,
+      "/cluster_scripts/",
       filename
     )
     utils::download.file(url, destfile = file.path(tempfolder, filename))
@@ -291,6 +294,7 @@ run_on_cluster <- function(
   account = jap::your_account(),
   my_email = jap::default_my_email(),
   drive = jap::default_drive_choice(),
+  jap_branch = "master",
   session = NA
 ) {
   project_name <- package_name
@@ -335,6 +339,7 @@ run_on_cluster <- function(
   # upload scripts
   jap::upload_jap_scripts(
     cluster_folder = cluster_folder,
+    jap_branch = jap_branch,
     account = account,
     session = session
   )

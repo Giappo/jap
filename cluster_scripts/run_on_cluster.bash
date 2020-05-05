@@ -21,6 +21,8 @@ fun_file=$( printf $fun_file )
 
 cluster_folder=$( printf $cluster_folder )
 account=$( printf $account )
+package_name=$( printf $package_name )
+function_name=$( printf $function_name )
 
 R_file_name=R-${args_string}.R
 bash_file_name=bash-${args_string}.bash
