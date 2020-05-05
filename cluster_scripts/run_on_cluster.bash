@@ -4,8 +4,9 @@ my_email=$3
 chosen_partition=$4
 cluster_folder=$5
 account=$6
-package_name=$7
-function_name=$8
+projects_folder_name=$7
+package_name=$8
+function_name=$9
 cd /$cluster_folder/$account/jap_scripts/
 
 args_file=$1
@@ -21,6 +22,7 @@ fun_file=$( printf $fun_file )
 
 cluster_folder=$( printf $cluster_folder )
 account=$( printf $account )
+projects_folder_name=$( printf $projects_folder_name )
 package_name=$( printf $package_name )
 function_name=$( printf $function_name )
 
@@ -37,13 +39,14 @@ echo "args <- commandArgs(TRUE)" > $R_file_name
 echo "print(args)" >> $R_file_name
 echo "load(file.path(\"\", \"${cluster_folder}\", \"${account}\", \"jap_scripts\", \"${fun_file}\"))" >> $R_file_name
 echo "x <- fun_list\$run_function_from_file(args_file = args)" >> $R_file_name
+echo "setwd(dir = file.path(\"\", \"${cluster_folder}\", \"${account}\", \"${projects_folder_name}\", \"${package_name}\", \"${function_name}\", \"results\"))" >> $R_file_name
 echo "print(x)" >> $R_file_name
 #echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
-echo "save(x, file = file.path(\"\", \"${cluster_folder}\", \"${account}\", \"${package_name}\", \"${function_name}\", \"results\", \"${out_name}\"))" >> $R_file_name
+#echo "save(x, file = file.path(\"\", \"${cluster_folder}\", \"${account}\", \"${package_name}\", \"${function_name}\", \"results\", \"${out_name}\"))" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
-echo "#SBATCH --output=${log_name}" >> $bash_file_name
+echo "#SBATCH --output=/${cluster_folder}/${account}/${projects_folder_name}/${package_name}/${function_name}/logs/${log_name}" >> $bash_file_name
 echo "module load R" >> $bash_file_name
 echo "Rscript ${R_file_name} ${args_file}" >> $bash_file_name
 echo "rm ${R_file_name}" >> $bash_file_name

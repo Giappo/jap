@@ -404,9 +404,11 @@ run_on_cluster <- function(
     " ",
     account, #6
     " ",
-    package_name, #7
+    projects_folder_name, #7
     " ",
-    function_name #8
+    package_name, #8
+    " ",
+    function_name #9
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(
