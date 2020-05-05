@@ -47,8 +47,8 @@ echo "print(x)" >> $R_file_name
 echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
-echo "#SBATCH --time=71:58:58" >> $bash_file_name
-echo "#SBATCH --output=${log_name}" >> $bash_file_name
+#echo "#SBATCH --time=71:58:58" >> $bash_file_name
+#echo "#SBATCH --output=${log_name}" >> $bash_file_name
 echo "module load R" >> $bash_file_name
 echo "Rscript ${R_file_name} ${args_file}" >> $bash_file_name
 echo "rm ${R_file_name}" >> $bash_file_name
@@ -58,11 +58,12 @@ echo "rm ${fun_file}" >> $bash_file_name
 
 #NEVER ASK FOR MORE THAN 9GB OF MEMORY!
 sbatch  --partition=$chosen_partition \
+		--time=71:58:58 \
 		--mem=9GB \
 		--job-name=$job_name \
 		--mail-type=FAIL,TIME_LIMIT \
 		--mail-user=$my_email \
-		--output=job-${job_name}.log \
+		--output=job-${log_name} \
 		$bash_file_name
 
 cd /$cluster_folder/$USER/
