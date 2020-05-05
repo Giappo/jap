@@ -63,7 +63,7 @@ sbatch  --partition=$chosen_partition \
 		--job-name=$job_name \
 		--mail-type=FAIL,TIME_LIMIT \
 		--mail-user=$my_email \
-		--output=job-${log_name} \
+		--output=${log_name} \
 		$bash_file_name
 
 cd /$cluster_folder/$USER/
