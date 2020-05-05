@@ -13,7 +13,7 @@ First, specify basic info
 
 ```{r setup, eval = FALSE}
 jap::initialize_jap()
-jap_branch <- "giovanni"
+cluster_partition <- "regular"
 library(jap, quietly = TRUE)
 ```
 
@@ -38,7 +38,6 @@ params_grid <- expand.grid(
 )
 loglik_functions <- sls::sls_logliks_experiment()
 verbose <- TRUE
-# project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
 project_folder <- jap::get_remote_function_folder(
   function_name = function_name,
   project_name = project_name
@@ -64,7 +63,8 @@ jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
   function_name = function_name,
-  params = params
+  params = params,
+  cluster_partition = cluster_partition
 )
 ```
 
@@ -87,7 +87,10 @@ params_grid <- expand.grid(
 )
 loglik_functions <- mbd::mbd_experiment_logliks()
 verbose <- TRUE
-project_folder <- file.path("", "home", account, projects_folder_name, project_name)
+project_folder <- jap::get_remote_function_folder(
+  function_name = function_name,
+  project_name = project_name
+)
 
 params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
@@ -109,9 +112,7 @@ jap::pocket_experiment(
   project_name = project_name,
   function_name = function_name,
   params = params,
-  account = account,
-  projects_folder_name = projects_folder_name, 
-  drive = drive
+  cluster_partition = cluster_partition
 )
 ```
 
@@ -145,10 +146,12 @@ for (i in 1:2) {
 Again, we just need to run "pocket_experiment" to make everything run
 
 ```{r eval=FALSE}
-jap::pocket_experiment(github_name = "Neves-P",
+jap::pocket_experiment(
+  github_name = github_name,
   project_name = project_name,
   function_name = function_name,
-  params = params, cluster_folder = "data"
+  params = params,
+  cluster_partition = cluster_partition
 )
 ```
 
@@ -169,7 +172,14 @@ params_grid <- expand.grid(
   cond = 1,
   seed = 1:max_sims
 )
-output_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name, "results")
+output_folder <- jap::get_remote_subfolder(
+    subfolder = "results",
+    function_name = function_name,
+    project_name = project_name,
+    projects_folder_name = projects_folder_name,
+    account = account,
+    cluster_folder = cluster_folder
+  )
 
 params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
@@ -191,17 +201,14 @@ jap::pocket_experiment(
   project_name = project_name,
   function_name = function_name,
   params = params,
-  account = account,
-  cluster_folder = cluster_folder,
-  projects_folder_name = projects_folder_name, 
-  drive = drive
+  cluster_partition = cluster_partition
 )
 ```
 
 We can check that everything is running
 
 ```{r eval=FALSE}
-jap::check_jobs(account = account)
+jap::check_jobs()
 ```
 
 Or we can check if our results are stored on google drive
