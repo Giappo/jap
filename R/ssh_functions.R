@@ -93,6 +93,7 @@ upload_bash_scripts <- function(
 #' @export
 upload_jap_scripts <- function(
   account = jap::your_account(),
+  jap_branch = "master",
   cluster_folder = jap::default_cluster_folder(),
   session = NA
 ) {
@@ -112,7 +113,9 @@ upload_jap_scripts <- function(
   tempfolder <- tempdir()
   for (filename in filenames) {
     url <- paste0(
-      "https://raw.githubusercontent.com/Giappo/jap/master/cluster_scripts/",
+      "https://raw.githubusercontent.com/Giappo/jap/",
+      jap_branch,
+      "/cluster_scripts/",
       filename
     )
     utils::download.file(url, destfile = file.path(tempfolder, filename))
@@ -284,12 +287,17 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
+  projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
+  home_dir = jap::default_home_dir(),
   account = jap::your_account(),
   my_email = jap::default_my_email(),
+  drive = jap::default_drive_choice(),
+  jap_branch = "master",
   session = NA
 ) {
+  project_name <- package_name
 
   if (is.list(fun_arguments)) {
     fun_arguments <- jap::args_2_string(fun_arguments)
@@ -306,9 +314,32 @@ run_on_cluster <- function(
     session <- jap::open_session(account = account)
   }
 
+  # create folder structure
+  if (!jap::remote_dir.exists(
+    jap::get_remote_function_folder(
+      function_name = function_name,
+      project_name = project_name,
+      projects_folder_name = projects_folder_name,
+      account = account,
+      cluster_folder = cluster_folder
+    )
+  )) {
+    jap::create_folder_structure(
+      account = account,
+      projects_folder_name = projects_folder_name,
+      home_dir = home_dir,
+      cluster_folder = cluster_folder,
+      project_name = project_name,
+      function_name = function_name,
+      drive = drive,
+      session = session
+    )
+  }
+
   # upload scripts
   jap::upload_jap_scripts(
     cluster_folder = cluster_folder,
+    jap_branch = jap_branch,
     account = account,
     session = session
   )
@@ -373,9 +404,11 @@ run_on_cluster <- function(
     " ",
     account, #6
     " ",
-    package_name, #7
+    projects_folder_name, #7
     " ",
-    function_name #8
+    package_name, #8
+    " ",
+    function_name #9
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(

@@ -9,10 +9,14 @@ run_on_cluster(
   package_name,
   function_name,
   fun_arguments,
+  projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
+  home_dir = jap::default_home_dir(),
   account = jap::your_account(),
   my_email = jap::default_my_email(),
+  drive = jap::default_drive_choice(),
+  jap_branch = "master",
   session = NA
 )
 }
@@ -26,6 +30,9 @@ run_on_cluster(
 \item{fun_arguments}{the arguments of the function passed either as
 list or as string (in the format 'arg1 = x, arg2 = y')}
 
+\item{projects_folder_name}{the name you want to give to the folder
+containing all your projects}
+
 \item{cluster_folder}{main folder on the cluster. It can be either 'home'
 or 'data'}
 
@@ -33,7 +40,13 @@ or 'data'}
 the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
 \code{"short"} and remaining Peregrine partitions.}
 
+\item{home_dir}{path to the home directory. On windows usually is
+a disk like C or D. On mac is always ~.}
+
 \item{account}{a peregrine account}
+
+\item{drive}{do you want to use google drive to store the data of your
+prokects? It can be either TRUE or FALSE}
 
 \item{session}{a ssh session}
 }
