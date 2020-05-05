@@ -45,6 +45,7 @@ echo "setwd(dir = file.path(\"\", \"${cluster_folder}\", \"${account}\", \"${pro
 echo "print(x)" >> $R_file_name
 #echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
 #echo "save(x, file = file.path(\"\", \"${cluster_folder}\", \"${account}\", \"${package_name}\", \"${function_name}\", \"results\", \"${out_name}\"))" >> $R_file_name
+echo "save(x, file = file.path(getwd(), \"${out_name}\"))" >> $R_file_name
 
 echo "#!/bin/bash" > $bash_file_name
 echo "#SBATCH --time=71:58:58" >> $bash_file_name
