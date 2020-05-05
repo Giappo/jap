@@ -12,9 +12,8 @@ vignette: >
 First, specify basic info
 
 ```{r setup, eval = FALSE}
-account <- jap::your_account()
-projects_folder_name <- "Projects"
-drive <- FALSE # we want to use google drive
+jap::initialize_jap()
+jap_branch <- "giovanni"
 library(jap, quietly = TRUE)
 ```
 
@@ -39,7 +38,11 @@ params_grid <- expand.grid(
 )
 loglik_functions <- sls::sls_logliks_experiment()
 verbose <- TRUE
-project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
+# project_folder <- file.path("", cluster_folder, account, projects_folder_name, project_name)
+project_folder <- jap::get_remote_function_folder(
+  function_name = function_name,
+  project_name = project_name
+)
 
 params <- vector("list", nrow(params_grid))
 for (i in 1:nrow(params_grid)) {
@@ -61,11 +64,7 @@ jap::pocket_experiment(
   github_name = github_name,
   project_name = project_name,
   function_name = function_name,
-  params = params,
-  account = account,
-  cluster_folder = cluster_folder,
-  projects_folder_name = projects_folder_name,
-  drive = drive
+  params = params
 )
 ```
 

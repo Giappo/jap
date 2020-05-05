@@ -1,12 +1,11 @@
 load("pocket_data.RData")
 
-remote_projects_folder <- file.path(
-  "",
-  cluster_folder,
-  account,
-  projects_folder_name
+remote_project_folder <- jap::get_remote_project_folder(
+  project_name = project_name,
+  projects_folder_name = projects_folder_name,
+  account = account,
+  cluster_folder = cluster_folder
 )
-remote_project_folder <- file.path(remote_projects_folder, project_name)
 
 # Project Settings
 jap::install_package(package_name = project_name, github_name = github_name)
@@ -14,16 +13,6 @@ library(project_name, character.only = TRUE)
 
 # Open Session
 session <- jap::open_session(account = account)
-
-# Create remote folder structure for the project
-jap::create_folder_structure(
-  projects_folder_name = projects_folder_name,
-  project_name = project_name,
-  account = account,
-  cluster_folder = cluster_folder,
-  session = session,
-  drive = drive
-)
 
 # Install on cluster
 jap::remote_install.packages(
@@ -57,6 +46,7 @@ while (i <= length(params)) {
     # Download partial results
     jap::download_subfolder(
       subfolder = "results",
+      function_name = function_name,
       projects_folder_name = projects_folder_name,
       project_name = project_name,
       cluster_folder = cluster_folder,
@@ -71,11 +61,12 @@ while (i <= length(params)) {
       github_name = github_name,
       package_name = project_name,
       function_name = function_name,
+      fun_arguments = args,
       cluster_folder = cluster_folder,
       cluster_partition = cluster_partition,
       account = account,
       session = session,
-      fun_arguments = args
+      jap_branch = jap_branch
     )
     i <- i + 1
   } else {
