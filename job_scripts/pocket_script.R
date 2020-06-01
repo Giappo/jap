@@ -53,7 +53,7 @@ while (i <= length(params)) {
       account = account,
       session = session,
       drive = drive,
-      delete_on_cluster = TRUE
+      delete_on_cluster = delete_on_cluster
     )
 
     # Run the main function
@@ -92,7 +92,7 @@ while (n_jobs > 0) {
       account = account,
       session = session,
       drive = drive,
-      delete_on_cluster = TRUE
+      delete_on_cluster = delete_on_cluster
     )
   }
 }
