@@ -27,7 +27,7 @@ i <- 1
 while (i <= length(params)) {
 
   # Select the i-th parsetting
-  args <- params[[i]]
+  fun_arguments <- params[[i]]
 
   check <- jap::check_jobs(session = session)
   n_jobs <- length(check$job_ids)
@@ -39,7 +39,7 @@ while (i <= length(params)) {
 
     cat(
       "Function arguments are:\n",
-      jap::args_2_string(args),
+      jap::args_2_string(fun_arguments),
       "\n"
     )
 
@@ -61,7 +61,7 @@ while (i <= length(params)) {
       github_name = github_name,
       package_name = project_name,
       function_name = function_name,
-      fun_arguments = args,
+      fun_arguments = fun_arguments,
       cluster_folder = cluster_folder,
       cluster_partition = cluster_partition,
       account = account,

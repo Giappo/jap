@@ -18,9 +18,7 @@ git_clone <- function(
       github_repo,
       ".git",
       " ",
-      github_folder,
-      "/",
-      github_repo
+      file.path(github_folder, github_repo)
     )
     system(command)
   }
@@ -117,6 +115,7 @@ open_github_project <- function(
     jap::git_clone(github_name = github_name, github_repo = github_repo)
   }
   project_file <- file.path(project_folder, paste0(github_repo,".Rproj"))
+  testit::assert(file.exists(project_file))
   jap::open_file(project_file)
   return()
 }

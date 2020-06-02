@@ -300,16 +300,35 @@ run_on_cluster <- function(
 ) {
   project_name <- package_name
 
+  if (run_name == "default") {
+    run_name <- paste0(
+      function_name,
+      "-",
+      gsub(
+        x = toString(unlist(
+          fun_arguments
+        )),
+        pattern = " ",
+        replacement = ""
+      )
+    )
+    run_name <- gsub(x = run_name, pattern = "::", replacement = "-")
+    run_name <- gsub(x = run_name, pattern = ":", replacement = "")
+    run_name <- gsub(x = run_name, pattern = "\"", replacement = "")
+    run_name <- gsub(x = run_name, pattern = ",", replacement = "-")
+    run_name <- gsub(x = run_name, pattern = "=", replacement = "-")
+    run_name <- gsub(x = run_name, pattern = "file.path", replacement = "")
+    run_name <- gsub(x = run_name, pattern = "[(]", replacement = "[")
+    run_name <- gsub(x = run_name, pattern = "[)]", replacement = "]")
+    run_name <- substr(x = run_name, start = 1, stop = 2000)
+  }
+
   if (is.list(fun_arguments)) {
     fun_arguments <- jap::args_2_string(fun_arguments)
   }
 
   while (grepl(x = fun_arguments, pattern = " ")) {
     fun_arguments <- gsub(x = fun_arguments, pattern = " ", replacement = "")
-  }
-
-  if (run_name == "default") {
-    run_name <- paste0(function_name, "-", fun_arguments)
   }
 
   # open session
@@ -380,7 +399,7 @@ run_on_cluster <- function(
   if (is.na(run_name)) {
     args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
   } else {
-    args_filename <- run_name
+    args_filename <- paste0(run_name, ".RData")
   }
   args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
