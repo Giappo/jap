@@ -16,7 +16,8 @@ pocket_experiment <- function(
   my_email = jap::default_my_email(),
   cluster_partition = "gelifes",
   jap_branch = "master",
-  drive = jap::default_drive_choice()
+  drive = jap::default_drive_choice(),
+  delete_on_cluster = TRUE
 ) {
 
   tempfolder <- tempdir()
@@ -35,7 +36,8 @@ pocket_experiment <- function(
       "home_dir",
       "my_email",
       "jap_branch",
-      "drive"
+      "drive",
+      "delete_on_cluster"
     )
   )
 
