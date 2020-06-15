@@ -34,6 +34,8 @@
 #' @param subfolder a subfolder of the project folder
 #' @param t time
 #' @param verbose choose if you want to print the output or not
+#' @param runtime A string with the amount of cluster runtime that the jobs
+#' should take. Defaults to "71:58:58".
 #' @author Documentation by Giovanni Laudanno,
 #' @note This is an internal function, so it should be marked with
 #'   \code{@noRd}. This is not done, as this will disallow all

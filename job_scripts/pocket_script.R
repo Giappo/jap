@@ -66,7 +66,8 @@ while (i <= length(params)) {
       cluster_partition = cluster_partition,
       account = account,
       session = session,
-      jap_branch = jap_branch
+      jap_branch = jap_branch,
+      runtime = runtime
     )
     i <- i + 1
   } else {

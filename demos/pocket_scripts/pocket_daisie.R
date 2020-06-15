@@ -2,7 +2,7 @@
 # Basic Settings
 library(ssh); library(googledrive)
 drive <- TRUE
-account <- "p282067" # account <- "p282067"
+account <- jap::your_account()
 github_name <- "Neves-P"
 project_name <- "DAISIErobustness"
 projects_folder_name <- "Projects"
