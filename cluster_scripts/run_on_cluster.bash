@@ -59,7 +59,7 @@ echo "rm ${fun_file}" >> $bash_file_name
 
 #NEVER ASK FOR MORE THAN 9GB OF MEMORY!
 sbatch  --partition=$chosen_partition \
-		--time=${runtime} \
+		--time=$runtime \
 		--mem=9GB \
 		--job-name=$job_name \
 		--mail-type=FAIL,TIME_LIMIT \
