@@ -43,9 +43,7 @@ pocket_experiment <- function(
 
   filename <- "pocket_script.R"
   url <- paste0(
-    "https://raw.githubusercontent.com/Giappo/jap/",
-    jap_branch,
-    "/job_scripts/",
+    "https://raw.githubusercontent.com/Giappo/jap/stable-robustness/job_scripts/",
     filename
   )
   utils::download.file(url, destfile = file.path(tempfolder, filename))
