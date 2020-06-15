@@ -295,8 +295,7 @@ run_on_cluster <- function(
   my_email = jap::default_my_email(),
   drive = jap::default_drive_choice(),
   jap_branch = "master",
-  session = NA,
-  runtime = "71:58:58"
+  session = NA
 ) {
   project_name <- package_name
 
@@ -409,9 +408,7 @@ run_on_cluster <- function(
     " ",
     package_name, #8
     " ",
-    function_name, #9
-    " ",
-    runtime #10
+    function_name #9
   )
   cat(command, "\n")
   x <- utils::capture.output(ssh::ssh_exec_wait(

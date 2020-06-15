@@ -7,7 +7,6 @@ account=$6
 projects_folder_name=$7
 package_name=$8
 function_name=$9
-runtime=$10
 cd /$cluster_folder/$account/jap_scripts/
 
 args_file=$1
@@ -59,7 +58,7 @@ echo "rm ${fun_file}" >> $bash_file_name
 
 #NEVER ASK FOR MORE THAN 9GB OF MEMORY!
 sbatch  --partition=$chosen_partition \
-		--time=$runtime \
+		--time=71:58:58 \
 		--mem=9GB \
 		--job-name=$job_name \
 		--mail-type=FAIL,TIME_LIMIT \
