@@ -113,9 +113,7 @@ upload_jap_scripts <- function(
   tempfolder <- tempdir()
   for (filename in filenames) {
     url <- paste0(
-      "https://raw.githubusercontent.com/Giappo/jap/",
-      jap_branch,
-      "/cluster_scripts/",
+      "https://raw.githubusercontent.com/Giappo/jap/stable-robustness/cluster_scripts/",
       filename
     )
     utils::download.file(url, destfile = file.path(tempfolder, filename))
