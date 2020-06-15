@@ -33,6 +33,7 @@ account=$( printf $account )
 projects_folder_name=$( printf $projects_folder_name )
 package_name=$( printf $package_name )
 function_name=$( printf $function_name )
+runtime=$( printf $runtime )
 
 rm $R_file_name #remove previous versions
 rm $bash_file_name #remove previous versions
