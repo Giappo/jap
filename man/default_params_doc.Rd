@@ -30,6 +30,7 @@ default_params_doc(
   session,
   subfolder,
   t,
+  tree_file,
   verbose
 )
 }
@@ -90,6 +91,8 @@ containing all your projects}
 \item{subfolder}{a subfolder of the project folder}
 
 \item{t}{time}
+
+\item{tree_file}{a tree file in format nexus or .tree}
 
 \item{verbose}{choose if you want to print the output or not}
 }

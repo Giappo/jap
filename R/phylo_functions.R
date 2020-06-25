@@ -98,3 +98,22 @@ plot_ltt <- function(
     ggplot2::theme_bw()
   plot
 }
+
+#' Open tree file to retrieve node bars info
+#' @inheritParams default_params_doc
+#' @author Giovanni Laudanno
+#' @export
+read_phylo_node_bars <- function(
+  tree_file
+) {
+  a = utils::read.csv(tree_file)
+  grepl(x = a, pattern = "height_95%_HPD")
+  b = apply(a, MARGIN = 1, FUN = function(x) grepl(x = x, pattern = "height_95%_HPD=\\{"))
+  c1 = gsub(x = a[which(b), ], pattern = "height_95%_HPD=\\{", replacement = "")
+  c2 = gsub(x = a[which(b) + 1, ], pattern = "\\}", replacement = "")
+  node_bars = data.frame(
+    min = as.numeric(c1),
+    max = as.numeric(c2)
+  )
+  node_bars
+}

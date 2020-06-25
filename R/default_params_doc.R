@@ -33,6 +33,7 @@
 #' @param session a ssh session
 #' @param subfolder a subfolder of the project folder
 #' @param t time
+#' @param tree_file a tree file in format nexus or .tree
 #' @param verbose choose if you want to print the output or not
 #' @author Documentation by Giovanni Laudanno,
 #' @note This is an internal function, so it should be marked with
@@ -63,6 +64,7 @@ default_params_doc <- function(
   session,
   subfolder,
   t,
+  tree_file,
   verbose
 ) {
   # Nothing
