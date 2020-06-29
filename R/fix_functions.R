@@ -15,6 +15,15 @@ fix_documentation <- function() {
 #' @export
 fix_java <- function() {
 
+  java_name <- paste0(
+    "jre",
+    gsub(
+      x = gsub(x = system("java -version", intern = T)[1], pattern = "java version \"", replacement = ""),
+      pattern = "\"",
+      replacement = ""
+    )
+  )
+
   jap_folder <- system.file(package = "jap")
   extdata_folder <- file.path(jap_folder, "extdata")
   if (!("extdata" %in% list.files(jap_folder))) {
@@ -32,9 +41,9 @@ fix_java <- function() {
 
   disks <- jap::find_disks()
 
-  # browseURL(
-  # "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=241533_1f5b5a70bf22433b84d0e960903adac8"
-  # )
+  browseURL(
+  "https://javadl.oracle.com/webapps/download/AutoDL?BundleId=241533_1f5b5a70bf22433b84d0e960903adac8"
+  )
 
   i <- 1
   done <- FALSE
@@ -53,12 +62,12 @@ fix_java <- function() {
       pre <- fs::dir_ls(
         path = priority,
         recurse = TRUE,
-        regexp = "jre1.8.0_241",
+        regexp = java_name,
         fail = FALSE
       )
     )
 
-    pre <- pre[endsWith(pre, "jre1.8.0_241")]
+    pre <- pre[endsWith(pre, java_name)]
     if (length(pre) > 0) {
       j <- 1
       while (j <= length(pre) & done == FALSE) {
@@ -81,12 +90,12 @@ fix_java <- function() {
       pre <- fs::dir_ls(
         path = paste0(disk, ":/"),
         recurse = TRUE,
-        regexp = "jre1.8.0_241",
+        regexp = java_name,
         fail = FALSE
       )
     )
 
-    pre <- pre[endsWith(pre, "jre1.8.0_241")]
+    pre <- pre[endsWith(pre, java_name)]
     if (length(pre) > 0) {
       j <- 1
       while (j <= length(pre) & done == FALSE) {
