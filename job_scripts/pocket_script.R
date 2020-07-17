@@ -35,7 +35,7 @@ while (i <= length(params)) {
   cat(x)
   cat("\nThere are", n_jobs, "jobs left\n")
 
-  if (n_jobs < (100)) { #send new jobs only if max 100 jobs are already running
+  if (n_jobs < (max_n_jobs)) { #send new jobs only if max 100 jobs are already running
 
     cat(
       "Function arguments are:\n",
