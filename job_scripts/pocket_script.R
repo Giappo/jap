@@ -35,7 +35,7 @@ while (i <= length(params)) {
   cat(x)
   cat("\nThere are", n_jobs, "jobs left\n")
 
-  if (n_jobs < (max_n_jobs)) { #send new jobs only if max 100 jobs are already running
+  if (n_jobs < (max_n_jobs)) { #send new jobs only if max jobs are already running
 
     cat(
       "Function arguments are:\n",
@@ -44,17 +44,17 @@ while (i <= length(params)) {
     )
 
     # Download partial results
-    jap::download_subfolder(
-      subfolder = "results",
-      function_name = function_name,
-      projects_folder_name = projects_folder_name,
-      project_name = project_name,
-      cluster_folder = cluster_folder,
-      account = account,
-      session = session,
-      drive = drive,
-      delete_on_cluster = delete_on_cluster
-    )
+    # jap::download_subfolder(
+    #   subfolder = "results",
+    #   function_name = function_name,
+    #   projects_folder_name = projects_folder_name,
+    #   project_name = project_name,
+    #   cluster_folder = cluster_folder,
+    #   account = account,
+    #   session = session,
+    #   drive = drive,
+    #   delete_on_cluster = delete_on_cluster
+    # )
 
     # Run the main function
     jap::run_on_cluster(
@@ -75,27 +75,27 @@ while (i <= length(params)) {
 }
 
 # Download results
-while (n_jobs > 0) {
-  check <- jap::check_jobs(session = session)
-  n_jobs <- length(check$job_ids)
-  x <- utils::capture.output(print(Sys.time()))
-  cat(x)
-  cat("\nThere are", n_jobs, "jobs left\n")
-
-  if (n_jobs > 0) { # download when they are all completed
-    Sys.sleep(60) # wait 1 min then retry
-  } else {
-    jap::download_subfolder(
-      subfolder = "results",
-      projects_folder_name = projects_folder_name,
-      project_name = project_name,
-      account = account,
-      session = session,
-      drive = drive,
-      delete_on_cluster = delete_on_cluster
-    )
-  }
-}
+# while (n_jobs > 0) {
+#   check <- jap::check_jobs(session = session)
+#   n_jobs <- length(check$job_ids)
+#   x <- utils::capture.output(print(Sys.time()))
+#   cat(x)
+#   cat("\nThere are", n_jobs, "jobs left\n")
+#
+#   if (n_jobs > 0) { # download when they are all completed
+#     Sys.sleep(60) # wait 1 min then retry
+#   } else {
+#     jap::download_subfolder(
+#       subfolder = "results",
+#       projects_folder_name = projects_folder_name,
+#       project_name = project_name,
+#       account = account,
+#       session = session,
+#       drive = drive,
+#       delete_on_cluster = delete_on_cluster
+#     )
+#   }
+# }
 
 # Close session
 jap::close_session(session = session)
