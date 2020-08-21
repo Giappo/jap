@@ -16,7 +16,8 @@ pocket_experiment(
   my_email = jap::default_my_email(),
   cluster_partition = "gelifes",
   jap_branch = "master",
-  drive = jap::default_drive_choice()
+  drive = jap::default_drive_choice(),
+  delete_on_cluster = TRUE
 )
 }
 \arguments{
@@ -45,6 +46,9 @@ the main job. Defaults to \code{"gelifes"}, accepts \code{"regular"},
 
 \item{drive}{do you want to use google drive to store the data of your
 prokects? It can be either TRUE or FALSE}
+
+\item{delete_on_cluster}{do you want to delete the files from the cluster
+after the download?}
 }
 \value{
 nothing
