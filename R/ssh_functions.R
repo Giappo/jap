@@ -287,6 +287,7 @@ run_on_cluster <- function(
   package_name,
   function_name,
   fun_arguments,
+  run_name = "default",
   projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
@@ -298,6 +299,29 @@ run_on_cluster <- function(
   session = NA
 ) {
   project_name <- package_name
+
+  if (run_name == "default") {
+    run_name <- paste0(
+      function_name,
+      "-",
+      gsub(
+        x = toString(unlist(
+          fun_arguments
+        )),
+        pattern = " ",
+        replacement = ""
+      )
+    )
+    run_name <- gsub(x = run_name, pattern = "::", replacement = "-")
+    run_name <- gsub(x = run_name, pattern = ":", replacement = "")
+    run_name <- gsub(x = run_name, pattern = "\"", replacement = "")
+    run_name <- gsub(x = run_name, pattern = ",", replacement = "-")
+    run_name <- gsub(x = run_name, pattern = "=", replacement = "-")
+    run_name <- gsub(x = run_name, pattern = "file.path", replacement = "")
+    run_name <- gsub(x = run_name, pattern = "[(]", replacement = "[")
+    run_name <- gsub(x = run_name, pattern = "[)]", replacement = "]")
+    run_name <- substr(x = run_name, start = 1, stop = 2000)
+  }
 
   if (is.list(fun_arguments)) {
     fun_arguments <- jap::args_2_string(fun_arguments)
@@ -370,7 +394,13 @@ run_on_cluster <- function(
     install_package =
       eval(parse(text = paste0("install_package <- function(package_name, github_name = NA)", c(body(jap::install_package)))))
   )
-  args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+
+  # give name to run and args file
+  if (is.na(run_name)) {
+    args_filename <- paste0(stringi::stri_rand_strings(1, 12), ".RData")
+  } else {
+    args_filename <- paste0(run_name, ".RData")
+  }
   args_file <- file.path(tempfolder, args_filename)
   save(args_list, file = args_file)
   ssh::scp_upload(
