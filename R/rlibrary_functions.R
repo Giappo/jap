@@ -27,7 +27,7 @@ install_package <- function(
       )
     } else {
       out <- jap::my_try_catch(
-        utils::install.packages(package_name, repos = 'https://lib.ugent.be/CRAN/')
+        utils::install.packages(package_name, repos = 'https://cloud.r-project.org')
       )
       if (!is.null(out$error)) {
         github_name <- readline(paste0(
