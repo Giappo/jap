@@ -9,6 +9,7 @@ run_on_cluster(
   package_name,
   function_name,
   fun_arguments,
+  run_name = "default",
   projects_folder_name = jap::default_projects_folder(),
   cluster_folder = jap::default_cluster_folder(),
   cluster_partition = "gelifes",
